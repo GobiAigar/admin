@@ -11,6 +11,8 @@ import { Backend_Endpoint } from "@/constants/constants";
 
 function Page() {
   const [datas, setDatas] = useState([]);
+  const [statistic, setStatistic] = useState([]);
+  const [render, setRender] = useState(false);
 
   const fetchFaq = async () => {
     try {
@@ -23,15 +25,26 @@ function Page() {
     }
   };
 
+  const fetchStatistic = async () => {
+    try {
+      const response = await fetch(`${Backend_Endpoint}/api/statistics`);
+      const data = await response.json();
+      setStatistic(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchFaq();
-  }, []);
+    fetchStatistic();
+  }, [render]);
 
   return (
     <>
       <title>Users - Management</title>
       <PageTitleWrapper>
-        <PageHeader />
+        <PageHeader render={render} setRender={setRender} />
       </PageTitleWrapper>
 
       <Grid
@@ -45,7 +58,12 @@ function Page() {
         spacing={4}
       >
         <Grid item xs={12}>
-          <Results datas={datas} />
+          <Results
+            datas={datas}
+            statistic={statistic}
+            render={render}
+            setRender={setRender}
+          />
         </Grid>
       </Grid>
     </>

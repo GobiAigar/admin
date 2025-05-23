@@ -1,9 +1,8 @@
 /* eslint-disable jsx-a11y/label-has-for */
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { Formik } from "formik";
-import wait from "../../../../utils/wait";
 
 import {
   styled,
@@ -24,13 +23,13 @@ import {
   Button,
 } from "@mui/material";
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
-import CloudUploadTwoToneIcon from "@mui/icons-material/CloudUploadTwoTone";
+import { Backend_Endpoint } from "@/constants/constants";
 
 const Input = styled("input")({
   display: "none",
 });
 
-function PageHeader() {
+function PageHeader({ setRender, render }) {
   const [openQuestion, setOpenQuestion] = useState(false);
   const [openStatistic, setOpenStatistic] = useState(false);
 
@@ -44,10 +43,6 @@ function PageHeader() {
   const handleClose = () => {
     setOpenQuestion(false);
     setOpenStatistic(false);
-  };
-
-  const handleCreateUserSuccess = () => {
-    setOpen(false);
   };
 
   return (
@@ -103,7 +98,7 @@ function PageHeader() {
             enquestion: "",
             mnquestion: "",
             enanswer: "",
-            mnanswer: "",
+            mongolia: "",
             submit: null,
           }}
           validationSchema={Yup.object().shape({
@@ -125,11 +120,19 @@ function PageHeader() {
             { resetForm, setErrors, setStatus, setSubmitting }
           ) => {
             try {
-              await wait(1000);
+              const response = await fetch(`${Backend_Endpoint}/api/faq`, {
+                method: "POST",
+                body: JSON.stringify(_values),
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              });
+              const data = await response.json();
+
               resetForm();
               setStatus({ success: true });
               setSubmitting(false);
-              handleCreateUserSuccess();
+              alert("Амжилттай нэмэгдлээ");
             } catch (err) {
               console.error(err);
               setStatus({ success: false });
@@ -249,36 +252,39 @@ function PageHeader() {
         </DialogTitle>
         <Formik
           initialValues={{
-            enquestion: "",
-            mnquestion: "",
-            enanswer: "",
-            mnanswer: "",
+            english: "",
+            mongolia: "",
             submit: null,
           }}
           validationSchema={Yup.object().shape({
-            enquestion: Yup.string()
+            english: Yup.string()
               .max(255)
               .required("Асуултын англи хэлбэрийг оруулна уу"),
-            mnquestion: Yup.string()
+            mongolia: Yup.string()
               .max(255)
               .required("Асуултын монгол хэлбэрийг оруулна уу"),
-            enanswer: Yup.string()
-              .max(255)
-              .required("Хариултын англи хэлбэрийг оруулна уу"),
-            mnanswer: Yup.string()
-              .max(255)
-              .required("Хариултын англи хэлбэрийг оруулна уу"),
           })}
           onSubmit={async (
             _values,
             { resetForm, setErrors, setStatus, setSubmitting }
           ) => {
             try {
-              await wait(1000);
+              const response = await fetch(
+                `${Backend_Endpoint}/api/statistics`,
+                {
+                  method: "POST",
+                  body: JSON.stringify(_values),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
+              const data = await response.json();
+              setRender(!render);
               resetForm();
               setStatus({ success: true });
               setSubmitting(false);
-              handleCreateUserSuccess();
+              alert("Амжилттай нэмэгдлээ");
             } catch (err) {
               console.error(err);
               setStatus({ success: false });
@@ -306,27 +312,27 @@ function PageHeader() {
                 <Grid container spacing={3}>
                   <Grid item size={12}>
                     <TextField
-                      error={Boolean(touched.mnquestion && errors.mnquestion)}
+                      error={Boolean(touched.english && errors.english)}
                       fullWidth
-                      helperText={touched.mnquestion && errors.mnquestion}
+                      helperText={touched.english && errors.english}
                       label={"Англи"}
-                      name="mnquestion"
+                      name="english"
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      value={values.mnquestion}
+                      value={values.english}
                       variant="outlined"
                     />
                   </Grid>
                   <Grid item size={12}>
                     <TextField
-                      error={Boolean(touched.mnanswer && errors.mnanswer)}
+                      error={Boolean(touched.mongolia && errors.mongolia)}
                       fullWidth
-                      helperText={touched.mnanswer && errors.mnanswer}
+                      helperText={touched.mongolia && errors.mongolia}
                       label="Монгол"
-                      name="mnanswer"
+                      name="mongolia"
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      value={values.mnanswer}
+                      value={values.mongolia}
                       variant="outlined"
                     />
                   </Grid>
