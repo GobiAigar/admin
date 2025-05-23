@@ -41,7 +41,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import LaunchTwoToneIcon from "@mui/icons-material/LaunchTwoTone";
 import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
-import Label from "./Label";
+import { Backend_Endpoint } from "@/constants/constants";
 
 const DialogWrapper = styled(Dialog)(
   () => `
@@ -51,52 +51,14 @@ const DialogWrapper = styled(Dialog)(
 `
 );
 
-const CardWrapper = styled(Card)(
-  ({ theme }) => `
-
-  position: relative;
-  overflow: visible;
-
-  &::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    border-radius: inherit;
-    z-index: 1;
-    transition: ${theme.transitions.create(["box-shadow"])};
-  }
-      
-    &.Mui-selected::after {
-      box-shadow: 0 0 0 3px ${theme.colors.primary.main};
-    }
-  `
-);
-
-const TabsWrapper = styled(Tabs)(
-  ({ theme }) => `
-    @media (max-width: ${theme.breakpoints.values.md}px) {
-      .MuiTabs-scrollableX {
-        overflow-x: auto !important;
-      }
-
-      .MuiTabs-indicator {
-          box-shadow: none;
-      }
-    }
-    `
-);
-
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
-const Results = ({ datas }) => {
+const Results = ({ datas, statistic, setRender, render }) => {
   const [selectedTab, setSelectedTab] = useState("faq");
   const [selectedDatas, setSelectedDatas] = useState([]);
-  const { enqueueSnackbar } = useSnackbar();
+  const [id, setId] = useState(null);
 
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(10);
@@ -108,35 +70,27 @@ const Results = ({ datas }) => {
   };
 
   const handleSelectAllUsers = (event) => {
-    setSelectedDatas(event.target.checked ? datas.map((user) => user.id) : []);
+    setSelectedDatas(event.target.checked ? datas.map((data) => data.id) : []);
   };
 
-  const handleSelectOneUser = (_event, userId) => {
-    if (!selectedDatas.includes(userId)) {
-      setSelectedDatas((prevSelected) => [...prevSelected, userId]);
+  const handleSelectOneUser = (_event, id) => {
+    if (!selectedDatas.includes(id)) {
+      setSelectedDatas((prevSelected) => [...prevSelected, id]);
     } else {
       setSelectedDatas((prevSelected) =>
-        prevSelected.filter((id) => id !== userId)
+        prevSelected.filter((id) => id !== datas.id)
       );
     }
-  };
-
-  const handlePageChange = (_event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleLimitChange = (event) => {
-    setLimit(parseInt(event.target.value));
   };
 
   const selectedBulkActions = selectedDatas.length > 0;
   const selectedSomeUsers =
     selectedDatas.length > 0 && selectedDatas.length < datas.length;
   const selectedAllUsers = selectedDatas.length === datas.length;
-
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDeleteFaq = (e) => {
+    setId(e);
     setOpenConfirmDelete(true);
   };
 
@@ -144,17 +98,34 @@ const Results = ({ datas }) => {
     setOpenConfirmDelete(false);
   };
 
-  const handleDeleteCompleted = () => {
-    setOpenConfirmDelete(false);
+  const handleEditFaq = (e) => {
+    setOpenConfirmDelete(true);
+  };
 
-    enqueueSnackbar("Хэрэглэгч устгагдсан", {
-      variant: "success",
-      anchorOrigin: {
-        vertical: "top",
-        horizontal: "right",
-      },
-      TransitionComponent: Zoom,
-    });
+  const handleEditStatistic = (e) => {
+    setOpenConfirmDelete(true);
+  };
+
+  const handleDeleteCompleted = async () => {
+    try {
+      const response = await fetch(
+        `${Backend_Endpoint}/api/${selectedTab}/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      setRender(!render);
+
+      alert("Амжилттай устгалаа");
+    } catch (error) {
+      console.log(error, "error");
+    }
+
+    setOpenConfirmDelete(false);
   };
 
   return (
@@ -174,7 +145,7 @@ const Results = ({ datas }) => {
           <Button
             variant="outlined"
             onClick={() => {
-              setSelectedTab("statistic");
+              setSelectedTab("statistics");
             }}
           >
             Статистик
@@ -214,13 +185,6 @@ const Results = ({ datas }) => {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={selectedAllUsers}
-                          indeterminate={selectedSomeUsers}
-                          onChange={handleSelectAllUsers}
-                        />
-                      </TableCell>
                       <TableCell>дэс дугаар</TableCell>
                       <TableCell>Англи асуулт</TableCell>
                       <TableCell>Англи хариулт</TableCell>
@@ -233,15 +197,6 @@ const Results = ({ datas }) => {
                       const isSelected = selectedDatas.includes(data.id);
                       return (
                         <TableRow hover key={data.id} selected={isSelected}>
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isSelected}
-                              onChange={(event) =>
-                                handleSelectOneUser(event, data?.id)
-                              }
-                              value={isSelected}
-                            />
-                          </TableCell>
                           <TableCell>
                             <Typography>{data?.id}</Typography>
                           </TableCell>
@@ -267,10 +222,12 @@ const Results = ({ datas }) => {
                           <TableCell>{data.mndescription}</TableCell>
                           <TableCell align="center">
                             <Typography noWrap>
-                              <Tooltip title="Харуулах" arrow>
+                              <Tooltip title="Засах" arrow>
                                 <IconButton
-                                  component={Link}
-                                  href="#"
+                                  value={data.id}
+                                  onClick={() => {
+                                    handleEditFaq(data.id);
+                                  }}
                                   color="primary"
                                 >
                                   <LaunchTwoToneIcon fontSize="small" />
@@ -278,7 +235,9 @@ const Results = ({ datas }) => {
                               </Tooltip>
                               <Tooltip title="Устгах" arrow>
                                 <IconButton
-                                  onClick={handleConfirmDelete}
+                                  onClick={() => {
+                                    handleConfirmDeleteFaq(data.id);
+                                  }}
                                   color="primary"
                                 >
                                   <DeleteTwoToneIcon fontSize="small" />
@@ -294,7 +253,70 @@ const Results = ({ datas }) => {
               </TableContainer>
             </>
           )}
-          :(<>aaa</>)
+          {selectedTab === "statistics" && (
+            <>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>дэс дугаар</TableCell>
+                      <TableCell>Англи</TableCell>
+                      <TableCell>Монгол</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {statistic.map((data) => {
+                      const isSelected = selectedDatas.includes(data.id);
+                      return (
+                        <TableRow hover key={data.id} selected={isSelected}>
+                          <TableCell>
+                            <Typography>{data?.id}</Typography>
+                          </TableCell>
+
+                          <TableCell>
+                            <Box display="flex" alignItems="center">
+                              <Box>
+                                <Typography>{data.english}</Typography>
+                              </Box>
+                            </Box>
+                          </TableCell>
+                          <TableCell>
+                            <Typography>{data.mongolia}</Typography>
+                          </TableCell>
+                          <TableCell>{data.mndescription}</TableCell>
+                          <TableCell align="center">
+                            <Typography noWrap>
+                              <Tooltip title="Засах" arrow>
+                                <IconButton
+                                  value={data.id}
+                                  onClick={() => {
+                                    handleEditFaq(data.id);
+                                  }}
+                                  color="primary"
+                                >
+                                  <LaunchTwoToneIcon fontSize="small" />
+                                </IconButton>
+                              </Tooltip>
+                              <Tooltip title="Устгах" arrow>
+                                <IconButton
+                                  onClick={() => {
+                                    handleConfirmDeleteFaq(data.id);
+                                  }}
+                                  color="primary"
+                                >
+                                  <DeleteTwoToneIcon fontSize="small" />
+                                </IconButton>
+                              </Tooltip>
+                            </Typography>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </>
+          )}
         </Card>
       }
 
@@ -302,7 +324,6 @@ const Results = ({ datas }) => {
         open={openConfirmDelete}
         maxWidth="sm"
         fullWidth
-        TransitionComponent={Transition}
         keepMounted
         onClose={closeConfirmDelete}
       >
