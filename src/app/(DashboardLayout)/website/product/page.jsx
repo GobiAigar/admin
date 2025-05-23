@@ -18,6 +18,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
 import { Backend_Endpoint } from "@/constants/constants";
 import { useEffect, useState } from "react";
+import FileUploader from "../../components/website/FileUploader";
+import { Formik, Form } from "formik";
 
 const Page = () => {
   const [open, setOpen] = useState(false);
@@ -52,176 +54,142 @@ const Page = () => {
     fetchdata();
   }, []);
 
+  const handleSubmit = async (values) => {
+    console.log("zurag", values);
+
+    try {
+      const response = await fetch(`${Backend_Endpoint}/api/product/${id}`, {
+        method: "PUT",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(values),
+      });
+
+      if (response.ok) {
+        alert("Амжилттай шинэчиллээ");
+      } else {
+        alert("Алдаа гарлаа. Дахин оролдоно уу.");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+
+    handleClose();
+  };
+
   return (
-    <PageContainer title="Product" description="Product">
-      <Box sx={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
-        <Button
-          onClick={() => {
-            setEnglish(!isEnglish);
-          }}
-          variant="outlined"
-        >
-          {isEnglish ? "Монгол" : "Англи"}
-        </Button>
-        <Button variant="outlined" onClick={handleClickOpen}>
-          Засах
-        </Button>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          slotProps={{
-            paper: {
-              component: "form",
-              onSubmit: async (event) => {
-                event.preventDefault();
-                const formData = new FormData(event.currentTarget);
-                const formJson = Object.fromEntries(formData.entries());
+    <Formik
+      initialValues={{
+        entitle: filteredData?.entitle || "",
+        mntitle: filteredData?.mntitle || "",
+        endescription: filteredData?.endescription || "",
+        mndescription: filteredData?.mndescription || "",
+        image_url: filteredData?.image_url || "",
+      }}
+      enableReinitialize={true}
+      onSubmit={handleSubmit}
+    >
+      {({ setFieldValue, values }) => (
+        <PageContainer title="Product" description="Product">
+          <Box sx={{ display: "flex", gap: "20px", marginBottom: "20px" }}>
+            <Button onClick={() => setEnglish(!isEnglish)} variant="outlined">
+              {isEnglish ? "Монгол" : "Англи"}
+            </Button>
+            <Button variant="outlined" onClick={handleClickOpen}>
+              Засах
+            </Button>
+            <Dialog open={open} onClose={handleClose}>
+              <Form>
+                <DialogTitle>Засах</DialogTitle>
+                <DialogContent>
+                  <TextField
+                    autoFocus
+                    required
+                    margin="dense"
+                    id="entitle"
+                    name="entitle"
+                    label="Title"
+                    type="text"
+                    value={values.entitle}
+                    onChange={(e) => setFieldValue("entitle", e.target.value)}
+                    fullWidth
+                    variant="outlined"
+                  />
+                  <TextField
+                    required
+                    margin="dense"
+                    id="mntitle"
+                    name="mntitle"
+                    label="Гарчиг"
+                    value={values.mntitle}
+                    onChange={(e) => setFieldValue("mntitle", e.target.value)}
+                    fullWidth
+                    variant="outlined"
+                  />
+                  <FileUploader
+                    setFieldValue={setFieldValue}
+                    fieldName="image_url"
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose}>Cancel</Button>
+                  <Button type="submit">Засах</Button>
+                </DialogActions>
+              </Form>
+            </Dialog>
+          </Box>
 
-                try {
-                  const response = await fetch(
-                    `${Backend_Endpoint}/api/product/${id}`,
-                    {
-                      method: "PUT",
-                      headers: { "Content-type": "application/json" },
-                      body: JSON.stringify(formJson),
-                    }
-                  );
-                  if (response) {
-                    alert("amjilttai soligloo");
-                  }
-                } catch (error) {
-                  console.log(error);
-                }
-                handleClose();
-              },
-            },
-          }}
-        >
-          <DialogTitle>Засах</DialogTitle>
-          <DialogContent>
-            {filteredData?.id == 1 && (
-              <TextField
-                autoFocus
-                required
-                margin="dense"
-                id="entitle"
-                name="entitle"
-                label="Title"
-                type="text"
-                defaultValue={filteredData?.entitle}
-                fullWidth
-                variant="outlined"
+          <Grid
+            container
+            rowSpacing={1}
+            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          >
+            <Grid size={12}>
+              <FormControl sx={{ marginBottom: 2 }} fullWidth>
+                <Select
+                  id="sectionSelect"
+                  value={id}
+                  onChange={(e) => setId(e.target.value)}
+                >
+                  {datas.map((item) => (
+                    <MenuItem key={item?.id} value={item?.id}>
+                      {item?.entitle}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 6 }}>
+              <CardMedia
+                component="img"
+                height="600"
+                image={values.image_url || ""}
+                alt="Product"
+                sx={{
+                  objectFit: "cover",
+                }}
               />
-            )}
-            {filteredData?.id == 1 && (
-              <TextField
-                autoFocus
-                required
-                margin="dense"
-                id="mntitle"
-                name="mntitle"
-                label="Гарчиг"
-                defaultValue={filteredData?.mntitle}
-                type="text"
-                fullWidth
-                variant="outlined"
-              />
-            )}
-
-            {filteredData?.endescription && (
-              <TextField
-                autoFocus
-                required
-                margin="dense"
-                id="endescription"
-                name="endescription"
-                label="description"
-                type="textarea"
-                defaultValue={filteredData?.endescription}
-                fullWidth
-                variant="outlined"
-              />
-            )}
-            {filteredData?.mndescription && (
-              <TextField
-                autoFocus
-                required
-                margin="dense"
-                id="mndescription"
-                name="mndescription"
-                label="Тайлбар"
-                type="text"
-                defaultValue={filteredData?.mndescription}
-                fullWidth
-                variant="outlined"
-              />
-            )}
-
-            <TextField
-              autoFocus
-              required
-              margin="dense"
-              id="image_url"
-              name="image_url"
-              label="Image URL"
-              type="text"
-              fullWidth
-              variant="outlined"
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button type="submit">Засах</Button>
-          </DialogActions>
-        </Dialog>
-      </Box>
-
-      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        <Grid size={12}>
-          <FormControl sx={{ marginBottom: 2 }} fullWidth>
-            <Select
-              id="sectionSelect"
-              value={id}
-              onChange={(e) => {
-                setId(e.target.value);
-              }}
-            >
-              {datas.map((item) => (
-                <MenuItem key={item?.id} value={item?.id}>
-                  {item?.entitle}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid size={6}>
-          <CardMedia
-            component="img"
-            height="600"
-            image={filteredData?.image_url || ""}
-            alt="Paella dish"
-          />
-        </Grid>
-        <Grid size={6}>
-          {isEnglish && (
-            <>
-              <Typography variant="h4">{filteredData?.entitle}</Typography>
-              <Typography variant="body1" align="justify">
-                {filteredData?.endescription}
-              </Typography>
-            </>
-          )}
-          {!isEnglish && (
-            <>
-              <Typography variant="h4">{filteredData?.mntitle}</Typography>
-              <Typography variant="body1" align="justify">
-                {filteredData?.mndescription}
-              </Typography>
-            </>
-          )}
-        </Grid>
-      </Grid>
-    </PageContainer>
+            </Grid>
+            <Grid size={{ xs: 6 }}>
+              {isEnglish ? (
+                <>
+                  <Typography variant="h4">{values.entitle}</Typography>
+                  <Typography variant="body1" align="justify">
+                    {values.endescription}
+                  </Typography>
+                </>
+              ) : (
+                <>
+                  <Typography variant="h4">{values.mntitle}</Typography>
+                  <Typography variant="body1" align="justify">
+                    {values.mndescription}
+                  </Typography>
+                </>
+              )}
+            </Grid>
+          </Grid>
+        </PageContainer>
+      )}
+    </Formik>
   );
 };
 

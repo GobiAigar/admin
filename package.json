@@ -16,6 +16,7 @@
     "@mui/material": "^7.1.0",
     "@mui/x-data-grid": "^8.4.0",
     "@tabler/icons-react": "^3.33.0",
+    "cloudinary": "^2.6.1",
     "formik": "^2.4.6",
     "lodash": "^4.17.21",
     "next": "15.3.2",

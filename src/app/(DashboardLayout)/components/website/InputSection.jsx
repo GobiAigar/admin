@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useFormik } from "formik";
 import { Box, Button, InputLabel, TextField } from "@mui/material";
 import { Backend_Endpoint } from "@/constants/constants";
+import FileUploader from "./FileUploader";
 
 const InputSection = ({ data, id }) => {
   useEffect(() => {}, [data]);
@@ -91,52 +92,36 @@ const InputSection = ({ data, id }) => {
       {data?.image_url1 && (
         <div className="flex !flex-col px-4">
           <InputLabel htmlFor="image_url1">Зургийн хаяг</InputLabel>
-          <TextField
-            fullWidth
-            id="image_url1"
-            name="image_url1"
-            type="text"
-            onChange={formik.handleChange}
-            value={formik.values.image_url1}
+          <FileUploader
+            setFieldValue={formik.setFieldValue}
+            fieldName="image_url1"
           />
         </div>
       )}
       {data?.image_url2 && (
         <div className="flex flex-col px-4">
           <InputLabel htmlFor="image_url2">Зургийн хаяг 2</InputLabel>
-          <TextField
-            fullWidth
-            id="image_url2"
-            name="image_url2"
-            type="text"
-            onChange={formik.handleChange}
-            value={formik.values.image_url2}
+          <FileUploader
+            setFieldValue={formik.setFieldValue}
+            fieldName="image_url2"
           />
         </div>
       )}
       {data?.image_url3 && (
         <div className="flex flex-col px-4">
           <InputLabel htmlFor="image_url3">Зургийн хаяг 3</InputLabel>
-          <TextField
-            fullWidth
-            id="image_url3"
-            name="image_url3"
-            type="text"
-            onChange={formik.handleChange}
-            value={formik.values.image_url3}
+          <FileUploader
+            setFieldValue={formik.setFieldValue}
+            fieldName="image_url3"
           />
         </div>
       )}
       {data?.image_url4 && (
         <div className="flex flex-col px-4">
           <InputLabel htmlFor="image_url4">Зургийн хаяг 4</InputLabel>
-          <TextField
-            fullWidth
-            id="image_url4"
-            name="image_url4"
-            type="text"
-            onChange={formik.handleChange}
-            value={formik.values.image_url4}
+          <FileUploader
+            setFieldValue={formik.setFieldValue}
+            fieldName="image_url4"
           />
         </div>
       )}
