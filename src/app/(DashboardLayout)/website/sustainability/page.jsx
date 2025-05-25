@@ -1,50 +1,32 @@
 "use client";
 
-import { Box, Button } from "@mui/material";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  Snackbar,
+  Alert,
+  CardMedia,
+  Typography,
+} from "@mui/material";
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
 import { Backend_Endpoint } from "@/constants/constants";
 import { useEffect, useState } from "react";
-import { DataGrid, GridRowSelectionModel } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
+import { Formik, Form } from "formik";
+import FileUploader from "../../components/website/FileUploader";
 
 const columns = [
   { field: "id", headerName: "ID", width: 90 },
-  {
-    field: "entitle",
-    headerName: "Title",
-    sortable: false,
-    width: 150,
-  },
-  {
-    field: "mntitle",
-    headerName: "Гарчиг",
-    sortable: false,
-
-    width: 150,
-  },
-  {
-    field: "endescription",
-    headerName: "Discription",
-    sortable: false,
-    width: 110,
-  },
-  {
-    field: "mndescription",
-    headerName: "Тайлбар",
-    description: "This column has a value getter and is not sortable.",
-    sortable: false,
-    width: 100,
-  },
-  {
-    field: "image_url",
-    headerName: "Зураг",
-    sortable: false,
-    width: 200,
-  },
+  { field: "entitle", headerName: "Title", width: 150 },
+  { field: "mntitle", headerName: "Гарчиг", width: 150 },
+  { field: "endescription", headerName: "Description", width: 150 },
+  { field: "mndescription", headerName: "Тайлбар", width: 150 },
+  { field: "image_url", headerName: "Зураг", width: 200 },
 ];
 
 const Page = () => {
@@ -52,17 +34,25 @@ const Page = () => {
   const [addOpen, setAddOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [datas, setDatas] = useState([]);
-  const [id, setId] = useState();
+  const [id, setId] = useState([]);
   const [render, setRender] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
 
-  const handleClickOpenAdd = () => {
-    setAddOpen(true);
-  };
+  const selectedData = datas.find((d) => d.id === id[0]);
 
   const handleClickOpenFix = () => {
+    if (!id[0]) {
+      setAlertOpen(true);
+      return;
+    }
     setFixOpen(true);
   };
-  const handleClickOpen = () => {
+
+  const handleClickOpenDelete = () => {
+    if (!id[0]) {
+      setAlertOpen(true);
+      return;
+    }
     setDeleteOpen(true);
   };
 
@@ -78,25 +68,17 @@ const Page = () => {
       const data = await response.json();
       setDatas(data.data);
     } catch (error) {
-      console.error();
+      console.error(error);
     }
   };
 
-  const deleteCerficate = async () => {
-    if (!id[0]) {
-      return alert("Та устгах гэрчилгээгээ сонгоно уу");
-    }
-    if (id[0] == 1) {
-      return alert("Та устгах боломжгүй зүйл устгах гэж байна");
-    }
+  const deleteCertificate = async () => {
     try {
       const response = await fetch(
-        `${Backend_Endpoint}/api/sustainability/${id}`,
+        `${Backend_Endpoint}/api/sustainability/${id[0]}`,
         {
           method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         }
       );
       if (response.ok) {
@@ -104,18 +86,17 @@ const Page = () => {
         handleClose();
         setRender(!render);
       }
-      alert("Amjilttai ustgalaa");
     } catch (error) {
-      console.log(error);
+      console.error("Устгах алдаа:", error);
     }
   };
 
   useEffect(() => {
     fetchdata();
-  }, [id, render]);
+  }, [render]);
 
   return (
-    <PageContainer title="Product" description="Product">
+    <PageContainer title="Sustainability" description="Sustainability List">
       <Box sx={{ height: 400, width: "100%" }}>
         <Box
           sx={{
@@ -125,261 +106,225 @@ const Page = () => {
             justifyContent: "flex-end",
           }}
         >
-          {id && (
-            <>
-              <Button variant="outlined" onClick={handleClickOpenFix}>
-                Засах
-              </Button>
+          <Button variant="outlined" onClick={handleClickOpenFix}>
+            Засах
+          </Button>
 
-              <Dialog
-                open={fixOpen}
-                onClose={handleClose}
-                slotProps={{
-                  paper: {
-                    component: "form",
-                    onSubmit: async (event) => {
-                      event.preventDefault();
-                      const formData = new FormData(event.currentTarget);
-                      const formJson = Object.fromEntries(formData.entries());
-                      try {
-                        const response = await fetch(
-                          `${Backend_Endpoint}/api/sustainability/${id}`,
-                          {
-                            method: "PUT",
-                            headers: {
-                              "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify(formJson),
-                          }
-                        );
-                        setRender(!render);
-                        handleClose();
-                      } catch (error) {
-                        console.log(error);
-                      }
-                    },
-                  },
-                }}
-              >
-                <DialogTitle>Гэрчилгээ засах</DialogTitle>
-                <DialogContent>
-                  <TextField
-                    autoFocus
-                    required
-                    margin="dense"
-                    id="entitle"
-                    name="entitle"
-                    defaultValue={
-                      datas.find((data) => data.id === id[0])?.entitle
+          <Dialog open={fixOpen} onClose={handleClose} maxWidth="sm" fullWidth>
+            <Formik
+              initialValues={{
+                entitle: selectedData?.entitle || "",
+                mntitle: selectedData?.mntitle || "",
+                endescription: selectedData?.endescription || "",
+                mndescription: selectedData?.mndescription || "",
+                image_url: selectedData?.image_url || "",
+              }}
+              enableReinitialize={true}
+              onSubmit={async (values) => {
+                try {
+                  const response = await fetch(
+                    `${Backend_Endpoint}/api/sustainability/${id[0]}`,
+                    {
+                      method: "PUT",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify(values),
                     }
-                    label="Title"
-                    type="text"
-                    fullWidth
-                    variant="outlined"
-                  />
-                  <TextField
-                    required
-                    margin="dense"
-                    id="mntitle"
-                    name="mntitle"
-                    defaultValue={
-                      datas.find((data) => data.id === id[0])?.mntitle || ""
-                    }
-                    label="Гарчиг"
-                    type="text"
-                    fullWidth
-                    variant="outlined"
-                  />
-                  <TextField
-                    required
-                    margin="dense"
-                    id="endescription"
-                    name="endescription"
-                    defaultValue={
-                      datas.find((data) => data.id === id[0])?.endescription ||
-                      ""
-                    }
-                    label="Description"
-                    type="text"
-                    fullWidth
-                    variant="outlined"
-                  />
-                  <TextField
-                    required
-                    margin="dense"
-                    id="mndescription"
-                    name="mndescription"
-                    defaultValue={
-                      datas.find((data) => data.id === id[0])?.mndescription ||
-                      ""
-                    }
-                    label="Дэд гарчиг"
-                    type="text"
-                    fullWidth
-                    variant="outlined"
-                  />
-                  <TextField
-                    required
-                    margin="dense"
-                    id="image_url"
-                    name="image_url"
-                    defaultValue={
-                      datas.find((data) => data.id === id[0])?.image_url || ""
-                    }
-                    label="Зураг"
-                    type="text"
-                    fullWidth
-                    variant="outlined"
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose}>Cancel</Button>
-                  <Button type="submit">Засах</Button>
-                </DialogActions>
-              </Dialog>
-            </>
-          )}
-          {id && (
-            <>
-              <Button variant="outlined" onClick={() => handleClickOpen()}>
-                Устгах
-              </Button>
-              <Dialog
-                open={deleteOpen}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-              >
-                <DialogTitle id="alert-dialog-title">
-                  Та энэ нийтлэлийг устгахдаа итгэлтэй байна уу?
-                </DialogTitle>
-
-                <DialogActions>
-                  <Button onClick={handleClose}>Үгүй</Button>
-                  <Button onClick={deleteCerficate} autoFocus>
-                    Тийм
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </>
-          )}
-          <>
-            <Button variant="outlined" onClick={handleClickOpenAdd}>
-              Нэмэх
-            </Button>
-            <Dialog
-              open={addOpen}
-              onClose={handleClose}
-              slotProps={{
-                paper: {
-                  component: "form",
-                  onSubmit: async (event) => {
-                    event.preventDefault();
-                    const formData = new FormData(event.currentTarget);
-                    const formJson = Object.fromEntries(formData.entries());
-                    try {
-                      const response = await fetch(
-                        `${Backend_Endpoint}/api/sustainability`,
-                        {
-                          method: "POST",
-                          headers: {
-                            "Content-Type": "application/json",
-                          },
-                          body: JSON.stringify(formJson),
-                        }
-                      );
-                      setRender(!render);
-                      handleClose();
-                    } catch (error) {
-                      console.log(error);
-                    }
-                  },
-                },
+                  );
+                  if (response.ok) {
+                    setRender(!render);
+                    handleClose();
+                  }
+                } catch (error) {
+                  console.error("Засах алдаа:", error);
+                }
               }}
             >
-              <DialogTitle>Гэрчилгээ нэмэх</DialogTitle>
-              <DialogContent>
-                <TextField
-                  autoFocus
-                  required
-                  margin="dense"
-                  id="entitle"
-                  name="entitle"
-                  label="Title"
-                  type="text"
-                  fullWidth
-                  variant="outlined"
-                />
-                <TextField
-                  autoFocus
-                  required
-                  margin="dense"
-                  id="mntitle"
-                  name="mntitle"
-                  label="Title"
-                  type="text"
-                  fullWidth
-                  variant="outlined"
-                />
-                <TextField
-                  autoFocus
-                  required
-                  margin="dense"
-                  id="endescription"
-                  name="endescription"
-                  label="Description"
-                  type="text"
-                  fullWidth
-                  variant="outlined"
-                />
-                <TextField
-                  autoFocus
-                  required
-                  margin="dense"
-                  id="mndescription"
-                  name="mndescription"
-                  label="Дэд гарчиг"
-                  type="text"
-                  fullWidth
-                  variant="outlined"
-                />
-                <TextField
-                  autoFocus
-                  required
-                  margin="dense"
-                  id="image_url"
-                  name="image_url"
-                  label="Зураг"
-                  type="text"
-                  fullWidth
-                  variant="outlined"
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClose}>Cancel</Button>
-                <Button type="submit">Нэмэх</Button>
-              </DialogActions>
-            </Dialog>
-          </>
+              {({ setFieldValue, values }) => (
+                <Form>
+                  <DialogTitle>Гэрчилгээ засах</DialogTitle>
+                  <DialogContent>
+                    <TextField
+                      margin="dense"
+                      label="Title"
+                      fullWidth
+                      value={values.entitle}
+                      onChange={(e) => setFieldValue("entitle", e.target.value)}
+                    />
+                    <TextField
+                      margin="dense"
+                      label="Гарчиг"
+                      fullWidth
+                      value={values.mntitle}
+                      onChange={(e) => setFieldValue("mntitle", e.target.value)}
+                    />
+                    <TextField
+                      margin="dense"
+                      label="Description"
+                      fullWidth
+                      value={values.endescription}
+                      onChange={(e) =>
+                        setFieldValue("endescription", e.target.value)
+                      }
+                    />
+                    <TextField
+                      margin="dense"
+                      label="Дэд гарчиг"
+                      fullWidth
+                      value={values.mndescription}
+                      onChange={(e) =>
+                        setFieldValue("mndescription", e.target.value)
+                      }
+                    />
+                    <FileUploader
+                      setFieldValue={setFieldValue}
+                      fieldName="image_url"
+                    />
+                    {selectedData?.image_url && (
+                      <Box sx={{ my: 2 }}>
+                        <Typography variant="body2">Одоогийн зураг:</Typography>
+                        <CardMedia
+                          component="img"
+                          image={selectedData.image_url}
+                          alt="Uploaded"
+                          sx={{
+                            objectFit: "contain",
+                            width: "100%",
+                            maxHeight: 300,
+                            borderRadius: 2,
+                          }}
+                        />
+                      </Box>
+                    )}
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button type="submit">Засах</Button>
+                  </DialogActions>
+                </Form>
+              )}
+            </Formik>
+          </Dialog>
+
+          <Button variant="outlined" onClick={handleClickOpenDelete}>
+            Устгах
+          </Button>
+
+          <Dialog open={deleteOpen} onClose={handleClose}>
+            <DialogTitle>
+              Та энэ Гэрчилгээ устгахдаа итгэлтэй байна уу?
+            </DialogTitle>
+            <DialogActions>
+              <Button onClick={handleClose}>Үгүй</Button>
+              <Button onClick={deleteCertificate} autoFocus>
+                Тийм
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          <Button variant="outlined" onClick={() => setAddOpen(true)}>
+            Нэмэх
+          </Button>
+
+          <Dialog open={addOpen} onClose={handleClose}>
+            <Formik
+              initialValues={{
+                entitle: "",
+                mntitle: "",
+                endescription: "",
+                mndescription: "",
+                image_url: "",
+              }}
+              onSubmit={async (values) => {
+                try {
+                  const response = await fetch(
+                    `${Backend_Endpoint}/api/sustainability`,
+                    {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify(values),
+                    }
+                  );
+                  if (response.ok) {
+                    setRender(!render);
+                    handleClose();
+                  }
+                } catch (error) {
+                  console.error("Нэмэх алдаа:", error);
+                }
+              }}
+            >
+              {({ setFieldValue, values }) => (
+                <Form>
+                  <DialogTitle>Гэрчилгээ нэмэх</DialogTitle>
+                  <DialogContent>
+                    <TextField
+                      margin="dense"
+                      label="Title"
+                      fullWidth
+                      value={values.entitle}
+                      onChange={(e) => setFieldValue("entitle", e.target.value)}
+                    />
+                    <TextField
+                      margin="dense"
+                      label="Гарчиг"
+                      fullWidth
+                      value={values.mntitle}
+                      onChange={(e) => setFieldValue("mntitle", e.target.value)}
+                    />
+                    <TextField
+                      margin="dense"
+                      label="Description"
+                      fullWidth
+                      value={values.endescription}
+                      onChange={(e) =>
+                        setFieldValue("endescription", e.target.value)
+                      }
+                    />
+                    <TextField
+                      margin="dense"
+                      label="Дэд гарчиг"
+                      fullWidth
+                      value={values.mndescription}
+                      onChange={(e) =>
+                        setFieldValue("mndescription", e.target.value)
+                      }
+                    />
+                    <FileUploader
+                      setFieldValue={setFieldValue}
+                      fieldName="image_url"
+                    />
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button type="submit">Нэмэх</Button>
+                  </DialogActions>
+                </Form>
+              )}
+            </Formik>
+          </Dialog>
         </Box>
 
         <DataGrid
           rows={datas || []}
           columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 5,
-              },
-            },
-          }}
-          pageSizeOptions={[5]}
           checkboxSelection
           disableMultipleRowSelection
-          onRowSelectionModelChange={(newSelection) => {
-            setId(Array.from(newSelection.ids));
-          }}
+          onRowSelectionModelChange={(newSelection) =>
+            setId(Array.from(newSelection.ids))
+          }
         />
       </Box>
+
+      <Snackbar
+        open={alertOpen}
+        autoHideDuration={3000}
+        onClose={() => setAlertOpen(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert severity="warning" onClose={() => setAlertOpen(false)}>
+          Та жагсаалтаас Гэрчилгээгээ сонгоно уу!
+        </Alert>
+      </Snackbar>
     </PageContainer>
   );
 };

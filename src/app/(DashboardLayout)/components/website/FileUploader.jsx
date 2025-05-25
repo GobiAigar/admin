@@ -27,10 +27,10 @@ const VisuallyHiddenInput = (props) => (
   />
 );
 
-const FileUploader = ({ setFieldValue, fieldName }) => {
+const FileUploader = ({ setFieldValue, fieldName, onClear }) => {
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState(null);
-  const fileInputRef = React.createRef(); 
+  const fileInputRef = React.createRef();
 
   const handleUpload = async (e) => {
     const file = e.target.files[0];
@@ -64,8 +64,9 @@ const FileUploader = ({ setFieldValue, fieldName }) => {
 
   const handleClear = () => {
     setPreview(null);
-    setFieldValue(fieldName, ""); 
-    fileInputRef.current.value = null; 
+    setFieldValue(fieldName, "");
+    fileInputRef.current.value = null;
+    if (onClear) onClear();
   };
 
   return (
@@ -81,7 +82,7 @@ const FileUploader = ({ setFieldValue, fieldName }) => {
           type="file"
           onChange={handleUpload}
           accept="image/*"
-          ref={fileInputRef} 
+          ref={fileInputRef}
         />
       </Button>
 

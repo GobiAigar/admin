@@ -1,11 +1,11 @@
 "use client";
 
-import Grid from "@mui/material/Grid";
 import {
   Box,
   Button,
   CardMedia,
   FormControl,
+  Grid,
   MenuItem,
   Select,
   Typography,
@@ -18,8 +18,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
 import { Backend_Endpoint } from "@/constants/constants";
 import { useEffect, useState } from "react";
-import FileUploader from "../../components/website/FileUploader";
 import { Formik, Form } from "formik";
+import FileUploader from "../../components/website/FileUploader";
 
 const Page = () => {
   const [open, setOpen] = useState(false);
@@ -27,41 +27,48 @@ const Page = () => {
   const [datas, setDatas] = useState([]);
   const [id, setId] = useState(1);
   const [filteredData, setFilteredData] = useState(null);
+  const [previousImageUrl, setPreviousImageUrl] = useState("");
 
   const handleClickOpen = () => {
+    if (!filteredData) return; 
     setOpen(true);
+    setPreviousImageUrl(filteredData.image_url || "");
   };
 
   const handleClose = () => {
     setOpen(false);
+    window.location.reload();
   };
 
-  const fetchdata = async () => {
+  const fetchData = async () => {
     try {
       const response = await fetch(`${Backend_Endpoint}/api/product`);
       const data = await response.json();
       setDatas(data.data);
     } catch (error) {
-      console.error();
+      console.error("Error fetching data:", error);
     }
   };
 
   useEffect(() => {
-    setFilteredData(datas?.find((item) => item?.id == id));
+    setFilteredData(datas?.find((item) => item?.id === id));
   }, [id, datas]);
 
   useEffect(() => {
-    fetchdata();
-  }, []);
+    fetchData();
+  }, [datas]);
 
   const handleSubmit = async (values) => {
-    console.log("zurag", values);
+    const updatedValues = { ...values };
+    if (updatedValues.image_url === previousImageUrl) {
+      delete updatedValues.image_url;
+    }
 
     try {
       const response = await fetch(`${Backend_Endpoint}/api/product/${id}`, {
         method: "PUT",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify(values),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedValues),
       });
 
       if (response.ok) {
@@ -108,7 +115,6 @@ const Page = () => {
                     id="entitle"
                     name="entitle"
                     label="Title"
-                    type="text"
                     value={values.entitle}
                     onChange={(e) => setFieldValue("entitle", e.target.value)}
                     fullWidth
@@ -125,10 +131,58 @@ const Page = () => {
                     fullWidth
                     variant="outlined"
                   />
+                  {id !== 1 && (
+                    <>
+                      <TextField
+                        required
+                        margin="dense"
+                        id="endescription"
+                        name="endescription"
+                        label="Description"
+                        value={values.endescription}
+                        onChange={(e) =>
+                          setFieldValue("endescription", e.target.value)
+                        }
+                        fullWidth
+                        variant="outlined"
+                      />
+                      <TextField
+                        required
+                        margin="dense"
+                        id="mndescription"
+                        name="mndescription"
+                        label="Дэд гарчиг"
+                        value={values.mndescription}
+                        onChange={(e) =>
+                          setFieldValue("mndescription", e.target.value)
+                        }
+                        fullWidth
+                        variant="outlined"
+                      />
+                    </>
+                  )}
+
                   <FileUploader
                     setFieldValue={setFieldValue}
                     fieldName="image_url"
                   />
+
+                  {filteredData?.image_url && (
+                    <Box sx={{ mt: 2 }}>
+                      <Typography variant="body2">Одоогийн зураг:</Typography>
+                      <CardMedia
+                        component="img"
+                        image={filteredData.image_url}
+                        alt="Uploaded Image"
+                        sx={{
+                          width: "100%",
+                          maxHeight: 300,
+                          objectFit: "contain",
+                          borderRadius: 2,
+                        }}
+                      />
+                    </Box>
+                  )}
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClose}>Cancel</Button>
