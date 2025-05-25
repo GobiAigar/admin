@@ -10,14 +10,13 @@ import React from "react";
 
 import LaunchTwoToneIcon from "@mui/icons-material/LaunchTwoTone";
 import DeleteNews from "../features/DeleteNews";
+import { Edit } from "@mui/icons-material";
+import EditNews from "../features/EditNews";
 
 const NewsRow = ({ data }) => {
   return (
     <>
       <TableRow hover key={data.id}>
-        <TableCell padding="checkbox">
-          <Checkbox />
-        </TableCell>
         <TableCell>
           <Typography variant="body1">{data?.mntitle}</Typography>
         </TableCell>
@@ -34,9 +33,7 @@ const NewsRow = ({ data }) => {
             alignItems: "center",
           }}
         >
-          <IconButton onClick={() => console.log(data.id)} color="primary">
-            <LaunchTwoToneIcon fontSize="small" />
-          </IconButton>
+          <EditNews data={data} />
           <DeleteNews id={data.id} />
         </TableCell>
       </TableRow>

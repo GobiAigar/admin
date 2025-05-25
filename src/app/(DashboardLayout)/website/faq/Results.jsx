@@ -42,6 +42,8 @@ import LaunchTwoToneIcon from "@mui/icons-material/LaunchTwoTone";
 import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import { Backend_Endpoint } from "@/constants/constants";
+import EditStatistic from "../../components/features/EditStatistic";
+import EditFaq from "../../components/features/EditFaq";
 
 const DialogWrapper = styled(Dialog)(
   () => `
@@ -186,53 +188,40 @@ const Results = ({ datas, statistic, setRender, render }) => {
                   <TableHead>
                     <TableRow>
                       <TableCell>дэс дугаар</TableCell>
-                      <TableCell>Англи асуулт</TableCell>
-                      <TableCell>Англи хариулт</TableCell>
                       <TableCell>Монгол асуулт</TableCell>
+                      <TableCell>Монгол хариулт</TableCell>
+                      <TableCell>Англи асуулт</TableCell>
                       <TableCell>Англи хариулт</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {datas.map((data) => {
+                    {datas.map((data, index) => {
                       const isSelected = selectedDatas.includes(data.id);
                       return (
                         <TableRow hover key={data.id} selected={isSelected}>
-                          <TableCell>
-                            <Typography>{data?.id}</Typography>
+                          <TableCell align="center">
+                            <Typography>{index + 1}</Typography>
                           </TableCell>
 
                           <TableCell>
                             <Box display="flex" alignItems="center">
                               <Box>
-                                <Typography>{data.enquestion}</Typography>
+                                <Typography>{data.mnquestion}</Typography>
                               </Box>
                             </Box>
                           </TableCell>
                           <TableCell>
-                            <Typography>{data.mnquestion}</Typography>
+                            <Typography>{data.mnanswer}</Typography>
                           </TableCell>
-                          <TableCell align="center">
-                            <Typography fontWeight="bold">
-                              {data.mnanswer}
-                            </Typography>
+                          <TableCell>
+                            <Typography>{data.enquestion}</Typography>
                           </TableCell>
                           <TableCell>
                             <Typography>{data.enanswer}</Typography>
                           </TableCell>
-                          <TableCell>{data.mndescription}</TableCell>
                           <TableCell align="center">
-                            <Typography noWrap>
-                              <Tooltip title="Засах" arrow>
-                                <IconButton
-                                  value={data.id}
-                                  onClick={() => {
-                                    handleEditFaq(data.id);
-                                  }}
-                                  color="primary"
-                                >
-                                  <LaunchTwoToneIcon fontSize="small" />
-                                </IconButton>
-                              </Tooltip>
+                            <Box display="flex" justifyContent="center">
+                              <EditFaq data={data} />
                               <Tooltip title="Устгах" arrow>
                                 <IconButton
                                   onClick={() => {
@@ -243,7 +232,7 @@ const Results = ({ datas, statistic, setRender, render }) => {
                                   <DeleteTwoToneIcon fontSize="small" />
                                 </IconButton>
                               </Tooltip>
-                            </Typography>
+                            </Box>
                           </TableCell>
                         </TableRow>
                       );
@@ -265,37 +254,23 @@ const Results = ({ datas, statistic, setRender, render }) => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {statistic.map((data) => {
+                    {statistic.map((data, index) => {
                       const isSelected = selectedDatas.includes(data.id);
                       return (
                         <TableRow hover key={data.id} selected={isSelected}>
-                          <TableCell>
-                            <Typography>{data?.id}</Typography>
+                          <TableCell sx={{ width: "10%" }}>
+                            <Typography>{index + 1}</Typography>
                           </TableCell>
-
-                          <TableCell>
-                            <Box display="flex" alignItems="center">
-                              <Box>
-                                <Typography>{data.english}</Typography>
-                              </Box>
-                            </Box>
+                          <TableCell size="medium" sx={{ width: "40%" }}>
+                            <Typography>{data.english}</Typography>
                           </TableCell>
-                          <TableCell>
+                          <TableCell size="medium" sx={{ width: "40%" }}>
                             <Typography>{data.mongolia}</Typography>
                           </TableCell>
-                          <TableCell>{data.mndescription}</TableCell>
-                          <TableCell align="center">
-                            <Typography noWrap>
+                          <TableCell align="center" sx={{ width: "10%" }}>
+                            <Box display="flex" justifyContent="center">
                               <Tooltip title="Засах" arrow>
-                                <IconButton
-                                  value={data.id}
-                                  onClick={() => {
-                                    handleEditFaq(data.id);
-                                  }}
-                                  color="primary"
-                                >
-                                  <LaunchTwoToneIcon fontSize="small" />
-                                </IconButton>
+                                <EditStatistic data={data} />
                               </Tooltip>
                               <Tooltip title="Устгах" arrow>
                                 <IconButton
@@ -307,7 +282,7 @@ const Results = ({ datas, statistic, setRender, render }) => {
                                   <DeleteTwoToneIcon fontSize="small" />
                                 </IconButton>
                               </Tooltip>
-                            </Typography>
+                            </Box>
                           </TableCell>
                         </TableRow>
                       );

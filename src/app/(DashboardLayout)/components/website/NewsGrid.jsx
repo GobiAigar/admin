@@ -9,6 +9,7 @@ import {
 import LaunchTwoToneIcon from "@mui/icons-material/LaunchTwoTone";
 import React from "react";
 import DeleteNews from "../features/DeleteNews";
+import EditNews from "../features/EditNews";
 
 const NewsGrid = ({ data }) => {
   return (
@@ -34,7 +35,6 @@ const NewsGrid = ({ data }) => {
           alignItems: "center",
         }}
       >
-        <Checkbox color="primary" />
         <Box
           sx={{
             display: "flex",
@@ -42,9 +42,7 @@ const NewsGrid = ({ data }) => {
             alignItems: "center",
           }}
         >
-          <IconButton onClick={() => console.log(data.id)} color="primary">
-            <LaunchTwoToneIcon fontSize="small" />
-          </IconButton>
+          <EditNews data={data} />
           <DeleteNews id={data.id} />
         </Box>
       </Box>

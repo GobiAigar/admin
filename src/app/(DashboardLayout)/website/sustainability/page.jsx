@@ -73,6 +73,7 @@ const Page = () => {
   };
 
   const deleteCertificate = async () => {
+    if (id[0] === 1) return alert("Энэ гэрчилгээг устгах боломжгүй");
     try {
       const response = await fetch(
         `${Backend_Endpoint}/api/sustainability/${id[0]}`,
@@ -305,13 +306,20 @@ const Page = () => {
         </Box>
 
         <DataGrid
-          rows={datas || []}
-          columns={columns}
+          rows={(datas || []).map((row, idx) => ({
+            ...row,
+            ui_id: idx + 1,
+          }))}
+          columns={[
+            { field: "ui_id", headerName: "№", width: 70 },
+            ...columns.filter((col) => col.field !== "id"),
+          ]}
           checkboxSelection
           disableMultipleRowSelection
           onRowSelectionModelChange={(newSelection) =>
             setId(Array.from(newSelection.ids))
           }
+          getRowId={(row) => row.id}
         />
       </Box>
 

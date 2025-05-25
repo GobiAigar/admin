@@ -40,8 +40,10 @@ function PageHeader({ setRender, render }) {
     setOpenStatistic(true);
   };
 
-  const handleClose = () => {
+  const handleCloseQuestion = () => {
     setOpenQuestion(false);
+  };
+  const handleCloseStatistic = () => {
     setOpenStatistic(false);
   };
 
@@ -85,7 +87,12 @@ function PageHeader({ setRender, render }) {
           </Grid>
         </Grid>
       </Grid>
-      <Dialog fullWidth maxWidth="sm" open={openQuestion} onClose={handleClose}>
+      <Dialog
+        fullWidth
+        maxWidth="sm"
+        open={openQuestion}
+        onClose={handleCloseQuestion}
+      >
         <DialogTitle
           sx={{
             p: 3,
@@ -132,6 +139,9 @@ function PageHeader({ setRender, render }) {
               resetForm();
               setStatus({ success: true });
               setSubmitting(false);
+              setRender(!render);
+              handleCloseStatistic();
+              handleCloseQuestion();
               alert("Амжилттай нэмэгдлээ");
             } catch (err) {
               console.error(err);
@@ -219,7 +229,7 @@ function PageHeader({ setRender, render }) {
                   p: 3,
                 }}
               >
-                <Button color="secondary" onClick={handleClose}>
+                <Button color="secondary" onClick={handleCloseQuestion}>
                   Гарах
                 </Button>
                 <Button
@@ -241,7 +251,7 @@ function PageHeader({ setRender, render }) {
         fullWidth
         maxWidth="sm"
         open={openStatistic}
-        onClose={handleClose}
+        onClose={handleCloseStatistic}
       >
         <DialogTitle
           sx={{
@@ -343,7 +353,7 @@ function PageHeader({ setRender, render }) {
                   p: 3,
                 }}
               >
-                <Button color="secondary" onClick={handleClose}>
+                <Button color="secondary" onClick={handleCloseStatistic}>
                   Гарах
                 </Button>
                 <Button

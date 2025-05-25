@@ -19,7 +19,7 @@ function Page() {
       const response = await fetch(`${Backend_Endpoint}/api/faq`);
       const data = await response.json();
       setDatas(data);
-      console.log("data", data);
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -57,7 +57,7 @@ function Page() {
         alignItems="stretch"
         spacing={4}
       >
-        <Grid item xs={12}>
+        <Grid item size={12}>
           <Results
             datas={datas}
             statistic={statistic}

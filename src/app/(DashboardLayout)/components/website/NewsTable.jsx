@@ -80,9 +80,6 @@ const NewsTable = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell padding="checkbox">
-                    <Checkbox />
-                  </TableCell>
                   <TableCell>Гарчиг</TableCell>
                   <TableCell>Нийтлэлч</TableCell>
                   <TableCell align="center">Он сар өдөр</TableCell>
