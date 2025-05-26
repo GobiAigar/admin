@@ -83,7 +83,7 @@ const NewsTable = () => {
                   <TableCell>Гарчиг</TableCell>
                   <TableCell>Нийтлэлч</TableCell>
                   <TableCell align="center">Он сар өдөр</TableCell>
-                  <TableCell>Actions</TableCell>
+                  <TableCell align="center">Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
