@@ -24,7 +24,17 @@ const NewsRow = ({ data }) => {
           <Typography variant="body1">{data?.mnjournalist}</Typography>
         </TableCell>
         <TableCell>
-          <Typography variant="body1">{data?.date}</Typography>
+          <Typography variant="body1" sx={{ textAlign: "center" }}>
+            {data?.date &&
+              new Date(data.date).toLocaleString("mn-MN", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+              })}
+          </Typography>
         </TableCell>
         <TableCell
           sx={{
