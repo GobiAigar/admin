@@ -24,9 +24,9 @@ const columns = [
   { field: "id", headerName: "ID", width: 90 },
   { field: "entitle", headerName: "Title", width: 150 },
   { field: "mntitle", headerName: "Гарчиг", width: 150 },
-  { field: "endescription", headerName: "Description", width: 150 },
-  { field: "mndescription", headerName: "Тайлбар", width: 150 },
-  { field: "image_url", headerName: "Зураг", width: 200 },
+  { field: "endescription", headerName: "Description", width: 220 },
+  { field: "mndescription", headerName: "Тайлбар", width: 220 },
+  { field: "image_url", headerName: "Зураг", width: 290 },
 ];
 
 const Page = () => {
@@ -314,6 +314,23 @@ const Page = () => {
             { field: "ui_id", headerName: "№", width: 70 },
             ...columns.filter((col) => col.field !== "id"),
           ]}
+          sx={{
+            border: "2px solid #ddd",
+            borderRadius: 2,
+            "& .MuiDataGrid-cell": {
+              borderRight: "2px solid #ddd",
+            },
+            "& .MuiDataGrid-row": {
+              borderBottom: "2px solid #ddd",
+            },
+            "& .MuiDataGrid-columnHeaders": {
+              borderBottom: "2px solid #ddd",
+              borderRight: "2px solid #ddd",
+            },
+            "& .MuiDataGrid-columnHeader": {
+              borderRight: "2px solid #ddd",
+            },
+          }}
           checkboxSelection
           disableMultipleRowSelection
           onRowSelectionModelChange={(newSelection) =>
