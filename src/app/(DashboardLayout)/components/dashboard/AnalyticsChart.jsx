@@ -27,17 +27,45 @@ const AnalyticsChart = () => {
     fetchAnalytics();
   }, [timeframe]);
 
-  const categories = chartData.map((item) => {
-    const path = item.dimensionValues.find((d) =>
-      d.value.startsWith("/")
-    )?.value;
-    return path || "Unknown";
+  const allowedPaths = [
+    "/mn/home",
+    "/en/home",
+    "/mn/product",
+    "/en/product",
+    "/mn/contact",
+    "/en/contact",
+    "/mn/sustainability",
+    "/en/sustainability",
+    "/mn/news",
+    "/en/news",
+  ];
+
+  const aggregatedData = allowedPaths.map((path) => {
+    const matchingRows = chartData.filter((item) => {
+      const p = item.dimensionValues.find((d) =>
+        d.value.startsWith("/")
+      )?.value;
+      return p === path;
+    });
+
+    const totalPageViews = matchingRows.reduce((sum, item) => {
+      return sum + Number(item.metricValues[0].value);
+    }, 0);
+
+    const totalActiveUsers = matchingRows.reduce((sum, item) => {
+      return sum + Number(item.metricValues[1].value);
+    }, 0);
+
+    return {
+      path,
+      pageViews: totalPageViews,
+      activeUsers: totalActiveUsers,
+    };
   });
 
-  const pageViews = chartData.map((item) => Number(item.metricValues[0].value));
-  const activeUsers = chartData.map((item) =>
-    Number(item.metricValues[1].value)
-  );
+  const categories = aggregatedData.map((item) => item.path);
+  const pageViews = aggregatedData.map((item) => item.pageViews);
+  const activeUsers = aggregatedData.map((item) => item.activeUsers);
 
   const options = {
     chart: { id: "analytics-bar", toolbar: { show: false } },
@@ -72,7 +100,7 @@ const AnalyticsChart = () => {
       </Box>
 
       <Box>
-        {chartData.length === 0 ? (
+        {aggregatedData.length === 0 ? (
           <Typography>Уншиж байна...</Typography>
         ) : (
           <Chart options={options} series={series} type="bar" height={400} />

@@ -8,7 +8,7 @@ const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const UserTimeChart = () => {
   const [chartData, setChartData] = useState([]);
-  const [timeframe, setTimeframe] = useState("week");
+  const [timeframe, setTimeframe] = useState("day");
 
   useEffect(() => {
     const fetchAnalytics = async () => {
@@ -26,81 +26,118 @@ const UserTimeChart = () => {
     fetchAnalytics();
   }, [timeframe]);
 
-  const categories = chartData.map((item) => {
-    const date = item.dimensionValues.find((d) =>
-      /^\d{4}/.test(d.value)
-    )?.value;
-    return date || "Unknown";
+  const hoursArray = Array.from({ length: 24 }, (_, i) => `${i}:00`);
+  const groupedData = {};
+
+  if (timeframe === "day") {
+    hoursArray.forEach((h) => {
+      groupedData[h] = {
+        sessionDuration: 0,
+        bounceRate: 0,
+        newUsers: 0,
+        count: 0,
+      };
+    });
+  }
+
+  chartData.forEach((item) => {
+    const dateHourStr = item.dimensionValues[0]?.value;
+    if (!dateHourStr) return;
+
+    let key;
+
+    if (timeframe === "day") {
+      if (dateHourStr.length !== 10) return;
+      const hour = dateHourStr.slice(-2);
+      key = `${hour}:00`;
+    } else {
+      const day = `${dateHourStr.slice(0, 4)}-${dateHourStr.slice(
+        4,
+        6
+      )}-${dateHourStr.slice(6, 8)}`;
+      key = day;
+    }
+
+    if (!groupedData[key]) {
+      groupedData[key] = {
+        sessionDuration: 0,
+        bounceRate: 0,
+        newUsers: 0,
+        count: 0,
+      };
+    }
+
+    groupedData[key].sessionDuration += Number(item.metricValues[3].value);
+    groupedData[key].bounceRate += Number(item.metricValues[4].value);
+    groupedData[key].newUsers += Number(item.metricValues[2].value);
+    groupedData[key].count += 1;
   });
 
-  const averageSessionDuration = chartData.map((item) => {
-    const seconds = Number(item.metricValues[3].value);
-    const minutes = +(seconds / 60).toFixed(2);
-    return minutes;
+  // 🔥 1. categories-г сортлоно
+  const categories =
+    timeframe === "day"
+      ? hoursArray
+      : Object.keys(groupedData).sort((a, b) => {
+          // 🔥 String-ийг Date болгож харьцуулна
+          const dateA = new Date(a);
+          const dateB = new Date(b);
+          return dateA - dateB;
+        });
+
+  const averageSessionDuration = categories.map((key) => {
+    const group = groupedData[key];
+    if (!group || group.count === 0) return 0;
+    return +(group.sessionDuration / group.count / 60).toFixed(2);
   });
-  const bounceRate = chartData.map((item) =>
-    Number(item.metricValues[4].value)
-  );
-  const newUsers = chartData.map((item) => Number(item.metricValues[2].value));
+
+  const averageBounceRate = categories.map((key) => {
+    const group = groupedData[key];
+    if (!group || group.count === 0) return 0;
+    return +(group.bounceRate / group.count).toFixed(2);
+  });
+
+  const totalNewUsers = categories.map((key) => {
+    const group = groupedData[key];
+    if (!group || group.count === 0) return 0;
+    return group.newUsers;
+  });
 
   const options = {
     chart: {
       id: "metrics-line",
-      toolbar: {
-        show: true,
-        offsetY: -15,
-        offsetX: 0,
-      },
+      toolbar: { show: true, offsetY: -15 },
       zoom: { enabled: true },
     },
     xaxis: {
       categories,
-      title: { text: "Огноо" },
+      title: { text: timeframe === "day" ? "Цаг" : "Өдөр" },
     },
     stroke: { width: 3, curve: "smooth" },
     dataLabels: { enabled: false },
     markers: { size: 4 },
     yaxis: {
       title: { text: "Үзүүлэлтүүдийн утга" },
-      labels: {
-        formatter: (val, opts) => {
-          const { seriesIndex } = opts;
-          if (seriesIndex === 1) return +val.toFixed(2);
-          return Math.round(val);
-        },
-      },
+      labels: { formatter: (val) => +val.toFixed(2) },
     },
     tooltip: {
-      y: {
-        formatter: (val, opts) => {
-          const { seriesIndex } = opts;
-          if (seriesIndex === 1) return +val.toFixed(2);
-          return Math.round(val);
-        },
-      },
+      y: { formatter: (val) => +val.toFixed(2) },
     },
     legend: { position: "top" },
   };
 
   const series = [
-    {
-      name: "Дундажаар байсан хугацаа (минут)",
-      data: averageSessionDuration,
-    },
+    { name: "Дундажаар байсан хугацаа (минут)", data: averageSessionDuration },
     {
       name: "Үйлдэл хийгээгүй гарсан хэрэглэгчийн (%)",
-      data: bounceRate,
+      data: averageBounceRate,
     },
-    {
-      name: "Шинэ хэрэглэгч",
-      data: newUsers,
-    },
+    { name: "Шинэ хэрэглэгч", data: totalNewUsers },
   ];
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
       <Typography variant="h4" mb={2}>
-        Хэрэглэгчийн сайтад байсан дундаж хугацаа
+        Хэрэглэгчдийн дундаж үзүүлэлтүүд (Нийт нэгтгэсэн)
       </Typography>
 
       <Box sx={{ mb: 2 }}>
