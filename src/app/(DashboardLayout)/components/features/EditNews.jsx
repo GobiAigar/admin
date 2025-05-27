@@ -54,11 +54,14 @@ const EditNews = ({ data }) => {
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
-        const response = await fetch(`${Backend_Endpoint}/api/news`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(values),
-        });
+        const response = await fetch(
+          `${Backend_Endpoint}/api/news/${data.id}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(values),
+          }
+        );
 
         if (response.ok) {
           setOpenSnackbar(true);
@@ -219,7 +222,7 @@ const EditNews = ({ data }) => {
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
           <Alert severity="success" onClose={handleCloseSnackbar}>
-            Амжилттай нэмэгдлээ
+            Амжилттай засагдлаа!
           </Alert>
         </Snackbar>
       </Dialog>
