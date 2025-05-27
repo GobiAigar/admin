@@ -5,6 +5,7 @@ import { Grid, Stack, Typography, Avatar, Box } from "@mui/material";
 import { IconArrowUpLeft, IconNews } from "@tabler/icons-react";
 
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
+import ChartCountInfo from "./ChartCountInfo";
 
 const InformationCount = () => {
   const theme = useTheme();
@@ -28,29 +29,32 @@ const InformationCount = () => {
   }, []);
 
   return (
-    <DashboardCard title="Мэдээний тоо">
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Stack direction="row" spacing={1} mt={1} alignItems="center">
-            <Typography variant="subtitle2" color="textSecondary">
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <IconNews width={20} color="#FA896B" />
-                <Typography ml={1}>Нийтлэл</Typography>
-                <Typography variant="h6" fontWeight="700" sx={{ ml: 1 }}>
-                  {newsCount}
-                </Typography>
-              </Box>
-            </Typography>
-          </Stack>
+    <Box display="flex" flexDirection="column" gap={5}>
+      <DashboardCard title="Мэдээний тоо">
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Stack direction="row" spacing={1} mt={1} alignItems="center">
+              <Typography variant="subtitle2" color="textSecondary">
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <IconNews width={20} color="#FA896B" />
+                  <Typography ml={1}>Нийтлэл</Typography>
+                  <Typography variant="h6" fontWeight="700" sx={{ ml: 1 }}>
+                    {newsCount}
+                  </Typography>
+                </Box>
+              </Typography>
+            </Stack>
+          </Grid>
         </Grid>
-      </Grid>
-    </DashboardCard>
+      </DashboardCard>
+      <ChartCountInfo />
+    </Box>
   );
 };
 

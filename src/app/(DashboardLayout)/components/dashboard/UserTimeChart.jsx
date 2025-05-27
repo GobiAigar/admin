@@ -73,12 +73,10 @@ const UserTimeChart = () => {
     groupedData[key].count += 1;
   });
 
-  // 🔥 1. categories-г сортлоно
   const categories =
     timeframe === "day"
       ? hoursArray
       : Object.keys(groupedData).sort((a, b) => {
-          // 🔥 String-ийг Date болгож харьцуулна
           const dateA = new Date(a);
           const dateB = new Date(b);
           return dateA - dateB;
@@ -146,7 +144,7 @@ const UserTimeChart = () => {
           value={timeframe}
           onChange={(e) => setTimeframe(e.target.value)}
         >
-          <MenuItem value="day">Өдөр</MenuItem>
+          <MenuItem value="day">Өнөөдөр</MenuItem>
           <MenuItem value="week">7 хоног</MenuItem>
           <MenuItem value="month">Сар</MenuItem>
           <MenuItem value="last_3_months">Сүүлийн 3 сар</MenuItem>
