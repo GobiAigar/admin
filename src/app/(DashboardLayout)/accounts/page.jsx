@@ -12,15 +12,9 @@ import {
   TableHead,
   TableContainer,
   TableRow,
-  Typography,
-  ToggleButton,
-  ToggleButtonGroup,
-  Grid,
-  Button,
 } from "@mui/material";
 import { Backend_Endpoint } from "@/constants/constants";
 import UserRow from "../components/features/UserRow";
-import { Add } from "@mui/icons-material";
 import AddUserButton from "../components/features/AddUser";
 
 const Page = () => {

@@ -1,26 +1,14 @@
-import {
-  Box,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-  Dialog,
-  Button,
-  DialogActions,
-  DialogTitle,
-} from "@mui/material";
+import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import Link from "next/link";
+import { useNavigate } from "react-router-dom";
 
-import { useState } from "react";
 const columns = [
   {
     field: "purpose",
     headerName: "Зорилго",
     type: "number",
-    width: 120,
-    align: "center",
-    headerAlign: "center",
+    width: 100,
   },
   {
     field: "firstname",
@@ -43,26 +31,20 @@ const columns = [
     field: "phonenumber",
     headerName: "Утасны дугаар",
     type: "text",
-    width: 120,
-    align: "center",
-    headerAlign: "center",
+    flex: 1,
   },
 
   {
     field: "bussiness",
     headerName: "Бизнес",
     type: "text",
-    width: 150,
-    align: "center",
-    headerAlign: "center",
+    flex: 1,
   },
   {
     field: "plan",
     headerName: "Төлөвлөгөө",
     type: "text",
-    width: 150,
-    align: "center",
-    headerAlign: "center",
+    flex: 1,
   },
   {
     field: "date",
@@ -85,12 +67,25 @@ const columns = [
       return `${year}/${month}/${day} ${hour}:${minute}`;
     },
   },
+  {
+    field: "slug",
+    headerName: "Дэлгэрэнгүй",
+    flex: 1,
+    renderCell: (params) => {
+      const slug = `/messages/${params.row.id}`;
+      return (
+        <Link href={slug} underline="hover">
+          Харах
+        </Link>
+      );
+    },
+  },
 ];
 
 const Messeges = ({ datas }) => {
   return (
     <>
-      <Box sx={{ height: 400, width: "100%" }}>
+      <Box sx={{ height: 400 }}>
         <DataGrid
           rows={datas}
           columns={columns}

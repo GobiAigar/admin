@@ -27,7 +27,6 @@ const Dashboard = () => {
               <Grid size={12}>
                 <InformationCount />
               </Grid>
-              <Grid size={12}></Grid>
             </Grid>
           </Grid>
         </Grid>

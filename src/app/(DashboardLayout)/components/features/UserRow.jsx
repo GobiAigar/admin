@@ -13,8 +13,8 @@ const UserRow = ({ data }) => {
         </TableCell>
         <TableCell>
           <Typography variant="body1" sx={{ textAlign: "center" }}>
-            {data?.date &&
-              new Date(data.date).toLocaleString("mn-MN", {
+            {data?.regiter_date &&
+              new Date(data.regiter_date).toLocaleString("mn-MN", {
                 year: "numeric",
                 month: "2-digit",
                 day: "2-digit",

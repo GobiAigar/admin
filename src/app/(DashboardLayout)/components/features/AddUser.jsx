@@ -72,7 +72,7 @@ function AddUser() {
   return (
     <>
       <Button variant="outlined" onClick={handleClickOpen}>
-        Open form dialog
+        {"Админ нэмэх"}
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <form onSubmit={formik.handleSubmit} style={{ width: "100%" }}>
