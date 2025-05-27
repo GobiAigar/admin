@@ -22,6 +22,10 @@ const Profile = () => {
     setAnchorEl2(null);
   };
 
+  const close = () => {
+    sessionStorage.removeItem("user");
+  };
+
   return (
     <Box>
       <IconButton
@@ -66,7 +70,9 @@ const Profile = () => {
           <ListItemIcon>
             <IconMail width={20} />
           </ListItemIcon>
-          <ListItemText href="/accounts">Accounts</ListItemText>
+          <ListItemText>
+            <Button href="/accounts">Accounts</Button>
+          </ListItemText>
         </MenuItem>
         <Box mt={1} py={1} px={2}>
           <Button
@@ -75,6 +81,7 @@ const Profile = () => {
             color="primary"
             component={Link}
             fullWidth
+            onClick={close}
           >
             Logout
           </Button>

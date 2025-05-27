@@ -17,41 +17,52 @@ import {
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
 import { Backend_Endpoint } from "@/constants/constants";
 import { useRouter } from "next/navigation";
+import Loading from "@/app/loading";
 
-const Login2 = () => {
+const Page = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [openSnackbar2, setOpenSnackbar2] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const validationSchema = Yup.object({
-    username: Yup.string().required("Хэрэглэгчийн нэр шаардлагатай"),
+    email: Yup.string().email("И-мэйл хаяг буруу байна"),
+    otp: Yup.string().required("Нэг удаагийн нууц үг (OTP) шаардлагатай"),
     password: Yup.string().required("Нууц үг шаардлагатай"),
+    repassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Нууц үг таарахгүй байна")
+      .required("Нууц үг дахин оруулах шаардлагатай"),
   });
 
   const formik = useFormik({
     initialValues: {
-      username: "",
+      email: "",
+      otp: "",
       password: "",
+      repassword: "",
     },
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
         const response = await fetch(`${Backend_Endpoint}/api/user`, {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-type": "application/json",
           },
           body: JSON.stringify(values),
         });
         const data = await response.json();
+        setLoading(true);
         if (response.ok) {
           setOpenSnackbar(true);
           resetForm();
-          sessionStorage.setItem("user", data.id);
           router.push("/");
+          setLoading(false);
         } else {
           setOpenSnackbar2(true);
           formik.setStatus({ loginError: data.message });
+          setLoading(false);
         }
       } catch (error) {
         console.error("Error:", error);
@@ -62,6 +73,10 @@ const Login2 = () => {
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <PageContainer title="Login" description="this is Login page">
@@ -99,25 +114,20 @@ const Login2 = () => {
                     style={{ width: 60, marginBottom: 8 }}
                   />
                   <Typography variant="h5" fontWeight={700} color="primary">
-                    Админ Нэвтрэх
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" mt={1}>
-                    Системд нэвтрэх эрхтэй хэрэглэгчийн мэдээллээ оруулна уу.
+                    Нууц үг сэргээх
                   </Typography>
                 </Box>
                 <Divider sx={{ mb: 3 }} />
                 <TextField
                   fullWidth
-                  id="username"
-                  name="username"
-                  label="Хэрэглэгчийн нэр"
-                  value={formik.values.username}
+                  id="email"
+                  name="email"
+                  label="Хэрэглэгчийн имэйл"
+                  value={formik.values.email}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  error={
-                    formik.touched.username && Boolean(formik.errors.username)
-                  }
-                  helperText={formik.touched.username && formik.errors.username}
+                  error={formik.touched.email && Boolean(formik.errors.email)}
+                  helperText={formik.touched.email && formik.errors.email}
                   sx={{ mb: 2 }}
                 />
                 <TextField
@@ -125,7 +135,6 @@ const Login2 = () => {
                   id="password"
                   name="password"
                   label="Нууц үг"
-                  type="password"
                   value={formik.values.password}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
@@ -133,6 +142,35 @@ const Login2 = () => {
                     formik.touched.password && Boolean(formik.errors.password)
                   }
                   helperText={formik.touched.password && formik.errors.password}
+                  sx={{ mb: 2 }}
+                />
+                <TextField
+                  fullWidth
+                  id="repassword"
+                  name="repassword"
+                  label="Нууц үг дахин оруулах"
+                  value={formik.values.repassword}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.repassword &&
+                    Boolean(formik.errors.repassword)
+                  }
+                  helperText={
+                    formik.touched.repassword && formik.errors.repassword
+                  }
+                  sx={{ mb: 2 }}
+                />
+                <TextField
+                  fullWidth
+                  id="otp"
+                  name="otp"
+                  label="Нэг удаагийн нууц үг (OTP)"
+                  value={formik.values.otp}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.otp && Boolean(formik.errors.otp)}
+                  helperText={formik.touched.otp && formik.errors.otp}
                   sx={{ mb: 2 }}
                 />
                 <Button
@@ -151,15 +189,12 @@ const Login2 = () => {
                   Нэвтрэх
                 </Button>
                 <Box mt={2} textAlign="center">
-                  <Typography variant="body2">
-                    Нууц үгээ мартсан уу?
-                    <Link
-                      href="/authentication/forgot-password"
-                      style={{ color: "#1976d2" }}
-                    >
-                      Сэргээх
-                    </Link>
-                  </Typography>
+                  <Link
+                    href="/authentication/forgot-password"
+                    style={{ color: "#1976d2" }}
+                  >
+                    Сэргээх
+                  </Link>
                 </Box>
               </Card>
             </Grid>
@@ -172,7 +207,7 @@ const Login2 = () => {
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
           <Alert severity="success" onClose={handleCloseSnackbar}>
-            Амжилттай нэвтэрлээ
+            Нууц үг амжилттай солиглоо.
           </Alert>
         </Snackbar>
         <Snackbar
@@ -192,4 +227,4 @@ const Login2 = () => {
   );
 };
 
-export default Login2;
+export default Page;

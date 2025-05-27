@@ -35,9 +35,6 @@ import {
 } from "@mui/material";
 
 import BulkActions from "./BulkActions";
-import { useSnackbar } from "notistack";
-
-import CloseIcon from "@mui/icons-material/Close";
 import LaunchTwoToneIcon from "@mui/icons-material/LaunchTwoTone";
 import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
