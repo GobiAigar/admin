@@ -18,25 +18,23 @@ import PageContainer from "@/app/(DashboardLayout)/components/container/PageCont
 import { Backend_Endpoint } from "@/constants/constants";
 import { useRouter } from "next/navigation";
 
-const Login2 = () => {
+const Page = () => {
+  const router = useRouter();
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [openSnackbar2, setOpenSnackbar2] = useState(false);
-  const router = useRouter();
 
   const validationSchema = Yup.object({
-    username: Yup.string().required("Хэрэглэгчийн нэр шаардлагатай"),
-    password: Yup.string().required("Нууц үг шаардлагатай"),
+    email: Yup.string().required("Хэрэглэгчийн э-майл шаардлагатай"),
   });
 
   const formik = useFormik({
     initialValues: {
-      username: "",
-      password: "",
+      email: "",
     },
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
-        const response = await fetch(`${Backend_Endpoint}/api/user`, {
+        const response = await fetch(`${Backend_Endpoint}/api/user/otp`, {
           method: "POST",
           headers: {
             "Content-type": "application/json",
@@ -47,8 +45,7 @@ const Login2 = () => {
         if (response.ok) {
           setOpenSnackbar(true);
           resetForm();
-          sessionStorage.setItem("user", data.id);
-          router.push("/");
+          router.push("/authentication/recover-password");
         } else {
           setOpenSnackbar2(true);
           formik.setStatus({ loginError: data.message });
@@ -99,42 +96,23 @@ const Login2 = () => {
                     style={{ width: 60, marginBottom: 8 }}
                   />
                   <Typography variant="h5" fontWeight={700} color="primary">
-                    Админ Нэвтрэх
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" mt={1}>
-                    Системд нэвтрэх эрхтэй хэрэглэгчийн мэдээллээ оруулна уу.
+                    Нууц үг сэргээх
                   </Typography>
                 </Box>
                 <Divider sx={{ mb: 3 }} />
                 <TextField
                   fullWidth
-                  id="username"
-                  name="username"
-                  label="Хэрэглэгчийн нэр"
-                  value={formik.values.username}
+                  id="email"
+                  name="email"
+                  label="Хэрэглэгчийн имэйл"
+                  value={formik.values.email}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  error={
-                    formik.touched.username && Boolean(formik.errors.username)
-                  }
-                  helperText={formik.touched.username && formik.errors.username}
+                  error={formik.touched.email && Boolean(formik.errors.email)}
+                  helperText={formik.touched.email && formik.errors.email}
                   sx={{ mb: 2 }}
                 />
-                <TextField
-                  fullWidth
-                  id="password"
-                  name="password"
-                  label="Нууц үг"
-                  type="password"
-                  value={formik.values.password}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={
-                    formik.touched.password && Boolean(formik.errors.password)
-                  }
-                  helperText={formik.touched.password && formik.errors.password}
-                  sx={{ mb: 2 }}
-                />
+
                 <Button
                   color="primary"
                   variant="contained"
@@ -148,18 +126,15 @@ const Login2 = () => {
                     borderRadius: 2,
                   }}
                 >
-                  Нэвтрэх
+                  Үргэлжлүүлэх
                 </Button>
                 <Box mt={2} textAlign="center">
-                  <Typography variant="body2">
-                    Нууц үгээ мартсан уу?
-                    <Link
-                      href="/authentication/forgot-password"
-                      style={{ color: "#1976d2" }}
-                    >
-                      Сэргээх
-                    </Link>
-                  </Typography>
+                  <Link
+                    href="/authentication/login"
+                    style={{ color: "#1976d2" }}
+                  >
+                    Нэвтрэх
+                  </Link>
                 </Box>
               </Card>
             </Grid>
@@ -172,7 +147,7 @@ const Login2 = () => {
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
           <Alert severity="success" onClose={handleCloseSnackbar}>
-            Амжилттай нэвтэрлээ
+            Амжилттай илгээдлээ. Та имэйл хаяг руугаа OTP кодыг хүлээн авна уу.
           </Alert>
         </Snackbar>
         <Snackbar
@@ -192,4 +167,4 @@ const Login2 = () => {
   );
 };
 
-export default Login2;
+export default Page;

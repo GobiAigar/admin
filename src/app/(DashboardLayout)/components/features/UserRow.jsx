@@ -1,17 +1,15 @@
 import { TableCell, TableRow, Typography } from "@mui/material";
-import React from "react";
-import DeleteNews from "../features/DeleteNews";
-import EditNews from "../features/EditNews";
+import DeleteUser from "./DeleteUser";
 
-const NewsRow = ({ data }) => {
+const UserRow = ({ data }) => {
   return (
     <>
       <TableRow hover key={data.id}>
         <TableCell>
-          <Typography variant="body1">{data?.mntitle}</Typography>
+          <Typography variant="body1">{data?.username}</Typography>
         </TableCell>
         <TableCell>
-          <Typography variant="body1">{data?.mnjournalist}</Typography>
+          <Typography variant="body1">{data?.email}</Typography>
         </TableCell>
         <TableCell>
           <Typography variant="body1" sx={{ textAlign: "center" }}>
@@ -33,12 +31,11 @@ const NewsRow = ({ data }) => {
             alignItems: "center",
           }}
         >
-          <EditNews data={data} />
-          <DeleteNews id={data.id} />
+          <DeleteUser id={data.id} />
         </TableCell>
       </TableRow>
     </>
   );
 };
 
-export default NewsRow;
+export default UserRow;

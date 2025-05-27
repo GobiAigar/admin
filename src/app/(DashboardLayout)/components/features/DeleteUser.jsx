@@ -1,4 +1,4 @@
-"use  client";
+"use client";
 
 import { Backend_Endpoint } from "@/constants/constants";
 import {
@@ -13,11 +13,13 @@ import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const DeleteNews = (id) => {
+const DeleteUser = (id) => {
+  if (id.id === "e952ac39-37fc-4019-98fe-e152d82d4990") {
+    return <></>;
+  }
+
   const router = useRouter();
-
   const [open, setOpen] = useState(false);
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -28,15 +30,16 @@ const DeleteNews = (id) => {
 
   const submit = async () => {
     try {
-      const response = await fetch(`${Backend_Endpoint}/api/news/${id.id}`, {
+      const response = await fetch(`${Backend_Endpoint}/api/user/${id.id}`, {
         method: "DELETE",
         headers: {
           "Content-type": "application/json",
         },
       });
       const data = await response.json();
+
+      router.push("/accounts");
       handleClose();
-      router.push("/news");
     } catch (error) {
       console.log(error);
     }
@@ -52,7 +55,7 @@ const DeleteNews = (id) => {
         aria-labelledby="alert-dialog-title"
       >
         <DialogTitle id="alert-dialog-title">
-          Та энэ нийтлэлийг устгахдаа итгэлтэй байна уу?
+          Та энэ админийг устгахдаа итгэлтэй байна уу?
         </DialogTitle>
 
         <DialogActions>
@@ -66,4 +69,4 @@ const DeleteNews = (id) => {
   );
 };
 
-export default DeleteNews;
+export default DeleteUser;

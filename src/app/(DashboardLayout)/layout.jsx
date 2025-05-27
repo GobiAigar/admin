@@ -1,9 +1,10 @@
 "use client";
 import { styled, Container, Box } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "@/app/(DashboardLayout)/layout/header/Header";
 
 import Sidebar from "@/app/(DashboardLayout)/layout/sidebar/Sidebar";
+import { useRouter } from "next/navigation";
 
 const MainWrapper = styled("div")(() => ({
   display: "flex",
@@ -23,6 +24,13 @@ const PageWrapper = styled("div")(() => ({
 export default function RootLayout({ children }) {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const router = useRouter();
+  useEffect(() => {
+    const user = sessionStorage.getItem("user");
+    if (!user) {
+      router.push("/authentication/login");
+    }
+  });
   return (
     <MainWrapper className="mainwrapper">
       {/* ------------------------------------------- */}

@@ -118,7 +118,7 @@ function AddNews() {
                   fullWidth
                   id="mndescription"
                   name="mndescription"
-                  label="Мэдээний дэлгэрэнгүй" 
+                  label="Мэдээний дэлгэрэнгүй"
                   multiline
                   rows={4}
                   value={formik.values.mndescription}

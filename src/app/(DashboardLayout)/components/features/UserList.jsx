@@ -12,60 +12,33 @@ import {
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
-import { useState } from "react";
 const columns = [
   {
-    field: "purpose",
-    headerName: "Зорилго",
-    type: "number",
-    width: 110,
+    field: "username",
+    headerName: "Хэрэглэгчийн нэр",
+    type: "string",
+    minWidth: 150,
   },
-  {
-    field: "firstname",
-    headerName: "Нэр",
-    width: 150,
-  },
-
   {
     field: "email",
-    headerName: "Майл",
-    type: "text",
-    width: 200,
-  },
-
-  {
-    field: "phonenumber",
-    headerName: "Утасны дугаар",
-    type: "text",
-    width: 110,
-  },
-
-  {
-    field: "bussiness",
-    headerName: "Бизнес",
-    type: "text",
-    width: 110,
-  },
-  {
-    field: "plan",
-    headerName: "Төлөвлөгөө",
-    type: "text",
-    width: 110,
+    headerName: "И-мэйл",
+    type: "string",
+    width: 150,
   },
   {
     field: "date",
     headerName: "Илгээсэн огноо",
     type: "text",
-    width: 110,
+    width: 150,
   },
 ];
 
-const Messeges = ({ datas }) => {
+const UserList = ({ users }) => {
   return (
     <>
       <Box sx={{ height: 400, width: "100%" }}>
         <DataGrid
-          rows={datas}
+          rows={users}
           columns={columns}
           initialState={{
             pagination: {
@@ -74,6 +47,8 @@ const Messeges = ({ datas }) => {
               },
             },
           }}
+          checkboxSelection
+          disableMultipleRowSelection
           pageSizeOptions={[5]}
         />
       </Box>
@@ -82,4 +57,4 @@ const Messeges = ({ datas }) => {
   );
 };
 
-export default Messeges;
+export default UserList;
