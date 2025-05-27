@@ -184,7 +184,7 @@ const Results = ({ datas, statistic, setRender, render }) => {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>дэс дугаар</TableCell>
+                      <TableCell>№</TableCell>
                       <TableCell>Монгол асуулт</TableCell>
                       <TableCell>Монгол хариулт</TableCell>
                       <TableCell>Англи асуулт</TableCell>
@@ -245,7 +245,7 @@ const Results = ({ datas, statistic, setRender, render }) => {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>дэс дугаар</TableCell>
+                      <TableCell>№</TableCell>
                       <TableCell>Англи</TableCell>
                       <TableCell>Монгол</TableCell>
                     </TableRow>

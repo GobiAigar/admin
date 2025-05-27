@@ -21,12 +21,12 @@ import { Formik, Form } from "formik";
 import FileUploader from "../../components/website/FileUploader";
 
 const columns = [
-  { field: "id", headerName: "ID", width: 90 },
-  { field: "entitle", headerName: "Title", width: 150 },
-  { field: "mntitle", headerName: "Гарчиг", width: 150 },
-  { field: "endescription", headerName: "Description", width: 220 },
-  { field: "mndescription", headerName: "Тайлбар", width: 220 },
-  { field: "image_url", headerName: "Зураг", width: 290 },
+  { field: "id", headerName: "ID", width: 5, align: "center" },
+  { field: "entitle", headerName: "Title", flex: 1 },
+  { field: "mntitle", headerName: "Гарчиг", flex: 1 },
+  { field: "endescription", headerName: "Description", flex: 1 },
+  { field: "mndescription", headerName: "Тайлбар", flex: 1 },
+  { field: "image_url", headerName: "Зураг", flex: 1 },
 ];
 
 const Page = () => {
@@ -212,7 +212,7 @@ const Page = () => {
 
           <Dialog open={deleteOpen} onClose={handleClose}>
             <DialogTitle>
-              Та энэ Гэрчилгээ устгахдаа итгэлтэй байна уу?
+              Та энэ гэрчилгээг устгахдаа итгэлтэй байна уу?
             </DialogTitle>
             <DialogActions>
               <Button onClick={handleClose}>Үгүй</Button>

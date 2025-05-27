@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import {
-  Avatar,
   Box,
   Menu,
   Button,
@@ -11,7 +10,7 @@ import {
   ListItemText,
 } from "@mui/material";
 
-import { IconListCheck, IconMail, IconUser } from "@tabler/icons-react";
+import { IconUser, IconUsers } from "@tabler/icons-react";
 
 const Profile = () => {
   const [anchorEl2, setAnchorEl2] = useState(null);
@@ -41,7 +40,7 @@ const Profile = () => {
         }}
         onClick={handleClick2}
       >
-        U
+        <IconUser width={20} height={20} />
       </IconButton>
       {/* ------------------------------------------- */}
       {/* Message Dropdown */}
@@ -62,7 +61,7 @@ const Profile = () => {
       >
         <MenuItem>
           <ListItemIcon>
-            <IconMail width={20} />
+            <IconUsers width={20} />
           </ListItemIcon>
           <ListItemText>
             <Button href="/accounts">Accounts</Button>

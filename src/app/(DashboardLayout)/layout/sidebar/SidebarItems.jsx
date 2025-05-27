@@ -10,8 +10,7 @@ import {
 import { IconPoint } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Upgrade } from "./Updrade";
-import { WidthFull } from "@mui/icons-material";
+import { Logo } from "../shared/Logo";
 
 const renderMenuItems = (items, pathDirect) => {
   return items.map((item) => {
@@ -69,8 +68,20 @@ const SidebarItems = () => {
         themeColor={"#5D87FF"}
         themeSecondaryColor={"#49beff"}
       >
-        <Link href="/">aaa</Link>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "50px",
 
+            my: 2,
+          }}
+        >
+          <Link href="/">
+            <Logo />
+          </Link>
+        </Box>
         {renderMenuItems(Menuitems, pathDirect)}
       </MUI_Sidebar>
     </>
