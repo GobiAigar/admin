@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Box,
   Button,
@@ -27,10 +27,19 @@ const VisuallyHiddenInput = (props) => (
   />
 );
 
-const FileUploader = ({ setFieldValue, fieldName, onClear }) => {
+const FileUploader = ({
+  setFieldValue,
+  fieldName,
+  onClear,
+  initialPreview,
+}) => {
   const [loading, setLoading] = useState(false);
-  const [preview, setPreview] = useState(null);
-  const fileInputRef = React.createRef();
+  const [preview, setPreview] = useState(initialPreview || null);
+  const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    setPreview(initialPreview || null);
+  }, [initialPreview]);
 
   const handleUpload = async (e) => {
     const file = e.target.files[0];
@@ -47,7 +56,6 @@ const FileUploader = ({ setFieldValue, fieldName, onClear }) => {
       });
 
       const text = await res.text();
-
       try {
         const data = JSON.parse(text);
         setPreview(data.url);
@@ -65,7 +73,7 @@ const FileUploader = ({ setFieldValue, fieldName, onClear }) => {
   const handleClear = () => {
     setPreview(null);
     setFieldValue(fieldName, "");
-    fileInputRef.current.value = null;
+    if (fileInputRef.current) fileInputRef.current.value = null;
     if (onClear) onClear();
   };
 

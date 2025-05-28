@@ -9,8 +9,6 @@ import FileUploader from "../website/FileUploader";
 import { Backend_Endpoint } from "@/constants/constants";
 
 export default function EditProduct({ data }) {
-  console.log(data);
-
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -31,9 +29,10 @@ export default function EditProduct({ data }) {
     },
     enableReinitialize: true,
     onSubmit: async (values) => {
+      console.log("values", values);
       try {
         const response = await fetch(
-          `${Backend_Endpoint}/api/website/${data.id}`,
+          `${Backend_Endpoint}/api/product/${data.id}`,
           {
             method: "PUT",
             headers: {
@@ -42,8 +41,9 @@ export default function EditProduct({ data }) {
             body: JSON.stringify(values),
           }
         );
+        console.log("response", response);
         const updated = await response.json();
-        console.log(updated);
+        console.log("updated", updated);
 
         handleClose();
       } catch (error) {
@@ -115,8 +115,9 @@ export default function EditProduct({ data }) {
                   alt={formik.values.mntitle}
                 />
                 <FileUploader
-                  setFieldValue={setFieldValue}
+                  setFieldValue={formik.setFieldValue}
                   fieldName="image_url"
+                  initialPreview={formik.values.image_url}
                 />
               </Grid>
             </Grid>
