@@ -73,18 +73,6 @@ function PageHeader({ setRender, render }) {
               Асуулт нэмэх
             </Button>
           </Grid>
-          <Grid item>
-            <Button
-              sx={{
-                mt: { xs: 2, sm: 0 },
-              }}
-              onClick={handleCreateStatisticOpen}
-              variant="contained"
-              startIcon={<AddTwoToneIcon fontSize="small" />}
-            >
-              Статистик нэмэх
-            </Button>
-          </Grid>
         </Grid>
       </Grid>
       <Dialog

@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Formik, Form } from "formik";
 import FileUploader from "../../components/website/FileUploader";
+import DeleteButton from "../../components/features/DeleteButton";
 
 const columns = [
   { field: "id", headerName: "ID", width: 5, align: "center" },
@@ -32,7 +33,6 @@ const columns = [
 const Page = () => {
   const [fixOpen, setFixOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
   const [datas, setDatas] = useState([]);
   const [id, setId] = useState([]);
   const [render, setRender] = useState(false);
@@ -48,18 +48,9 @@ const Page = () => {
     setFixOpen(true);
   };
 
-  const handleClickOpenDelete = () => {
-    if (!id[0]) {
-      setAlertOpen(true);
-      return;
-    }
-    setDeleteOpen(true);
-  };
-
   const handleClose = () => {
     setFixOpen(false);
     setAddOpen(false);
-    setDeleteOpen(false);
   };
 
   const fetchdata = async () => {
@@ -69,26 +60,6 @@ const Page = () => {
       setDatas(data.data);
     } catch (error) {
       console.error(error);
-    }
-  };
-
-  const deleteCertificate = async () => {
-    if (id[0] === 1) return alert("Энэ гэрчилгээг устгах боломжгүй");
-    try {
-      const response = await fetch(
-        `${Backend_Endpoint}/api/sustainability/${id[0]}`,
-        {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      if (response.ok) {
-        fetchdata();
-        handleClose();
-        setRender(!render);
-      }
-    } catch (error) {
-      console.error("Устгах алдаа:", error);
     }
   };
 
@@ -206,22 +177,7 @@ const Page = () => {
             </Formik>
           </Dialog>
 
-          <Button variant="outlined" onClick={handleClickOpenDelete}>
-            Устгах
-          </Button>
-
-          <Dialog open={deleteOpen} onClose={handleClose}>
-            <DialogTitle>
-              Та энэ гэрчилгээг устгахдаа итгэлтэй байна уу?
-            </DialogTitle>
-            <DialogActions>
-              <Button onClick={handleClose}>Үгүй</Button>
-              <Button onClick={deleteCertificate} autoFocus>
-                Тийм
-              </Button>
-            </DialogActions>
-          </Dialog>
-
+          <DeleteButton type={"sustainability"} id={selectedData} />
           <Button variant="outlined" onClick={() => setAddOpen(true)}>
             Нэмэх
           </Button>
@@ -334,7 +290,7 @@ const Page = () => {
           checkboxSelection
           disableMultipleRowSelection
           onRowSelectionModelChange={(newSelection) =>
-            setId(Array.from(newSelection.ids))
+            setId(new Array.from(newSelection.ids))
           }
           getRowId={(row) => row.id}
         />

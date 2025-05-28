@@ -1,25 +1,53 @@
 "use client";
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
-import HomeHero from "../../components/website/HomeHero";
-import InputSection from "../../components/website/InputSection";
+import { DataGrid } from "@mui/x-data-grid";
+
 import { useEffect, useState } from "react";
 import { Backend_Endpoint } from "@/constants/constants";
-import { FormControl, Grid, MenuItem, Select } from "@mui/material";
+import Loading from "../../loading";
+import { Box, CardContent, Grid, Icon, IconButton } from "@mui/material";
+import EditHome from "../../components/features/EditHome";
+import SeeDetailsHome from "../../components/features/SeeDetailsHome";
 
+const columns = [
+  { field: "id", headerName: "ID", width: 90 },
+  {
+    field: "entitle",
+    headerName: "Гарчиг /Англи/",
+    flex: 1,
+  },
+  {
+    field: "mntitle",
+    headerName: "Гарчиг /Монгол/",
+    flex: 1,
+  },
+  {
+    field: "mnsubtitle",
+    headerName: "Дэд гарчиг /Монгол/",
+    flex: 1,
+  },
+  {
+    field: "ensubtitle",
+    headerName: "Дэд гарчиг /Англи/",
+    flex: 1,
+  },
+];
 const Page = () => {
   const [datas, setDatas] = useState([]);
-  const [id, setId] = useState(1);
-  const [filteredData, setFilteredData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [selectedData, setSelecedData] = useState(null);
 
   const fetchdata = async () => {
+    setLoading(true);
     try {
       const response = await fetch(`${Backend_Endpoint}/api/website`);
       const data = await response.json();
-      setFilteredData(data?.website[0].title);
       setDatas(data?.website);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -27,44 +55,40 @@ const Page = () => {
     fetchdata();
   }, []);
 
-  useEffect(() => {
-    setFilteredData(datas?.find((item) => item.id == id));
-  }, [id, datas]);
-
-  if (!datas)
-    return (
-      <div className="h-screen w-screen flex items-center justify-center ">
-        loading
-      </div>
-    );
+  if (loading) return <Loading />;
 
   return (
-    <PageContainer title="Homepage" description="this is Homepage">
-      <DashboardCard title="Homepage">
-        <FormControl fullWidth>
-          <Select
-            id="sectionSelect"
-            value={id || datas?.id || ""}
-            onChange={(e) => {
-              setId(e.target.value);
-            }}
-          >
-            {datas.map((item) => (
-              <MenuItem key={item?.id} value={item?.id}>
-                {item?.title}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <Grid container spacing={2}>
-          <Grid size={6}>
-            <HomeHero data={filteredData} />
+    <PageContainer title="Нүүр хуудас">
+      <Grid container size={12} spacing={2}>
+        <Grid container item size={12} spacing={2}>
+          <Grid size={"grow"}>Нүүр хуудас</Grid>
+          <Grid size={"auto"}>
+            <EditHome data={selectedData} />
           </Grid>
-          <Grid size={6}>
-            <InputSection data={filteredData} id={id} />
+          <Grid size={"auto"}>
+            <SeeDetailsHome data={selectedData} />
           </Grid>
         </Grid>
-      </DashboardCard>
+        <Box sx={{ height: 800, width: "100%" }}>
+          <DataGrid
+            rows={datas}
+            columns={columns}
+            onRowClick={(params) => {
+              setSelecedData(params.row);
+            }}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 11,
+                },
+              },
+            }}
+            pageSizeOptions={[11]}
+            checkboxSelection
+            disableMultipleRowSelection
+          />
+        </Box>
+      </Grid>
     </PageContainer>
   );
 };

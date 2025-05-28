@@ -70,7 +70,7 @@ const FileUploader = ({ setFieldValue, fieldName, onClear }) => {
   };
 
   return (
-    <Box sx={{ mt: 4 }}>
+    <Box sx={{ mb: 2, mt: 1 }}>
       <Button
         component="label"
         variant="contained"

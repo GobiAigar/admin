@@ -1,10 +1,12 @@
 import {
+  Icon360View,
   IconAperture,
   IconCertificate,
   IconCopy,
   IconFlagQuestion,
   IconLayoutDashboard,
   IconLogin,
+  IconMessage,
   IconMoodHappy,
   IconNews,
   IconPlus,
@@ -16,20 +18,20 @@ import {
 import { uniqueId } from "lodash";
 
 const Menuitems = [
-  // {
-  //   navlabel: true,
-  //   subheader: "HOME",
-  // },
+  {
+    navlabel: true,
+    subheader: "Хяналт",
+  },
 
   {
     id: uniqueId(),
-    title: "Дашбоард",
+    title: "Хяналтын самбар",
     icon: IconLayoutDashboard,
     href: "/",
   },
   {
     navlabel: true,
-    subheader: "Веб хуудас",
+    subheader: "Хуудас",
   },
   {
     id: uniqueId(),
@@ -51,35 +53,27 @@ const Menuitems = [
   },
   {
     id: uniqueId(),
-    title: "Aсуулт, Статистик",
+    title: "Aсуулт",
     icon: IconFlagQuestion,
     href: "/website/faq",
   },
-
   {
-    navlabel: true,
-    subheader: "Мэдээ",
+    id: uniqueId(),
+    title: "Статистик",
+    icon: Icon360View,
+    href: "/website/statistics",
   },
   {
     id: uniqueId(),
-    title: "Мэдээнүүд",
+    title: "Мэдээлэл",
     icon: IconNews,
     href: "/news",
   },
+
   {
     id: uniqueId(),
-    title: "Мэдээ нэмэх",
-    icon: IconPlus,
-    href: "/news/add",
-  },
-  {
-    navlabel: true,
-    subheader: "Шуудан",
-  },
-  {
-    id: uniqueId(),
-    title: "Шуудангууд",
-    icon: IconMoodHappy,
+    title: "Зурвас",
+    icon: IconMessage,
     href: "/messages",
   },
 ];

@@ -1,4 +1,4 @@
-"use client";
+"use  client";
 
 import { Backend_Endpoint } from "@/constants/constants";
 import {
@@ -10,16 +10,11 @@ import {
   IconButton,
 } from "@mui/material";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const DeleteUser = (id) => {
-  if (id.id === "e952ac39-37fc-4019-98fe-e152d82d4990") {
-    return <></>;
-  }
-
-  const router = useRouter();
+const DeleteButton = ({ type, id }) => {
   const [open, setOpen] = useState(false);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -30,16 +25,15 @@ const DeleteUser = (id) => {
 
   const submit = async () => {
     try {
-      const response = await fetch(`${Backend_Endpoint}/api/user/${id.id}`, {
+      const response = await fetch(`${Backend_Endpoint}/api/${type}/${id.id}`, {
         method: "DELETE",
         headers: {
           "Content-type": "application/json",
         },
       });
       const data = await response.json();
-
-      router.push("/accounts");
       handleClose();
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -47,7 +41,7 @@ const DeleteUser = (id) => {
   return (
     <CardActions>
       <IconButton onClick={handleClickOpen} color="primary">
-        <DeleteTwoToneIcon />
+        <DeleteTwoToneIcon sx={{ color: "red" }} />
       </IconButton>
       <Dialog
         open={open}
@@ -55,7 +49,7 @@ const DeleteUser = (id) => {
         aria-labelledby="alert-dialog-title"
       >
         <DialogTitle id="alert-dialog-title">
-          Та энэ админийг устгахдаа итгэлтэй байна уу?
+          Та энэ нийтлэлийг устгахдаа итгэлтэй байна уу?
         </DialogTitle>
 
         <DialogActions>
@@ -69,4 +63,4 @@ const DeleteUser = (id) => {
   );
 };
 
-export default DeleteUser;
+export default DeleteButton;

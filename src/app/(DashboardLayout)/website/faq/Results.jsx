@@ -129,28 +129,6 @@ const Results = ({ datas, statistic, setRender, render }) => {
 
   return (
     <>
-      <Grid container display="flex" spacing={3} pb={3}>
-        <Grid item>
-          <Button
-            onClick={() => {
-              setSelectedTab("faq");
-            }}
-            variant="outlined"
-          >
-            Асуулт, Хариулт
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button
-            variant="outlined"
-            onClick={() => {
-              setSelectedTab("statistics");
-            }}
-          >
-            Статистик
-          </Button>
-        </Grid>
-      </Grid>
       {
         <Card>
           <Box p={2}>
