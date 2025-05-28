@@ -16,20 +16,20 @@ import {
 import { uniqueId } from "lodash";
 
 const Menuitems = [
-  {
-    navlabel: true,
-    subheader: "HOME",
-  },
+  // {
+  //   navlabel: true,
+  //   subheader: "HOME",
+  // },
 
   {
     id: uniqueId(),
-    title: "Dashboard",
+    title: "Дашбоард",
     icon: IconLayoutDashboard,
     href: "/",
   },
   {
     navlabel: true,
-    subheader: "WEBSITE",
+    subheader: "Веб хуудас",
   },
   {
     id: uniqueId(),

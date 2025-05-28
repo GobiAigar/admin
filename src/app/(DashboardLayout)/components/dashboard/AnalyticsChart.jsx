@@ -1,7 +1,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Select, MenuItem } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Select,
+  MenuItem,
+  CircularProgress,
+} from "@mui/material";
 import dynamic from "next/dynamic";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
 
@@ -28,42 +34,38 @@ const AnalyticsChart = () => {
   }, [timeframe]);
 
   const allowedPaths = [
-    "/mn/home",
-    "/en/home",
-    "/mn/product",
-    "/en/product",
-    "/mn/contact",
-    "/en/contact",
-    "/mn/sustainability",
-    "/en/sustainability",
-    "/mn/news",
-    "/en/news",
+    { path: "/home", label: "Нүүр" },
+    { path: "/product", label: "Бүтээгдэхүүн" },
+    { path: "/contact", label: "Холбоо барих" },
+    { path: "/sustainability", label: "Тогтвортой байдал" },
+    { path: "/news", label: "Мэдээ" },
   ];
 
-  const aggregatedData = allowedPaths.map((path) => {
+  const aggregatedData = allowedPaths.map(({ path, label }) => {
     const matchingRows = chartData.filter((item) => {
       const p = item.dimensionValues.find((d) =>
         d.value.startsWith("/")
       )?.value;
-      return p === path;
+      return p === `/en${path}` || p === `/mn${path}`;
     });
 
-    const totalPageViews = matchingRows.reduce((sum, item) => {
-      return sum + Number(item.metricValues[0].value);
-    }, 0);
+    const totalPageViews = matchingRows.reduce(
+      (sum, item) => sum + Number(item.metricValues[0].value),
+      0
+    );
 
-    const totalActiveUsers = matchingRows.reduce((sum, item) => {
-      return sum + Number(item.metricValues[1].value);
-    }, 0);
-
+    const uniqueActiveUsers = new Set();
+    matchingRows.forEach((item) => {
+      uniqueActiveUsers.add(item.dimensionValues[1]?.value || "unknown");
+    });
     return {
-      path,
+      label,
       pageViews: totalPageViews,
-      activeUsers: totalActiveUsers,
+      activeUsers: uniqueActiveUsers.size,
     };
   });
 
-  const categories = aggregatedData.map((item) => item.path);
+  const categories = aggregatedData.map((item) => item.label);
   const pageViews = aggregatedData.map((item) => item.pageViews);
   const activeUsers = aggregatedData.map((item) => item.activeUsers);
 
@@ -71,7 +73,7 @@ const AnalyticsChart = () => {
     chart: { id: "analytics-bar", toolbar: { show: false } },
     xaxis: {
       categories,
-      labels: { rotate: -45, style: { fontSize: "10px" } },
+      labels: { rotate: -45, style: { fontSize: "0.75rem" } },
       title: { text: "Хуудас" },
     },
     tooltip: { shared: true, intersect: false },
@@ -83,7 +85,7 @@ const AnalyticsChart = () => {
   ];
 
   return (
-    <DashboardCard title="Веб хуудасны үзэлтүүд">
+    <DashboardCard title="Веб хуудасны үзэлтүүд ">
       <Box sx={{ mb: 2 }}>
         <Select
           size="small"
@@ -101,7 +103,17 @@ const AnalyticsChart = () => {
 
       <Box>
         {aggregatedData.length === 0 ? (
-          <Typography>Уншиж байна...</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minHeight: 200,
+            }}
+          >
+            <CircularProgress size={30} />
+            <Typography ml={2}>Уншиж байна...</Typography>
+          </Box>
         ) : (
           <Chart options={options} series={series} type="bar" height={400} />
         )}

@@ -55,6 +55,7 @@ export default function RootLayout({ children }) {
           sx={{
             paddingTop: "20px",
             maxWidth: "1200px",
+            bgcolor: "#f4f9fe",
           }}
         >
           {/* ------------------------------------------- */}

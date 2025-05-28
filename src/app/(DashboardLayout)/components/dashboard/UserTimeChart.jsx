@@ -1,14 +1,21 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Select, MenuItem, Container } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Select,
+  MenuItem,
+  Container,
+  CircularProgress,
+} from "@mui/material";
 import dynamic from "next/dynamic";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const UserTimeChart = () => {
   const [chartData, setChartData] = useState([]);
-  const [timeframe, setTimeframe] = useState("day");
+  const [timeframe, setTimeframe] = useState("week");
 
   useEffect(() => {
     const fetchAnalytics = async () => {
@@ -133,9 +140,18 @@ const UserTimeChart = () => {
   ];
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
+    <Container
+      maxWidth="lg"
+      sx={{
+        mt: 4,
+        backgroundColor: "#fff",
+        borderRadius: 2,
+        p: 2,
+        boxShadow: 1,
+      }}
+    >
       <Typography variant="h4" mb={2}>
-        Хэрэглэгчдийн дундаж үзүүлэлтүүд (Нийт нэгтгэсэн)
+        Хэрэглэгчдийн дундаж үзүүлэлтүүд
       </Typography>
 
       <Box sx={{ mb: 2 }}>
@@ -155,7 +171,9 @@ const UserTimeChart = () => {
 
       <Box>
         {chartData.length === 0 ? (
-          <Typography>Уншиж байна...</Typography>
+          <Typography textAlign="center" mt={4} color="text.secondary">
+            Өнөөдрийн дата байхгүй байна.
+          </Typography>
         ) : (
           <Chart options={options} series={series} type="line" height={400} />
         )}
