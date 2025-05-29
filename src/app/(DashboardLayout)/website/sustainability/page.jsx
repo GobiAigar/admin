@@ -16,6 +16,7 @@ const columns = [
   { field: "endescription", headerName: "Description", flex: 1 },
   { field: "mndescription", headerName: "Тайлбар", flex: 1 },
   { field: "image_url", headerName: "Зураг", flex: 1 },
+  { field: "action", headerName: "Үйлдэл", flex: 1 },
 ];
 
 const Page = () => {
