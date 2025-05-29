@@ -1,26 +1,16 @@
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import { useState } from "react";
+import {
+  Button,
+  TextField,
+  Grid,
+  InputLabel,
+  DialogActions,
+} from "@mui/material";
 import { useFormik } from "formik";
 import FileUploader from "../website/FileUploader";
-import { Grid, InputLabel } from "@mui/material";
 import { Backend_Endpoint } from "@/constants/constants";
 
-export default function EditHome({ data }) {
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    if (!data) {
-      return alert("Шинэчлэх мэдээллээ сонгоно уу");
-    }
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
+export default function EditHome({ data, onClose, onSubmitSuccess }) {
+  console.log("data", data);
   const formik = useFormik({
     initialValues: {
       entitle: data?.entitle || "",
@@ -46,9 +36,9 @@ export default function EditHome({ data }) {
           }
         );
         const updated = await response.json();
-        console.log(updated);
+        console.log("Updated:", updated);
 
-        handleClose();
+        if (onSubmitSuccess) onSubmitSuccess();
       } catch (error) {
         console.log(error);
       }
@@ -56,132 +46,72 @@ export default function EditHome({ data }) {
   });
 
   return (
-    <>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Шинэчлэх
-      </Button>
-      <Dialog open={open} onClose={handleClose}>
-        <form onSubmit={formik.handleSubmit}>
-          <Grid container size={12} spacing={2} sx={{ margin: 2 }}>
-            {data?.entitle && (
-              <Grid item size={12}>
-                <InputLabel htmlFor="entitle">Англи гарчиг</InputLabel>
-                <TextField
-                  fullWidth
-                  id="entitle"
-                  name="entitle"
-                  type="text"
-                  onChange={formik.handleChange}
-                  value={formik.values.entitle}
-                />
-              </Grid>
-            )}
-            {data?.mntitle && (
-              <Grid item size={12}>
-                <InputLabel htmlFor="mntitle">Монгол гарчиг</InputLabel>
-                <TextField
-                  fullWidth
-                  id="mntitle"
-                  name="mntitle"
-                  type="text"
-                  onChange={formik.handleChange}
-                  value={formik.values.mntitle}
-                />
-              </Grid>
-            )}
-            {data?.ensubtitle && (
-              <Grid item size={12}>
-                <InputLabel htmlFor="ensubtitle">Англи дэд гарчиг</InputLabel>
-                <TextField
-                  fullWidth
-                  id="ensubtitle"
-                  name="ensubtitle"
-                  type="text"
-                  onChange={formik.handleChange}
-                  value={formik.values.ensubtitle}
-                />
-              </Grid>
-            )}
-            {data?.mnsubtitle && (
-              <Grid item size={12}>
-                <InputLabel htmlFor="mnsubtitle">Монгол дэд гарчиг</InputLabel>
-                <TextField
-                  fullWidth
-                  id="mnsubtitle"
-                  name="mnsubtitle"
-                  type="text"
-                  onChange={formik.handleChange}
-                  value={formik.values.mnsubtitle}
-                />
-              </Grid>
-            )}
-            <Grid container size={12}>
-              {data?.image_url1 && (
-                <Grid item size={6}>
-                  <InputLabel htmlFor="image_url1">Зургийн хаяг</InputLabel>
-                  <img
-                    width={100}
-                    src={formik.values.image_url1}
-                    alt={formik.values.mntitle}
-                  />
-                  <FileUploader
-                    setFieldValue={formik.setFieldValue}
-                    fieldName="image_url1"
-                  />
-                </Grid>
-              )}
-              {data?.image_url2 && (
-                <Grid item size={6}>
-                  <InputLabel htmlFor="image_url2">Зургийн хаяг 2</InputLabel>
-                  <img
-                    width={100}
-                    src={formik.values.image_url2}
-                    alt={formik.values.mntitle}
-                  />
-                  <FileUploader
-                    setFieldValue={formik.setFieldValue}
-                    fieldName="image_url2"
-                  />
-                </Grid>
-              )}
-              {data?.image_url3 && (
-                <Grid item size={6}>
-                  <InputLabel htmlFor="image_url3">Зургийн хаяг 3</InputLabel>
-                  <img
-                    width={100}
-                    src={formik.values.image_url3}
-                    alt={formik.values.mntitle}
-                  />
-                  <FileUploader
-                    setFieldValue={formik.setFieldValue}
-                    fieldName="image_url3"
-                  />
-                </Grid>
-              )}
-              {data?.image_url4 && (
-                <Grid item size={6}>
-                  <InputLabel htmlFor="image_url4">Зургийн хаяг 4</InputLabel>
-                  <img
-                    width={100}
-                    src={formik.values.image_url4}
-                    alt={formik.values.mntitle}
-                  />
-                  <FileUploader
-                    setFieldValue={formik.setFieldValue}
-                    fieldName="image_url4"
-                  />
-                </Grid>
-              )}
-            </Grid>
+    <form onSubmit={formik.handleSubmit}>
+      <Grid container spacing={2} sx={{ margin: 2 }}>
+        <Grid size={{ xs: 6 }}>
+          <InputLabel htmlFor="entitle">Англи гарчиг</InputLabel>
+          <TextField
+            fullWidth
+            id="entitle"
+            name="entitle"
+            onChange={formik.handleChange}
+            value={formik.values.entitle}
+          />
+        </Grid>
+        <Grid size={{ xs: 6 }}>
+          <InputLabel htmlFor="mntitle">Монгол гарчиг</InputLabel>
+          <TextField
+            fullWidth
+            id="mntitle"
+            name="mntitle"
+            onChange={formik.handleChange}
+            value={formik.values.mntitle}
+          />
+        </Grid>
+        <Grid size={{ xs: 6 }}>
+          <InputLabel htmlFor="ensubtitle">Англи дэд гарчиг</InputLabel>
+          <TextField
+            fullWidth
+            id="ensubtitle"
+            name="ensubtitle"
+            onChange={formik.handleChange}
+            value={formik.values.ensubtitle}
+          />
+        </Grid>
+        <Grid size={{ xs: 6 }}>
+          <InputLabel htmlFor="mnsubtitle">Монгол дэд гарчиг</InputLabel>
+          <TextField
+            fullWidth
+            id="mnsubtitle"
+            name="mnsubtitle"
+            onChange={formik.handleChange}
+            value={formik.values.mnsubtitle}
+          />
+        </Grid>
 
-            <Grid size={12}>
-              <Button variant="outlined" type="submit" fullWidth>
-                Submit
-              </Button>
+        {(data.id === 14 || data.id === 16 ? [1, 2, 3, 4] : [1]).map((i) => {
+          const url = formik.values[`image_url${i}`];
+          return (
+            <Grid size={{ xs: 6 }} key={i}>
+              <InputLabel htmlFor={`image_url${i}`}>{`Зураг ${i}`}</InputLabel>
+              <FileUploader
+                setFieldValue={formik.setFieldValue}
+                fieldName={`image_url${i}`}
+                initialPreview={url}
+              />
             </Grid>
-          </Grid>
-        </form>
-      </Dialog>
-    </>
+          );
+        })}
+      </Grid>
+
+      <DialogActions>
+        <Button onClick={onClose} color="primary" variant="outlined">
+          Буцах
+        </Button>
+        <Button type="submit" variant="contained" color="primary">
+          Засах
+        </Button>
+      </DialogActions>
+    </form>
   );
 }

@@ -89,7 +89,7 @@ const FileUploader = ({
         <VisuallyHiddenInput
           type="file"
           onChange={handleUpload}
-          accept="image/*"
+          accept="image/*,video/*,.svg"
           ref={fileInputRef}
         />
       </Button>
