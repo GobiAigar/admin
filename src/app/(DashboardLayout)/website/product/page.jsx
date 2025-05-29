@@ -69,6 +69,8 @@ const Page = () => {
       headerName: "Үйлдэл",
       width: 120,
       sortable: false,
+      headerAlign: "center",
+      align: "center",
       renderCell: (params) => (
         <Box>
           <IconButton
