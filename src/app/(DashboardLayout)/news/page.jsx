@@ -1,14 +1,14 @@
+"use client";
+
 import { Backend_Endpoint } from "@/constants/constants";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const columns = [
   {
     field: "purpose",
     headerName: "Зорилго",
-    type: "number",
     width: 100,
   },
   {
@@ -72,15 +72,21 @@ const columns = [
 
 const Page = () => {
   const [datas, setDatas] = useState([]);
+
   const fetchData = async () => {
     try {
       const response = await fetch(`${Backend_Endpoint}/api/news`);
       const fetchdata = await response.json();
-      console.log(fetchdata);
+      console.log(fetchData);
+      setDatas(fetchdata);
     } catch (error) {
-      console.log("error", error);
+      console.log(error, "error");
     }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <>
       <Box sx={{ height: 400 }}>

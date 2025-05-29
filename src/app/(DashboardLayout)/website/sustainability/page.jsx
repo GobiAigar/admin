@@ -1,25 +1,13 @@
 "use client";
 
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TextField,
-  Snackbar,
-  Alert,
-  CardMedia,
-  Typography,
-} from "@mui/material";
+import { Box, Snackbar, Alert } from "@mui/material";
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
 import { Backend_Endpoint } from "@/constants/constants";
 import { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Formik, Form } from "formik";
-import FileUploader from "../../components/website/FileUploader";
 import DeleteButton from "../../components/features/DeleteButton";
+import EditSustainability from "../../components/features/EditSustainability";
+import AddSustainability from "../../components/features/AddSustainability";
 
 const columns = [
   { field: "id", headerName: "ID", width: 5, align: "center" },
@@ -31,41 +19,40 @@ const columns = [
 ];
 
 const Page = () => {
-  const [fixOpen, setFixOpen] = useState(false);
-  const [addOpen, setAddOpen] = useState(false);
   const [datas, setDatas] = useState([]);
-  const [id, setId] = useState([]);
-  const [render, setRender] = useState(false);
+  const [selectedIds, setSelectedIds] = useState([]);
   const [alertOpen, setAlertOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const selectedData = datas.find((d) => d.id === id[0]);
-
-  const handleClickOpenFix = () => {
-    if (!id[0]) {
-      setAlertOpen(true);
-      return;
-    }
-    setFixOpen(true);
-  };
-
-  const handleClose = () => {
-    setFixOpen(false);
-    setAddOpen(false);
-  };
+  // Get the selected data based on the first selected ID
+  const selectedData = datas.find((d) => d.id === selectedIds[0]);
 
   const fetchdata = async () => {
+    setLoading(true);
+    setError(null);
     try {
       const response = await fetch(`${Backend_Endpoint}/api/sustainability`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const data = await response.json();
-      setDatas(data.data);
+      setDatas(data.data || []);
     } catch (error) {
-      console.error(error);
+      console.error("Failed to fetch sustainability data:", error);
+      setError("Failed to load data. Please try again.");
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const handleRefresh = () => {
+    fetchdata();
   };
 
   useEffect(() => {
     fetchdata();
-  }, [render]);
+  }, []);
 
   return (
     <PageContainer title="Sustainability" description="Sustainability List">
@@ -78,187 +65,17 @@ const Page = () => {
             justifyContent: "flex-end",
           }}
         >
-          <Button variant="outlined" onClick={handleClickOpenFix}>
-            Засах
-          </Button>
-
-          <Dialog open={fixOpen} onClose={handleClose} maxWidth="sm" fullWidth>
-            <Formik
-              initialValues={{
-                entitle: selectedData?.entitle || "",
-                mntitle: selectedData?.mntitle || "",
-                endescription: selectedData?.endescription || "",
-                mndescription: selectedData?.mndescription || "",
-                image_url: selectedData?.image_url || "",
-              }}
-              enableReinitialize={true}
-              onSubmit={async (values) => {
-                try {
-                  const response = await fetch(
-                    `${Backend_Endpoint}/api/sustainability/${id[0]}`,
-                    {
-                      method: "PUT",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify(values),
-                    }
-                  );
-                  if (response.ok) {
-                    setRender(!render);
-                    handleClose();
-                  }
-                } catch (error) {
-                  console.error("Засах алдаа:", error);
-                }
-              }}
-            >
-              {({ setFieldValue, values }) => (
-                <Form>
-                  <DialogTitle>Гэрчилгээ засах</DialogTitle>
-                  <DialogContent>
-                    <TextField
-                      margin="dense"
-                      label="Title"
-                      fullWidth
-                      value={values.entitle}
-                      onChange={(e) => setFieldValue("entitle", e.target.value)}
-                    />
-                    <TextField
-                      margin="dense"
-                      label="Гарчиг"
-                      fullWidth
-                      value={values.mntitle}
-                      onChange={(e) => setFieldValue("mntitle", e.target.value)}
-                    />
-                    <TextField
-                      margin="dense"
-                      label="Description"
-                      fullWidth
-                      value={values.endescription}
-                      onChange={(e) =>
-                        setFieldValue("endescription", e.target.value)
-                      }
-                    />
-                    <TextField
-                      margin="dense"
-                      label="Дэд гарчиг"
-                      fullWidth
-                      value={values.mndescription}
-                      onChange={(e) =>
-                        setFieldValue("mndescription", e.target.value)
-                      }
-                    />
-                    <FileUploader
-                      setFieldValue={setFieldValue}
-                      fieldName="image_url"
-                    />
-                    {selectedData?.image_url && (
-                      <Box sx={{ my: 2 }}>
-                        <Typography variant="body2">Одоогийн зураг:</Typography>
-                        <CardMedia
-                          component="img"
-                          image={selectedData.image_url}
-                          alt="Uploaded"
-                          sx={{
-                            objectFit: "contain",
-                            width: "100%",
-                            maxHeight: 300,
-                            borderRadius: 2,
-                          }}
-                        />
-                      </Box>
-                    )}
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button type="submit">Засах</Button>
-                  </DialogActions>
-                </Form>
-              )}
-            </Formik>
-          </Dialog>
-
-          <DeleteButton type={"sustainability"} id={selectedData} />
-          <Button variant="outlined" onClick={() => setAddOpen(true)}>
-            Нэмэх
-          </Button>
-
-          <Dialog open={addOpen} onClose={handleClose}>
-            <Formik
-              initialValues={{
-                entitle: "",
-                mntitle: "",
-                endescription: "",
-                mndescription: "",
-                image_url: "",
-              }}
-              onSubmit={async (values) => {
-                try {
-                  const response = await fetch(
-                    `${Backend_Endpoint}/api/sustainability`,
-                    {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify(values),
-                    }
-                  );
-                  if (response.ok) {
-                    setRender(!render);
-                    handleClose();
-                  }
-                } catch (error) {
-                  console.error("Нэмэх алдаа:", error);
-                }
-              }}
-            >
-              {({ setFieldValue, values }) => (
-                <Form>
-                  <DialogTitle>Гэрчилгээ нэмэх</DialogTitle>
-                  <DialogContent>
-                    <TextField
-                      margin="dense"
-                      label="Title"
-                      fullWidth
-                      value={values.entitle}
-                      onChange={(e) => setFieldValue("entitle", e.target.value)}
-                    />
-                    <TextField
-                      margin="dense"
-                      label="Гарчиг"
-                      fullWidth
-                      value={values.mntitle}
-                      onChange={(e) => setFieldValue("mntitle", e.target.value)}
-                    />
-                    <TextField
-                      margin="dense"
-                      label="Description"
-                      fullWidth
-                      value={values.endescription}
-                      onChange={(e) =>
-                        setFieldValue("endescription", e.target.value)
-                      }
-                    />
-                    <TextField
-                      margin="dense"
-                      label="Дэд гарчиг"
-                      fullWidth
-                      value={values.mndescription}
-                      onChange={(e) =>
-                        setFieldValue("mndescription", e.target.value)
-                      }
-                    />
-                    <FileUploader
-                      setFieldValue={setFieldValue}
-                      fieldName="image_url"
-                    />
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button type="submit">Нэмэх</Button>
-                  </DialogActions>
-                </Form>
-              )}
-            </Formik>
-          </Dialog>
+          <EditSustainability
+            data={selectedData}
+            id={selectedIds}
+            onSuccess={handleRefresh}
+          />
+          <DeleteButton
+            type={"sustainability"}
+            id={selectedData}
+            onSuccess={handleRefresh}
+          />
+          <AddSustainability onSuccess={handleRefresh} />
         </Box>
 
         <DataGrid
@@ -270,6 +87,7 @@ const Page = () => {
             { field: "ui_id", headerName: "№", width: 70 },
             ...columns.filter((col) => col.field !== "id"),
           ]}
+          loading={loading}
           sx={{
             border: "2px solid #ddd",
             borderRadius: 2,
@@ -289,13 +107,28 @@ const Page = () => {
           }}
           checkboxSelection
           disableMultipleRowSelection
-          onRowSelectionModelChange={(newSelection) =>
-            setId(new Array.from(newSelection.ids))
-          }
+          onRowSelectionModelChange={(newSelectionModel) => {
+            // Convert Set to Array for easier handling
+            const selectedIdsArray = Array.from(newSelectionModel);
+            setSelectedIds(selectedIdsArray);
+          }}
           getRowId={(row) => row.id}
         />
       </Box>
 
+      {/* Error Alert */}
+      <Snackbar
+        open={!!error}
+        autoHideDuration={6000}
+        onClose={() => setError(null)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert severity="error" onClose={() => setError(null)}>
+          {error}
+        </Alert>
+      </Snackbar>
+
+      {/* Warning Alert */}
       <Snackbar
         open={alertOpen}
         autoHideDuration={3000}

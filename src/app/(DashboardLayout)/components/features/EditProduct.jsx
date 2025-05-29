@@ -10,6 +10,7 @@ import { Backend_Endpoint } from "@/constants/constants";
 
 export default function EditProduct({ data }) {
   const [open, setOpen] = useState(false);
+  const [fieldValue, setFieldValue] = useState();
 
   const handleClickOpen = () => {
     setOpen(true);

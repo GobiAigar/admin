@@ -1,56 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
-
-import PageHeader from "./PageHeader";
-
-import { Grid } from "@mui/material";
-
-import Results from "./Results";
-import PageTitleWrapper from "./PageTitleWrapper";
-import { Backend_Endpoint } from "@/constants/constants";
-
-function Page() {
-  const [datas, setDatas] = useState([]);
-  const [render, setRender] = useState(false);
-
-  const fetchFaq = async () => {
-    try {
-      const response = await fetch(`${Backend_Endpoint}/api/faq`);
-      const data = await response.json();
-      setDatas(data);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchFaq();
-  }, [render]);
-
-  return (
-    <>
-      <title>Users - Management</title>
-      <PageTitleWrapper>
-        <PageHeader render={render} setRender={setRender} />
-      </PageTitleWrapper>
-
-      <Grid
-        sx={{
-          px: 4,
-        }}
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="stretch"
-        spacing={4}
-      >
-        <Grid item size={12}>
-          <Results datas={datas} render={render} setRender={setRender} />
-        </Grid>
-      </Grid>
-    </>
-  );
-}
+const Page = () => {
+  return <div>Page</div>;
+};
 
 export default Page;
