@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   IconButton,
@@ -11,11 +11,15 @@ import {
   Typography,
   Grid,
   Paper,
+  Snackbar,
 } from "@mui/material";
+import MuiAlert from "@mui/material/Alert";
 import { DataGrid } from "@mui/x-data-grid";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Backend_Endpoint } from "@/constants/constants";
 
-const columns = [
+const columns = (setSnackbar, handleRowDelete) => [
   {
     field: "index",
     headerName: "№",
@@ -79,15 +83,57 @@ const columns = [
   {
     field: "actions",
     headerName: "Үйлдэл",
-    width: 100,
+    width: 130,
     align: "center",
     headerAlign: "center",
-    renderCell: (params) => <ViewIconCell row={params.row} />,
+    renderCell: (params) => (
+      <ActionButtons
+        row={params.row}
+        setSnackbar={setSnackbar}
+        handleRowDelete={handleRowDelete}
+      />
+    ),
   },
 ];
 
-const ViewIconCell = ({ row }) => {
+const ActionButtons = ({ row, setSnackbar, handleRowDelete }) => {
   const [open, setOpen] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(
+        `${Backend_Endpoint}/api/messages/${row.id}`,
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (response.ok) {
+        setSnackbar({
+          open: true,
+          message: "Амжилттай устгагдлаа",
+          severity: "success",
+        });
+        handleRowDelete(row.id);
+      } else {
+        setSnackbar({
+          open: true,
+          message: "Устгах үед алдаа гарлаа. Дахин оролдоно уу!",
+          severity: "error",
+        });
+      }
+    } catch (error) {
+      setSnackbar({
+        open: true,
+        message: "Устгах үед алдаа гарлаа. Дахин оролдоно уу!",
+        severity: "error",
+      });
+    } finally {
+      setConfirmOpen(false);
+    }
+  };
 
   const fieldNames = {
     purpose: "Зорилго",
@@ -99,7 +145,7 @@ const ViewIconCell = ({ row }) => {
     bussiness: "Бизнес",
     plan: "Төлөвлөгөө",
     city: "Хот",
-    state: "Муж",
+    state: "Дүүрэг",
     country: "Улс",
   };
 
@@ -120,6 +166,9 @@ const ViewIconCell = ({ row }) => {
       <IconButton onClick={() => setOpen(true)} color="secondary">
         <VisibilityIcon />
       </IconButton>
+      <IconButton onClick={() => setConfirmOpen(true)} color="error">
+        <DeleteIcon />
+      </IconButton>
 
       <Dialog
         open={open}
@@ -132,12 +181,11 @@ const ViewIconCell = ({ row }) => {
           <Grid container spacing={2}>
             {Object.entries(row).map(([key, value]) => {
               if (key === "id" || key === "index") return null;
-
               const displayValue =
                 key === "date" ? formatDate(value) : value || "-";
 
               return (
-                <Grid size={{ xs: 12, sm: 6 }} key={key}>
+                <Grid item xs={12} sm={6} key={key}>
                   <Paper
                     elevation={2}
                     sx={{
@@ -180,26 +228,89 @@ const ViewIconCell = ({ row }) => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Dialog
+        open={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        maxWidth="xs"
+      >
+        <DialogTitle>Устгах</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Та "{row.lastname} овогтой {row.firstname}" хэрэглэгчийн зурвасыг
+            устгахдаа итгэлтэй байна уу?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmOpen(false)} color="primary">
+            Үгүй
+          </Button>
+          <Button onClick={handleDelete} color="error" variant="contained">
+            Тийм
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
 
 const Messeges = ({ datas }) => {
-  const processedRows = datas.map((item, idx) => ({
-    ...item,
-    index: idx + 1,
-  }));
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
+
+  const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    if (datas && datas.length > 0) {
+      const updatedRows = datas.map((item, idx) => ({
+        ...item,
+        index: idx + 1,
+      }));
+      setRows(updatedRows);
+    }
+  }, [datas]);
+
+  const handleRowDelete = (id) => {
+    setRows((prevRows) => {
+      const updatedRows = prevRows
+        .filter((row) => row.id !== id)
+        .map((row, idx) => ({
+          ...row,
+          index: idx + 1,
+        }));
+      return updatedRows;
+    });
+  };
 
   return (
-    <Box sx={{ height: 500 }}>
+    <Box sx={{ height: 450, position: "relative" }}>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <MuiAlert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </MuiAlert>
+      </Snackbar>
+
       <DataGrid
-        rows={processedRows}
-        columns={columns}
+        rows={rows}
+        columns={columns(setSnackbar, handleRowDelete)}
         getRowId={(row) => row.id}
         initialState={{
           pagination: { paginationModel: { pageSize: 5 } },
         }}
         pageSizeOptions={[5]}
+        disableRowSelectionOnClick
         sx={{
           border: "2px solid #ddd",
           borderRadius: 2,

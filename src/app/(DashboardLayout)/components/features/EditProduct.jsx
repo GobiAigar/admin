@@ -100,7 +100,7 @@ export default function EditProduct({ data, onClose, onSubmitSuccess }) {
         </Grid>
 
         <DialogActions sx={{ m: 1 }}>
-          <Button onClick={onClose} color="secondary" variant="outlined">
+          <Button onClick={onClose} color="primary" variant="outlined">
             Буцах
           </Button>
           <Button type="submit" variant="contained" color="primary">

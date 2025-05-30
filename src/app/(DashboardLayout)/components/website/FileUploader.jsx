@@ -32,6 +32,7 @@ const FileUploader = ({
   fieldName,
   onClear,
   initialPreview,
+  type = "image",
 }) => {
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState(initialPreview || null);
@@ -85,11 +86,11 @@ const FileUploader = ({
         startIcon={<CloudUploadIcon />}
         disabled={loading}
       >
-        Зураг оруулах
+        {type === "video" ? "Видео оруулах" : "Зураг оруулах"}
         <VisuallyHiddenInput
           type="file"
           onChange={handleUpload}
-          accept="image/*,video/*,.svg"
+          accept={type === "video" ? "video/*" : "image/*,.svg"}
           ref={fileInputRef}
         />
       </Button>
@@ -110,12 +111,21 @@ const FileUploader = ({
           }}
         >
           <Card sx={{ maxWidth: 600 }}>
-            <CardMedia
-              component="img"
-              height="140"
-              image={preview}
-              alt="Uploaded"
-            />
+            {type === "video" ? (
+              <CardMedia
+                component="video"
+                height="240"
+                src={preview}
+                controls
+              />
+            ) : (
+              <CardMedia
+                component="img"
+                height="140"
+                image={preview}
+                alt="Uploaded"
+              />
+            )}
           </Card>
 
           <Button
