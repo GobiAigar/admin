@@ -16,10 +16,9 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import HomeDetails from "../../components/features/SeeHomeDetails";
 import EditHome from "../../components/features/EditHome";
+import { IconEdit, IconEye } from "@tabler/icons-react";
 
 const Page = () => {
   const [datas, setDatas] = useState([]);
@@ -76,20 +75,19 @@ const Page = () => {
           <IconButton
             onClick={() => {
               setSelecedData(params.row);
-              setEditOpen(true);
+              setViewOpen(true);
             }}
-            color="primary"
           >
-            <EditIcon />
+            <IconEye color="blue" />
           </IconButton>
           <IconButton
             onClick={() => {
               setSelecedData(params.row);
-              setViewOpen(true);
+              setEditOpen(true);
             }}
-            color="secondary"
+            color="primary"
           >
-            <VisibilityIcon />
+            <IconEdit />
           </IconButton>
         </Box>
       ),
@@ -97,7 +95,7 @@ const Page = () => {
   ];
 
   return (
-    <PageContainer title="Нүүр хуудас">
+    <PageContainer>
       <Grid container spacing={2}>
         <Grid size={{ xs: 12 }}>Нүүр хуудас</Grid>
 

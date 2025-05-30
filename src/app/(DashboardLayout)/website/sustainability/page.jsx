@@ -1,33 +1,20 @@
 "use client";
 
-import { Box, Snackbar, Alert } from "@mui/material";
+import { Box, Snackbar, Alert, IconButton } from "@mui/material";
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
 import { Backend_Endpoint } from "@/constants/constants";
 import { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import DeleteButton from "../../components/features/DeleteButton";
-import EditSustainability from "../../components/features/EditSustainability";
-import AddSustainability from "../../components/features/AddSustainability";
-
-const columns = [
-  { field: "id", headerName: "ID", width: 5, align: "center" },
-  { field: "entitle", headerName: "Title", flex: 1 },
-  { field: "mntitle", headerName: "Гарчиг", flex: 1 },
-  { field: "endescription", headerName: "Description", flex: 1 },
-  { field: "mndescription", headerName: "Тайлбар", flex: 1 },
-  { field: "image_url", headerName: "Зураг", flex: 1 },
-  { field: "action", headerName: "Үйлдэл", flex: 1 },
-];
+import EditSustainability from "./EditSustainability";
+import AddSustainability from "./AddSustainability";
+import SeeSustainability from "./SeeSustainability";
 
 const Page = () => {
   const [datas, setDatas] = useState([]);
-  const [selectedIds, setSelectedIds] = useState([]);
   const [alertOpen, setAlertOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  // Get the selected data based on the first selected ID
-  const selectedData = datas.find((d) => d.id === selectedIds[0]);
 
   const fetchdata = async () => {
     setLoading(true);
@@ -55,6 +42,46 @@ const Page = () => {
     fetchdata();
   }, []);
 
+  // Define columns with action column
+  const columns = [
+    {
+      field: "ui_id",
+      headerName: "№",
+      width: 70,
+      align: "center",
+      headerAlign: "center",
+    },
+    { field: "entitle", headerName: "Гарчиг /Англи/", flex: 1 },
+    { field: "mntitle", headerName: "Гарчиг /Монгол/", flex: 1 },
+    { field: "endescription", headerName: "Тайлбар /Англи/", flex: 1 },
+    { field: "mndescription", headerName: "Тайлбар /Монгол/", flex: 1 },
+    {
+      field: "action",
+      align: "center",
+      headerAlign: "center",
+      headerName: "Үйлдэл",
+      width: "130",
+      sortable: false,
+      filterable: false,
+      renderCell: (params) => {
+        const rowData = params.row;
+        return (
+          <Box sx={{ display: "flex" }}>
+            <SeeSustainability data={rowData} onSuccess={handleRefresh} />
+            <EditSustainability data={rowData} onSuccess={handleRefresh} />
+            {rowData.id !== 1 && (
+              <DeleteButton
+                type={"sustainability"}
+                id={rowData}
+                onSuccess={handleRefresh}
+              />
+            )}
+          </Box>
+        );
+      },
+    },
+  ];
+
   return (
     <PageContainer title="Sustainability" description="Sustainability List">
       <Box sx={{ height: 400, width: "100%" }}>
@@ -66,16 +93,6 @@ const Page = () => {
             justifyContent: "flex-end",
           }}
         >
-          <EditSustainability
-            data={selectedData}
-            id={selectedIds}
-            onSuccess={handleRefresh}
-          />
-          <DeleteButton
-            type={"sustainability"}
-            id={selectedData}
-            onSuccess={handleRefresh}
-          />
           <AddSustainability onSuccess={handleRefresh} />
         </Box>
 
@@ -84,36 +101,36 @@ const Page = () => {
             ...row,
             ui_id: idx + 1,
           }))}
-          columns={[
-            { field: "ui_id", headerName: "№", width: 70 },
-            ...columns.filter((col) => col.field !== "id"),
-          ]}
+          columns={columns}
           loading={loading}
+          disableMultipleRowSelection
+          disableAutosize
+          disableColumnResize
+          getRowId={(row) => row.id}
           sx={{
             border: "2px solid #ddd",
             borderRadius: 2,
             "& .MuiDataGrid-cell": {
-              borderRight: "2px solid #ddd",
+              borderRight: "1px solid #ddd",
             },
             "& .MuiDataGrid-row": {
-              borderBottom: "2px solid #ddd",
+              borderBottom: "1px solid #ddd",
             },
             "& .MuiDataGrid-columnHeaders": {
-              borderBottom: "2px solid #ddd",
-              borderRight: "2px solid #ddd",
+              borderBottom: "1px solid #ddd",
             },
             "& .MuiDataGrid-columnHeader": {
-              borderRight: "2px solid #ddd",
+              borderRight: "1px solid #ddd",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+            },
+            "& .MuiDataGrid-columnHeaderTitle": {
+              textAlign: "center",
+              width: "100%",
             },
           }}
-          checkboxSelection
-          disableMultipleRowSelection
-          onRowSelectionModelChange={(newSelectionModel) => {
-            // Convert Set to Array for easier handling
-            const selectedIdsArray = Array.from(newSelectionModel);
-            setSelectedIds(selectedIdsArray);
-          }}
-          getRowId={(row) => row.id}
         />
       </Box>
 

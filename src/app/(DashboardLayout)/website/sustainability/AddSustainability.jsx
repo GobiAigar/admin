@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -10,7 +11,7 @@ import {
 } from "@mui/material";
 import { Form, Formik } from "formik";
 import { useState } from "react";
-import FileUploader from "../website/FileUploader";
+import FileUploader from "../../components/website/FileUploader";
 import { Backend_Endpoint } from "@/constants/constants";
 
 const AddSustainability = () => {
@@ -25,7 +26,7 @@ const AddSustainability = () => {
     setOpen(false);
   };
   return (
-    <>
+    <Box>
       <Button variant="outlined" onClick={() => handleClickOpen(true)}>
         Нэмэх
       </Button>
@@ -99,14 +100,14 @@ const AddSustainability = () => {
                 />
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose}>Cancel</Button>
-                <Button type="submit">Нэмэх</Button>
+                <Button onClick={handleClose}>Буцах</Button>
+                <Button type="submit">Шинэчлэх</Button>
               </DialogActions>
             </Form>
           )}
         </Formik>
       </Dialog>
-    </>
+    </Box>
   );
 };
 

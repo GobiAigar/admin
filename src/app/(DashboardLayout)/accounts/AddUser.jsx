@@ -10,6 +10,7 @@ import {
   Snackbar,
   Alert,
   Dialog,
+  Box,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { Backend_Endpoint } from "@/constants/constants";
@@ -70,7 +71,7 @@ function AddUser() {
   };
 
   return (
-    <>
+    <Box>
       <Button variant="outlined" onClick={handleClickOpen}>
         {"Админ нэмэх"}
       </Button>
@@ -153,7 +154,7 @@ function AddUser() {
           Амжилттай нэмэгдлээ
         </Alert>
       </Snackbar>
-    </>
+    </Box>
   );
 }
 

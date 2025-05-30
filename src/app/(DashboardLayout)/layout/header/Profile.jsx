@@ -64,7 +64,7 @@ const Profile = () => {
             <IconUsers width={20} />
           </ListItemIcon>
           <ListItemText>
-            <Button href="/accounts">Accounts</Button>
+            <Button href="/accounts">Админууд</Button>
           </ListItemText>
         </MenuItem>
         <Box mt={1} py={1} px={2}>
@@ -76,7 +76,7 @@ const Profile = () => {
             fullWidth
             onClick={close}
           >
-            Logout
+            Системээс гарах
           </Button>
         </Box>
       </Menu>

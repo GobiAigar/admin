@@ -3,10 +3,8 @@
 import { Backend_Endpoint } from "@/constants/constants";
 import {
   Button,
-  Card,
   CardActions,
   CardHeader,
-  Divider,
   Dialog,
   DialogActions,
   Alert,
@@ -14,16 +12,16 @@ import {
   TextField,
   Grid,
   IconButton,
+  Box,
+  Card,
+  Divider,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { IconEdit } from "@tabler/icons-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import FileUploader from "../website/FileUploader";
 
 const EditStatistic = ({ data }) => {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
@@ -32,8 +30,8 @@ const EditStatistic = ({ data }) => {
   const handleCloseSnackbar = () => setOpenSnackbar(false);
 
   const validationSchema = Yup.object({
-    english: Yup.string().required("Title is required"),
-    mongolia: Yup.string().required("Гарчиг шаардлагатай"),
+    english: Yup.string().required("Шаардлагатай"),
+    mongolia: Yup.string().required("Шаардлагатай"),
   });
 
   const formik = useFormik({
@@ -45,7 +43,7 @@ const EditStatistic = ({ data }) => {
     onSubmit: async (values, { resetForm }) => {
       try {
         const response = await fetch(
-          `${Backend_Endpoint}/api/statistics/${data.id}`,
+          `${Backend_Endpoint}/api/statistics/${values.id}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -53,6 +51,7 @@ const EditStatistic = ({ data }) => {
           }
         );
 
+        const data = await response.json();
         if (response.ok) {
           setOpenSnackbar(true);
           resetForm();
@@ -67,19 +66,23 @@ const EditStatistic = ({ data }) => {
   });
 
   return (
-    <CardActions>
+    <Box>
       <IconButton onClick={handleClickOpen} color="primary">
         <IconEdit />
       </IconButton>
       <Dialog open={open} onClose={handleClose}>
-        <form onSubmit={formik.handleSubmit} style={{ width: "100%" }}>
-          <Grid container spacing={3} minWidth={500} size={12}>
-            <Card sx={{ padding: 2 }}>
+        <Grid container spacing={3} minWidth={500} size={12}>
+          <form onSubmit={formik.handleSubmit} style={{ width: "100%" }}>
+            <Card
+              sx={{
+                padding: 2,
+                display: "flex",
+                flexDirection: "column",
+                gap: "2",
+              }}
+            >
               <CardHeader title="Мэдээ засах хэсэг" />
-              <Divider />
-              <Grid container spacing={2} size={12}>
-                {/* MONGOL section */}
-
+              <Grid container sm={6} size={12} spacing={2}>
                 <TextField
                   fullWidth
                   id="english"
@@ -106,16 +109,17 @@ const EditStatistic = ({ data }) => {
                   }
                   helperText={formik.touched.mongolia && formik.errors.mongolia}
                 />
+                <Divider />
               </Grid>
+              <DialogActions>
+                <Button onClick={handleClose}>Буцах</Button>
+                <Button color="primary" variant="contained" type="submit">
+                  Шинэчлэх
+                </Button>
+              </DialogActions>
             </Card>
-          </Grid>
-          <DialogActions>
-            <Button onClick={handleClose}>Үгүй</Button>
-            <Button color="primary" variant="contained" type="submit">
-              Тийм
-            </Button>
-          </DialogActions>
-        </form>
+          </form>
+        </Grid>
 
         <Snackbar
           open={openSnackbar}
@@ -124,11 +128,11 @@ const EditStatistic = ({ data }) => {
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
           <Alert severity="success" onClose={handleCloseSnackbar}>
-            Амжилттай нэмэгдлээ
+            Амжилттай шинэчлэгдлээ!
           </Alert>
         </Snackbar>
       </Dialog>
-    </CardActions>
+    </Box>
   );
 };
 

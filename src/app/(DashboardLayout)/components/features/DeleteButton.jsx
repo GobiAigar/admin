@@ -2,15 +2,15 @@
 
 import { Backend_Endpoint } from "@/constants/constants";
 import {
+  Box,
   Button,
-  CardActions,
   Dialog,
   DialogActions,
   DialogTitle,
   IconButton,
 } from "@mui/material";
-import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import { useState } from "react";
+import { IconTrash } from "@tabler/icons-react";
 
 const DeleteButton = ({ type, id }) => {
   const [open, setOpen] = useState(false);
@@ -39,9 +39,9 @@ const DeleteButton = ({ type, id }) => {
     }
   };
   return (
-    <CardActions>
-      <IconButton onClick={handleClickOpen} color="primary">
-        <DeleteTwoToneIcon sx={{ color: "red" }} />
+    <Box>
+      <IconButton onClick={handleClickOpen}>
+        <IconTrash color="red" />
       </IconButton>
       <Dialog
         open={open}
@@ -49,17 +49,24 @@ const DeleteButton = ({ type, id }) => {
         aria-labelledby="alert-dialog-title"
       >
         <DialogTitle id="alert-dialog-title">
-          Та энэ нийтлэлийг устгахдаа итгэлтэй байна уу?
+          Та устгахдаа итгэлтэй байна уу?
         </DialogTitle>
 
-        <DialogActions>
-          <Button onClick={handleClose}>Үгүй</Button>
-          <Button onClick={submit} autoFocus>
+        <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
+          <Button onClick={handleClose} variant="text">
+            Үгүй
+          </Button>
+          <Button
+            onClick={submit}
+            autoFocus
+            variant="outlined"
+            sx={{ color: "red", borderColor: "red" }}
+          >
             Тийм
           </Button>
         </DialogActions>
       </Dialog>
-    </CardActions>
+    </Box>
   );
 };
 

@@ -1,20 +1,24 @@
 "use client";
 
 import {
+  Box,
   Button,
+  CardMedia,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  IconButton,
   TextField,
+  Typography,
 } from "@mui/material";
 import { Form, Formik } from "formik";
 import { useState } from "react";
-import FileUploader from "../website/FileUploader";
+import FileUploader from "../../components/website/FileUploader";
+import { IconEdit } from "@tabler/icons-react";
+import { Backend_Endpoint } from "@/constants/constants";
 
-const EditSustainability = ({ data, id }) => {
-  console.log(data, id);
-
+const EditSustainability = ({ data }) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -25,10 +29,10 @@ const EditSustainability = ({ data, id }) => {
     setOpen(false);
   };
   return (
-    <>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Засах
-      </Button>
+    <Box>
+      <IconButton onClick={handleClickOpen}>
+        <IconEdit variant="primary" />
+      </IconButton>
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
         <Formik
           initialValues={{
@@ -42,7 +46,7 @@ const EditSustainability = ({ data, id }) => {
           onSubmit={async (values) => {
             try {
               const response = await fetch(
-                `${Backend_Endpoint}/api/sustainability/${id[0]}`,
+                `${Backend_Endpoint}/api/sustainability/${data.id}`,
                 {
                   method: "PUT",
                   headers: { "Content-Type": "application/json" },
@@ -50,7 +54,6 @@ const EditSustainability = ({ data, id }) => {
                 }
               );
               if (response.ok) {
-                setRender(!render);
                 handleClose();
               }
             } catch (error) {
@@ -116,14 +119,14 @@ const EditSustainability = ({ data, id }) => {
                 )}
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose}>Cancel</Button>
-                <Button type="submit">Засах</Button>
+                <Button onClick={handleClose}>Буцах</Button>
+                <Button type="submit">Шинэчлэх</Button>
               </DialogActions>
             </Form>
           )}
         </Formik>
       </Dialog>
-    </>
+    </Box>
   );
 };
 

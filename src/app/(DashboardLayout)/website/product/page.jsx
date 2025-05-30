@@ -17,9 +17,9 @@ import {
   Alert,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditProduct from "../../components/features/EditProduct";
 import SeeDetailsProduct from "../../components/features/SeeDetailsProduct";
+import { IconEdit, IconEye } from "@tabler/icons-react";
 
 const Page = () => {
   const [datas, setDatas] = useState([]);
@@ -60,10 +60,30 @@ const Page = () => {
       headerAlign: "center",
       align: "center",
     },
-    { field: "entitle", headerName: "Гарчиг /Англи/", flex: 1 },
-    { field: "mntitle", headerName: "Гарчиг /Монгол/", flex: 1 },
-    { field: "mndescription", headerName: "Дэд гарчиг /Монгол/", flex: 1 },
-    { field: "endescription", headerName: "Дэд гарчиг /Англи/", flex: 1 },
+    {
+      field: "entitle",
+      headerName: "Гарчиг /Англи/",
+      flex: 1,
+      headerAlign: "center",
+    },
+    {
+      field: "mntitle",
+      headerName: "Гарчиг /Монгол/",
+      flex: 1,
+      headerAlign: "center",
+    },
+    {
+      field: "mndescription",
+      headerName: "Дэд гарчиг /Монгол/",
+      flex: 1,
+      headerAlign: "center",
+    },
+    {
+      field: "endescription",
+      headerName: "Дэд гарчиг /Англи/",
+      flex: 1,
+      headerAlign: "center",
+    },
     {
       field: "actions",
       headerName: "Үйлдэл",
@@ -76,20 +96,19 @@ const Page = () => {
           <IconButton
             onClick={() => {
               setSelecedData(params.row);
-              setEditOpen(true);
+              setViewOpen(true);
             }}
-            color="primary"
           >
-            <EditIcon />
+            <IconEye color="blue" />
           </IconButton>
           <IconButton
             onClick={() => {
               setSelecedData(params.row);
-              setViewOpen(true);
+              setEditOpen(true);
             }}
-            color="secondary"
+            color="primary"
           >
-            <VisibilityIcon />
+            <IconEdit />
           </IconButton>
         </Box>
       ),

@@ -18,6 +18,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Backend_Endpoint } from "@/constants/constants";
+import { IconEye } from "@tabler/icons-react";
 
 const columns = (setSnackbar, handleRowDelete) => [
   {
@@ -163,8 +164,8 @@ const ActionButtons = ({ row, setSnackbar, handleRowDelete }) => {
 
   return (
     <>
-      <IconButton onClick={() => setOpen(true)} color="secondary">
-        <VisibilityIcon />
+      <IconButton onClick={() => setOpen(true)} color="blue">
+        <IconEye color="blue" />
       </IconButton>
       <IconButton onClick={() => setConfirmOpen(true)} color="error">
         <DeleteIcon />

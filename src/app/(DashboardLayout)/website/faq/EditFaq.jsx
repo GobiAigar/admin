@@ -6,7 +6,6 @@ import {
   Card,
   CardActions,
   CardHeader,
-  Divider,
   Dialog,
   DialogActions,
   Alert,
@@ -14,15 +13,14 @@ import {
   TextField,
   Grid,
   IconButton,
+  Box,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { IconEdit } from "@tabler/icons-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const EditFaq = ({ data }) => {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
@@ -39,6 +37,7 @@ const EditFaq = ({ data }) => {
 
   const formik = useFormik({
     initialValues: {
+      id: data?.id,
       mnquestion: data?.mnquestion,
       mnanswer: data?.mnanswer,
       enquestion: data?.enquestion,
@@ -47,12 +46,16 @@ const EditFaq = ({ data }) => {
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
-        const response = await fetch(`${Backend_Endpoint}/api/faq/${data.id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(values),
-        });
+        const response = await fetch(
+          `${Backend_Endpoint}/api/faq/${values.id}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(values),
+          }
+        );
 
+        const data = await response.json();
         if (response.ok) {
           setOpenSnackbar(true);
           resetForm();
@@ -67,8 +70,8 @@ const EditFaq = ({ data }) => {
   });
 
   return (
-    <CardActions>
-      <IconButton onClick={handleClickOpen} color="primary">
+    <Box>
+      <IconButton onClick={handleClickOpen}>
         <IconEdit />
       </IconButton>
       <Dialog open={open} onClose={handleClose}>
@@ -76,15 +79,14 @@ const EditFaq = ({ data }) => {
           <Grid container spacing={3} minWidth={500} size={12}>
             <Card sx={{ padding: 2 }}>
               <CardHeader title="Мэдээ засах хэсэг" />
-              <Divider />
               <Grid container spacing={2} size={12}>
                 {/* MONGOL section */}
-                <Grid container item xs={12} sm={6} size={6}>
+                <Grid container item sm={6} size={12}>
                   <TextField
                     fullWidth
                     id="mnquestion"
                     name="mnquestion"
-                    label="Монгол асуулт"
+                    label="Асуулт /Монгол/"
                     value={formik.values.mnquestion}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -100,9 +102,7 @@ const EditFaq = ({ data }) => {
                     fullWidth
                     id="mnanswer"
                     name="mnanswer"
-                    label="Монгол хариулт"
-                    multiline
-                    rows={4}
+                    label="Хариулт /Монгол/"
                     value={formik.values.mnanswer}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -116,12 +116,12 @@ const EditFaq = ({ data }) => {
                 </Grid>
 
                 {/* ENGLISH section */}
-                <Grid container item xs={12} sm={6} size={6}>
+                <Grid container item sm={6} size={12}>
                   <TextField
                     fullWidth
                     id="enquestion"
                     name="enquestion"
-                    label="Question in English"
+                    label="Асуулт /Англи/"
                     value={formik.values.enquestion}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -137,9 +137,7 @@ const EditFaq = ({ data }) => {
                     fullWidth
                     id="enanswer"
                     name="enanswer"
-                    label="Answer in English"
-                    multiline
-                    rows={4}
+                    label="Хариулт /Англи/"
                     value={formik.values.enanswer}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -152,14 +150,14 @@ const EditFaq = ({ data }) => {
                   />
                 </Grid>
               </Grid>
+              <DialogActions>
+                <Button onClick={handleClose}>Буцах</Button>
+                <Button color="primary" variant="contained" type="submit">
+                  Шинэчлэх
+                </Button>
+              </DialogActions>
             </Card>
           </Grid>
-          <DialogActions>
-            <Button onClick={handleClose}>Үгүй</Button>
-            <Button color="primary" variant="contained" type="submit">
-              Тийм
-            </Button>
-          </DialogActions>
         </form>
 
         <Snackbar
@@ -169,11 +167,11 @@ const EditFaq = ({ data }) => {
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
           <Alert severity="success" onClose={handleCloseSnackbar}>
-            Амжилттай Засагдлаа!
+            Амжилттай шинэчлэгдлээ!
           </Alert>
         </Snackbar>
       </Dialog>
-    </CardActions>
+    </Box>
   );
 };
 
