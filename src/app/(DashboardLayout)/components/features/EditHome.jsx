@@ -68,7 +68,7 @@ export default function EditHome({ data, onClose, onSubmitSuccess }) {
             value={formik.values.mntitle}
           />
         </Grid>
-        {![19, 6, 5].includes(data.id) && (
+        {![19, 6, 5, 1].includes(data.id) && (
           <>
             <Grid size={{ xs: 6 }}>
               <InputLabel htmlFor="ensubtitle">Англи дэд гарчиг</InputLabel>
@@ -93,9 +93,12 @@ export default function EditHome({ data, onClose, onSubmitSuccess }) {
           </>
         )}
 
-        {(data.id === 14 || data.id === 16 ? [1, 2, 3, 4] : [1]).map((i) => {
+        {(data.id === 14 || data.id === 16 || data.id === 1
+          ? [1, 2, 3, 4]
+          : [1]
+        ).map((i) => {
           const url = formik.values[`image_url${i}`];
-          const isVideo = data.id === 19; 
+          const isVideo = data.id === 19;
           return (
             <Grid size={{ xs: 6 }} key={i}>
               <InputLabel htmlFor={`image_url${i}`}>
