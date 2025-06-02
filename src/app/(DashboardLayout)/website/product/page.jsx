@@ -74,13 +74,13 @@ const Page = () => {
     },
     {
       field: "mndescription",
-      headerName: "Дэд гарчиг /Монгол/",
+      headerName: "Тайлбар /Монгол/",
       flex: 1,
       headerAlign: "center",
     },
     {
       field: "endescription",
-      headerName: "Дэд гарчиг /Англи/",
+      headerName: "Тайлбар /Англи/",
       flex: 1,
       headerAlign: "center",
     },

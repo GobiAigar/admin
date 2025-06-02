@@ -49,17 +49,7 @@ export default function EditHome({ data, onClose, onSubmitSuccess }) {
     <form onSubmit={formik.handleSubmit}>
       <Grid container spacing={2} sx={{ margin: 2 }}>
         <Grid size={{ xs: 6 }}>
-          <InputLabel htmlFor="entitle">Англи гарчиг</InputLabel>
-          <TextField
-            fullWidth
-            id="entitle"
-            name="entitle"
-            onChange={formik.handleChange}
-            value={formik.values.entitle}
-          />
-        </Grid>
-        <Grid size={{ xs: 6 }}>
-          <InputLabel htmlFor="mntitle">Монгол гарчиг</InputLabel>
+          <InputLabel htmlFor="mntitle">Гарчиг /Монгол/</InputLabel>
           <TextField
             fullWidth
             id="mntitle"
@@ -68,26 +58,39 @@ export default function EditHome({ data, onClose, onSubmitSuccess }) {
             value={formik.values.mntitle}
           />
         </Grid>
+        <Grid size={{ xs: 6 }}>
+          <InputLabel htmlFor="entitle">Гарчиг /Англи/</InputLabel>
+          <TextField
+            fullWidth
+            id="entitle"
+            name="entitle"
+            onChange={formik.handleChange}
+            value={formik.values.entitle}
+          />
+        </Grid>
+
         {![19, 6, 5, 1].includes(data.id) && (
           <>
             <Grid size={{ xs: 6 }}>
-              <InputLabel htmlFor="ensubtitle">Англи дэд гарчиг</InputLabel>
-              <TextField
-                fullWidth
-                id="ensubtitle"
-                name="ensubtitle"
-                onChange={formik.handleChange}
-                value={formik.values.ensubtitle}
-              />
-            </Grid>
-            <Grid size={{ xs: 6 }}>
-              <InputLabel htmlFor="mnsubtitle">Монгол дэд гарчиг</InputLabel>
+              <InputLabel htmlFor="mnsubtitle">Тайлбар /Монгол/</InputLabel>
               <TextField
                 fullWidth
                 id="mnsubtitle"
                 name="mnsubtitle"
+                multiline
                 onChange={formik.handleChange}
                 value={formik.values.mnsubtitle}
+              />
+            </Grid>
+            <Grid size={{ xs: 6 }}>
+              <InputLabel htmlFor="ensubtitle">Тайлбар /Англи/</InputLabel>
+              <TextField
+                fullWidth
+                id="ensubtitle"
+                name="ensubtitle"
+                multiline
+                onChange={formik.handleChange}
+                value={formik.values.ensubtitle}
               />
             </Grid>
           </>
@@ -120,7 +123,7 @@ export default function EditHome({ data, onClose, onSubmitSuccess }) {
           Буцах
         </Button>
         <Button type="submit" variant="contained" color="primary">
-          Засах
+          Шинэчлэх
         </Button>
       </DialogActions>
     </form>

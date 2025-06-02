@@ -11,17 +11,7 @@ const HomeDetails = ({ data, isEdit }) => {
     <Box p={2}>
       <Grid container spacing={2} mb={2}>
         <Grid size={{ xs: 6 }}>
-          <InputLabel>Англи гарчиг</InputLabel>
-          <TextField
-            fullWidth
-            value={data.entitle || ""}
-            multiline
-            minRows={2}
-            disabled={!isEdit}
-          />
-        </Grid>
-        <Grid size={{ xs: 6 }}>
-          <InputLabel>Монгол гарчиг</InputLabel>
+          <InputLabel>Гарчиг /Монгол/</InputLabel>
           <TextField
             fullWidth
             value={data.mntitle || ""}
@@ -31,25 +21,40 @@ const HomeDetails = ({ data, isEdit }) => {
           />
         </Grid>
         <Grid size={{ xs: 6 }}>
-          <InputLabel>Англи дэд гарчиг</InputLabel>
+          <InputLabel>Гарчиг /Англи/</InputLabel>
           <TextField
             fullWidth
-            value={data.ensubtitle || ""}
+            value={data.entitle || ""}
             multiline
             minRows={2}
             disabled={!isEdit}
           />
         </Grid>
-        <Grid size={{ xs: 6 }}>
-          <InputLabel>Монгол дэд гарчиг</InputLabel>
-          <TextField
-            fullWidth
-            value={data.mnsubtitle || ""}
-            multiline
-            minRows={2}
-            disabled={!isEdit}
-          />
-        </Grid>
+
+        {![19, 6, 5, 1].includes(data.id) && (
+          <>
+            <Grid size={{ xs: 6 }}>
+              <InputLabel>Тайлбар /Монгол/</InputLabel>
+              <TextField
+                fullWidth
+                value={data.mnsubtitle || ""}
+                multiline
+                minRows={2}
+                disabled={!isEdit}
+              />
+            </Grid>
+            <Grid size={{ xs: 6 }}>
+              <InputLabel>Тайлбар /Англи/</InputLabel>
+              <TextField
+                fullWidth
+                value={data.ensubtitle || ""}
+                multiline
+                minRows={2}
+                disabled={!isEdit}
+              />
+            </Grid>
+          </>
+        )}
       </Grid>
 
       {imageUrls.length > 0 && (

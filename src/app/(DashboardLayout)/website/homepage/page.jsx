@@ -61,8 +61,8 @@ const Page = () => {
     },
     { field: "entitle", headerName: "Гарчиг /Англи/", flex: 1 },
     { field: "mntitle", headerName: "Гарчиг /Монгол/", flex: 1 },
-    { field: "mnsubtitle", headerName: "Дэд гарчиг /Монгол/", flex: 1 },
-    { field: "ensubtitle", headerName: "Дэд гарчиг /Англи/", flex: 1 },
+    { field: "mnsubtitle", headerName: "Тайлбар /Монгол/", flex: 1 },
+    { field: "ensubtitle", headerName: "Тайлбар /Англи/", flex: 1 },
     {
       field: "actions",
       headerName: "Үйлдэл",

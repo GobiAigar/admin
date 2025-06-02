@@ -70,7 +70,7 @@ const SeeDetailsProduct = ({ data, onClose }) => {
               {eng && (
                 <>
                   <Typography variant="subtitle2" color="textSecondary">
-                    Дэд гарчиг (Англи)
+                    Тайлбар /Англи/
                   </Typography>
                   <Typography style={{ textAlign: "justify" }}>
                     {data?.endescription}
@@ -80,7 +80,7 @@ const SeeDetailsProduct = ({ data, onClose }) => {
               {!eng && (
                 <>
                   <Typography variant="subtitle2" color="textSecondary">
-                    Дэд гарчиг (Монгол)
+                    Тайлбар /Монгол/
                   </Typography>
                   <Typography style={{ textAlign: "justify" }}>
                     {data?.mndescription}

@@ -71,6 +71,7 @@ export default function EditProduct({ data, onClose, onSubmitSuccess }) {
               fullWidth
               id="endescription"
               name="endescription"
+              multiline
               onChange={formik.handleChange}
               value={formik.values.ensubtitle}
             />
@@ -82,6 +83,7 @@ export default function EditProduct({ data, onClose, onSubmitSuccess }) {
               fullWidth
               id="mndescription"
               name="mndescription"
+              multiline
               onChange={formik.handleChange}
               value={formik.values.mnsubtitle}
             />
@@ -104,7 +106,7 @@ export default function EditProduct({ data, onClose, onSubmitSuccess }) {
             Буцах
           </Button>
           <Button type="submit" variant="contained" color="primary">
-            Засах
+            Шинэчлэх
           </Button>
         </DialogActions>
       </form>

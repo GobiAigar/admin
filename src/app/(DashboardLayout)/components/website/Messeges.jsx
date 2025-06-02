@@ -186,7 +186,7 @@ const ActionButtons = ({ row, setSnackbar, handleRowDelete }) => {
                 key === "date" ? formatDate(value) : value || "-";
 
               return (
-                <Grid item xs={12} sm={6} key={key}>
+                <Grid size={{ xs: 12, sm: 6 }} key={key}>
                   <Paper
                     elevation={2}
                     sx={{
