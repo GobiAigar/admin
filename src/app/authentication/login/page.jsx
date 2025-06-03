@@ -17,6 +17,7 @@ import {
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
 import { Backend_Endpoint } from "@/constants/constants";
 import { useRouter } from "next/navigation";
+import { Logo } from "@/app/(DashboardLayout)/layout/shared/Logo";
 
 const Login2 = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -93,16 +94,9 @@ const Login2 = () => {
                 }}
               >
                 <Box textAlign="center" mb={2}>
-                  <img
-                    src="/logo.svg"
-                    alt="Logo"
-                    style={{ width: 60, marginBottom: 8 }}
-                  />
+                  <Logo />
                   <Typography variant="h5" fontWeight={700} color="primary">
-                    Админ Нэвтрэх
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" mt={1}>
-                    Системд нэвтрэх эрхтэй хэрэглэгчийн мэдээллээ оруулна уу.
+                    Системд нэвтрэх
                   </Typography>
                 </Box>
                 <Divider sx={{ mb: 3 }} />
@@ -154,6 +148,7 @@ const Login2 = () => {
                   <Typography variant="body2">
                     Нууц үгээ мартсан уу?
                     <Link
+                      sx={{ paddingLeft: 5 }}
                       href="/authentication/forgot-password"
                       style={{ color: "#1976d2" }}
                     >

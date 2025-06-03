@@ -42,7 +42,6 @@ const Page = () => {
     fetchdata();
   }, []);
 
-  // Define columns with action column
   const columns = [
     {
       field: "ui_id",
@@ -83,8 +82,8 @@ const Page = () => {
   ];
 
   return (
-    <PageContainer title="Sustainability" description="Sustainability List">
-      <Box sx={{ height: 400, width: "100%" }}>
+    <PageContainer title="Баталгаажуулалт">
+      <Box sx={{ height: 450, width: "100%" }}>
         <Box
           sx={{
             display: "flex",
@@ -134,7 +133,6 @@ const Page = () => {
         />
       </Box>
 
-      {/* Error Alert */}
       <Snackbar
         open={!!error}
         autoHideDuration={6000}

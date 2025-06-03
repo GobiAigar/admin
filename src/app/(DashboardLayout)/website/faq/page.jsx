@@ -101,7 +101,7 @@ const Page = () => {
   }
 
   return (
-    <PageContainer title="Sustainability" description="Sustainability List">
+    <PageContainer title="Асуулт, хариулт" description="Нийтлэг асуулт">
       <Box sx={{ height: 400, width: "100%" }}>
         <Box
           sx={{

@@ -71,7 +71,7 @@ const EditFaq = ({ data }) => {
 
   return (
     <Box>
-      <IconButton onClick={handleClickOpen}>
+      <IconButton onClick={handleClickOpen} color="primary">
         <IconEdit />
       </IconButton>
       <Dialog open={open} onClose={handleClose}>

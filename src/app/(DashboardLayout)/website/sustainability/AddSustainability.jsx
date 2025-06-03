@@ -52,6 +52,7 @@ const AddSustainability = () => {
               );
               if (response.ok) {
                 handleClose();
+                window.location.reload();
               }
             } catch (error) {
               console.error("Нэмэх алдаа:", error);
@@ -101,7 +102,7 @@ const AddSustainability = () => {
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose}>Буцах</Button>
-                <Button type="submit">Шинэчлэх</Button>
+                <Button type="submit">Нэмэх</Button>
               </DialogActions>
             </Form>
           )}

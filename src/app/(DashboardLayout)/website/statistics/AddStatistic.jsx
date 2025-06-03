@@ -17,7 +17,6 @@ import {
   Box,
 } from "@mui/material";
 import React, { useState } from "react";
-import { IconEdit } from "@tabler/icons-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -49,7 +48,6 @@ const AddStatistic = () => {
         });
 
         const data = await response.json();
-        console.log(response);
         if (response.ok) {
           setOpenSnackbar(true);
           resetForm();

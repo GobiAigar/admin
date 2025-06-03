@@ -25,8 +25,8 @@ const Page = () => {
     fetchData();
   }, []);
   return (
-    <PageContainer title="Messages" description="this is Messages">
-      <DashboardCard title="Messages">
+    <PageContainer title="Шуудан">
+      <DashboardCard title="Шуудан">
         <Box>
           <Messages datas={messages} />
         </Box>

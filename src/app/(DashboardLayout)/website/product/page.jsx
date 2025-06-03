@@ -16,7 +16,6 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
 import EditProduct from "../../components/features/EditProduct";
 import SeeDetailsProduct from "../../components/features/SeeDetailsProduct";
 import { IconEdit, IconEye } from "@tabler/icons-react";
@@ -118,7 +117,7 @@ const Page = () => {
   return (
     <PageContainer title="Бүтээгдэхүүн">
       <Grid container spacing={2}>
-        <Grid size={{ xs: 12 }}>Бүтээгдэхүүн</Grid>
+        <Grid size={12}>Бүтээгдэхүүн</Grid>
 
         <Box sx={{ height: 270, width: "100%" }}>
           <DataGrid

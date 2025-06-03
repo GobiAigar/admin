@@ -95,9 +95,9 @@ const Page = () => {
   ];
 
   return (
-    <PageContainer>
+    <PageContainer title="HomePage">
       <Grid container spacing={2}>
-        <Grid size={{ xs: 12 }}>Нүүр хуудас</Grid>
+        <Grid size={12}>Нүүр хуудас</Grid>
 
         <Box sx={{ height: 700, width: "100%" }}>
           <DataGrid

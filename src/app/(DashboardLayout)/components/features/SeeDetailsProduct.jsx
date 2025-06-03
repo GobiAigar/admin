@@ -27,7 +27,7 @@ const SeeDetailsProduct = ({ data, onClose }) => {
             </Typography>
           </Grid>
           <Grid item>
-            <Button onClick={() => setEng(!eng)}>
+            <Button variant="outlined" onClick={() => setEng(!eng)}>
               {eng ? "English" : "Монгол"}
             </Button>
           </Grid>
@@ -36,7 +36,7 @@ const SeeDetailsProduct = ({ data, onClose }) => {
 
       <DialogContent dividers>
         <Grid container spacing={2}>
-          {eng && (
+          {!eng && (
             <Grid size={{ xs: 12 }}>
               <Typography variant="subtitle2" color="textSecondary">
                 Гарчиг /Англи/ :
@@ -44,7 +44,7 @@ const SeeDetailsProduct = ({ data, onClose }) => {
               <Typography variant="h6">{data?.entitle}</Typography>
             </Grid>
           )}
-          {!eng && (
+          {eng && (
             <Grid size={{ xs: 12 }}>
               <Typography variant="subtitle2" color="textSecondary">
                 Гарчиг /Монгол/
@@ -67,7 +67,7 @@ const SeeDetailsProduct = ({ data, onClose }) => {
               />
             </Grid>
             <Grid size={{ xs: 6 }}>
-              {eng && (
+              {!eng && (
                 <>
                   <Typography variant="subtitle2" color="textSecondary">
                     Тайлбар /Англи/
@@ -77,7 +77,7 @@ const SeeDetailsProduct = ({ data, onClose }) => {
                   </Typography>
                 </>
               )}
-              {!eng && (
+              {eng && (
                 <>
                   <Typography variant="subtitle2" color="textSecondary">
                     Тайлбар /Монгол/

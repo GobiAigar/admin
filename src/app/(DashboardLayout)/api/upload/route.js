@@ -20,10 +20,16 @@ export async function POST(req) {
 
   const result = await new Promise((resolve, reject) => {
     cloudinary.uploader
-      .upload_stream({ resource_type: "auto" }, (err, result) => {
-        if (err) return reject(err);
-        resolve(result);
-      })
+      .upload_stream(
+        {
+          resource_type: "auto",
+          transformation: [{ width: 500, height: 500, crop: "limit" }],
+        },
+        (err, result) => {
+          if (err) return reject(err);
+          resolve(result);
+        }
+      )
       .end(buffer);
   });
 

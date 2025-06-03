@@ -1,16 +1,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import {
-  Box,
-  Menu,
-  Button,
-  IconButton,
-  MenuItem,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
+import { Box, Menu, Button, IconButton } from "@mui/material";
 
-import { IconUser, IconUsers } from "@tabler/icons-react";
+import { IconUser } from "@tabler/icons-react";
 
 const Profile = () => {
   const [anchorEl2, setAnchorEl2] = useState(null);
@@ -59,14 +51,6 @@ const Profile = () => {
           },
         }}
       >
-        <MenuItem>
-          <ListItemIcon>
-            <IconUsers width={20} />
-          </ListItemIcon>
-          <ListItemText>
-            <Button href="/accounts">Админууд</Button>
-          </ListItemText>
-        </MenuItem>
         <Box mt={1} py={1} px={2}>
           <Button
             href="/authentication/login"
@@ -76,7 +60,7 @@ const Profile = () => {
             fullWidth
             onClick={close}
           >
-            Системээс гарах
+            Гарах
           </Button>
         </Box>
       </Menu>

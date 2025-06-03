@@ -30,8 +30,8 @@ const EditSustainability = ({ data }) => {
   };
   return (
     <Box>
-      <IconButton onClick={handleClickOpen}>
-        <IconEdit variant="primary" />
+      <IconButton onClick={handleClickOpen} color="primary">
+        <IconEdit />
       </IconButton>
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
         <Formik
@@ -55,6 +55,7 @@ const EditSustainability = ({ data }) => {
               );
               if (response.ok) {
                 handleClose();
+                window.location.reload();
               }
             } catch (error) {
               console.error("Засах алдаа:", error);

@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { Backend_Endpoint } from "@/constants/constants";
-import FileUploader from "../website/FileUploader";
 import * as Yup from "yup";
 import React, { useState } from "react";
 
@@ -73,7 +72,7 @@ function AddUser() {
   return (
     <Box>
       <Button variant="outlined" onClick={handleClickOpen}>
-        {"Админ нэмэх"}
+        {"Нэмэх"}
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <form onSubmit={formik.handleSubmit} style={{ width: "100%" }}>

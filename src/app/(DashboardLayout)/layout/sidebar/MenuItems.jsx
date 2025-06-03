@@ -1,17 +1,12 @@
 import {
   Icon360View,
-  IconAperture,
   IconCertificate,
-  IconCopy,
   IconFlagQuestion,
   IconLayoutDashboard,
-  IconLogin,
   IconMessage,
-  IconMoodHappy,
   IconNews,
-  IconPlus,
   IconTypography,
-  IconUserPlus,
+  IconUsers,
   IconWorldDollar,
 } from "@tabler/icons-react";
 
@@ -75,6 +70,12 @@ const Menuitems = [
     title: "Зурвас",
     icon: IconMessage,
     href: "/messages",
+  },
+  {
+    id: uniqueId(),
+    title: "Админууд",
+    icon: IconUsers,
+    href: "/accounts",
   },
 ];
 

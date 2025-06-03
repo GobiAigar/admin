@@ -15,8 +15,8 @@ import {
 } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import { DataGrid } from "@mui/x-data-grid";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { IconTrash } from "@tabler/icons-react";
+
 import { Backend_Endpoint } from "@/constants/constants";
 import { IconEye } from "@tabler/icons-react";
 
@@ -168,7 +168,7 @@ const ActionButtons = ({ row, setSnackbar, handleRowDelete }) => {
         <IconEye color="blue" />
       </IconButton>
       <IconButton onClick={() => setConfirmOpen(true)} color="error">
-        <DeleteIcon />
+        <IconTrash />
       </IconButton>
 
       <Dialog

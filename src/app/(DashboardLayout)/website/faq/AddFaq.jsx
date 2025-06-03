@@ -89,7 +89,7 @@ const AddFaq = () => {
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose}>Буцах</Button>
-                <Button type="submit">Шинэчлэх</Button>
+                <Button type="submit">Нэмэх</Button>
               </DialogActions>
             </Form>
           )}

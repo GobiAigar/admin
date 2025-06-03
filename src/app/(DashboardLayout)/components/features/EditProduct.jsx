@@ -12,8 +12,8 @@ export default function EditProduct({ data, onClose, onSubmitSuccess }) {
     initialValues: {
       entitle: data?.entitle,
       mntitle: data?.mntitle,
-      ensubtitle: data?.endescription,
-      mnsubtitle: data?.mndescription,
+      endescription: data?.endescription,
+      mndescription: data?.mndescription,
       image_url: data?.image_url,
     },
     enableReinitialize: true,
@@ -30,10 +30,10 @@ export default function EditProduct({ data, onClose, onSubmitSuccess }) {
           }
         );
         const updated = await response.json();
-        console.log("updated", updated);
         if (onSubmitSuccess) onSubmitSuccess();
         if (onClose) onClose();
       } catch (error) {
+        throw new Error(error);
         console.log(error);
       }
     },
@@ -72,8 +72,9 @@ export default function EditProduct({ data, onClose, onSubmitSuccess }) {
               id="endescription"
               name="endescription"
               multiline
+              minRows={4}
               onChange={formik.handleChange}
-              value={formik.values.ensubtitle}
+              value={formik.values.endescription}
             />
           </Grid>
 
@@ -84,8 +85,9 @@ export default function EditProduct({ data, onClose, onSubmitSuccess }) {
               id="mndescription"
               name="mndescription"
               multiline
+              minRows={4}
               onChange={formik.handleChange}
-              value={formik.values.mnsubtitle}
+              value={formik.values.mndescription}
             />
           </Grid>
 

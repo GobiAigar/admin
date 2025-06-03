@@ -1,12 +1,12 @@
 "use client";
 import { Grid, Box, Container } from "@mui/material";
-import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
 import SalesOverview from "@/app/(DashboardLayout)/components/dashboard/SalesOverview";
 import InformationCount from "@/app/(DashboardLayout)/components/dashboard/InformationCount";
+import PageContainer from "./components/container/PageContainer";
 
 const Dashboard = () => {
   return (
-    <Container>
+    <PageContainer title={"Хяналтын самбар"}>
       <Grid container spacing={3}>
         <Grid size={{ xs: 12 }}>
           <InformationCount />
@@ -16,7 +16,7 @@ const Dashboard = () => {
           <SalesOverview />
         </Grid>
       </Grid>
-    </Container>
+    </PageContainer>
   );
 };
 
