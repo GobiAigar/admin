@@ -37,6 +37,7 @@ const AddNews = () => {
     endescription: Yup.string().required("Description is required"),
     mndescription: Yup.string().required("Мэдээний дэлгэрэнгүй шаардлагатай"),
     image_url: Yup.string().required("Зураг шаардлагатай"),
+    thumbnail: Yup.string().required("Thumbnail шаардлагатай"),
   });
 
   const formik = useFormik({
@@ -48,6 +49,7 @@ const AddNews = () => {
       endescription: "",
       mndescription: "",
       image_url: "",
+      thumbnail: "",
     },
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
@@ -210,7 +212,10 @@ const AddNews = () => {
                   <FileUploader
                     setFieldValue={formik.setFieldValue}
                     fieldName="image_url"
-                    onClear={() => formik.setFieldValue("image_url", "")}
+                    onClear={() => {
+                      formik.setFieldValue("image_url", "");
+                      formik.setFieldValue("thumbnail", "");
+                    }}
                   />
                   {formik.touched.image_url && formik.errors.image_url && (
                     <Alert severity="error" sx={{ mt: 1 }}>

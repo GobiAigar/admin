@@ -140,7 +140,6 @@ const FileUploader = ({
     const formData = new FormData();
     formData.append("file", file);
 
-    // Simulate upload progress
     const progressInterval = setInterval(() => {
       setUploadProgress((prev) => {
         if (prev >= 90) {
@@ -156,16 +155,12 @@ const FileUploader = ({
         method: "POST",
         body: formData,
       });
+      const data = await res.json();
 
-      const text = await res.text();
-      try {
-        const data = JSON.parse(text);
-        setPreview(data.url);
-        setFieldValue(fieldName, data.url);
-        setUploadProgress(100);
-      } catch (jsonError) {
-        console.error("Failed to parse JSON:", jsonError);
-      }
+      setPreview(data.url);
+      setFieldValue(fieldName, data.url);
+      setFieldValue("thumbnail", data.thumbnail);
+      setUploadProgress(100);
     } catch (error) {
       console.error("Upload error:", error);
     } finally {
