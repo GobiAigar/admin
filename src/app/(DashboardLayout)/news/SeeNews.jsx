@@ -4,23 +4,21 @@ import Typography from "@mui/material/Typography";
 import {
   Box,
   Button,
-  CardActions,
   Container,
   Dialog,
   DialogActions,
-  DialogTitle,
   IconButton,
+  Chip,
+  Divider,
+  Fade,
 } from "@mui/material";
-import { IconEye } from "@tabler/icons-react";
+import { IconEye, IconCalendar, IconUser } from "@tabler/icons-react";
 import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import { formatDate } from "@/utils/formatDate";
 
 export default function SeeNews({ data }) {
   const [open, setOpen] = useState(false);
-  console.log(data);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -33,16 +31,23 @@ export default function SeeNews({ data }) {
   return (
     <Box>
       <IconButton onClick={handleClickOpen}>
-        <IconEye variant="primary" color="blue" />
+        <IconEye />
       </IconButton>
-      <Dialog open={open} onClose={handleClose} width={50} scroll="body">
-        <Card sx={{ maxWidth: 800 }}>
-          <DialogTitle>Мэдээ харах</DialogTitle>
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        maxWidth="md"
+        fullWidth
+        scroll="body"
+      >
+        <Card sx={{ maxWidth: "100%", boxShadow: "none" }}>
           <Box
             sx={{
               position: "relative",
               width: "100%",
-              backgroundImage: `url('${data?.image_url}')`,
+              height: 300,
+              backgroundImage: `linear-gradient(45deg, rgba(0,0,0,0.7), rgba(0,0,0,0.3)), url('${data?.image_url}')`,
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
               backgroundPosition: "center",
@@ -52,43 +57,95 @@ export default function SeeNews({ data }) {
               textAlign: "center",
             }}
           >
-            <Box
-              sx={{
-                position: "absolute",
-                inset: 0,
-                bgcolor: "rgba(0,0,0,0.5)",
-                zIndex: 1,
-              }}
-            />
-            <Container
-              maxWidth="lg"
-              sx={{ pt: 20, position: "relative", zIndex: 2 }}
-            >
+            <Container maxWidth="md" sx={{ position: "relative", zIndex: 2 }}>
               <Typography
                 variant="h3"
                 fontWeight="bold"
                 color="white"
-                sx={{ fontSize: { xs: "24px", sm: "32px", md: "48px" } }}
+                sx={{
+                  fontSize: { xs: "24px", sm: "32px", md: "40px" },
+                  textShadow: "2px 2px 4px rgba(0,0,0,0.7)",
+                  lineHeight: 1.2,
+                  mb: 2,
+                }}
               >
                 {data?.entitle}
               </Typography>
             </Container>
           </Box>
 
+          {/* Meta information */}
           <CardContent
-            sx={{ display: "flex", justifyContent: "space-between" }}
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: 2,
+              bgcolor: "grey.50",
+              borderBottom: "1px solid",
+              borderColor: "divider",
+            }}
           >
-            <Typography>{formatDate(data?.date)}</Typography>
-            <Typography>Journalist : {data?.enjournalist}</Typography>
+            <Chip
+              icon={<IconCalendar size={16} />}
+              label={formatDate(data?.date)}
+              size="small"
+              sx={{
+                bgcolor: "white",
+                bgcolor: "grey.50",
+              }}
+            />
+            <Chip
+              icon={<IconUser size={16} />}
+              label={`Journalist: ${data?.enjournalist}`}
+              size="small"
+              sx={{
+                bgcolor: "white",
+                bgcolor: "grey.50",
+              }}
+            />
           </CardContent>
 
-          <CardContent>
-            <Typography variant="body1" textAlign="justify">
+          {/* Content */}
+          <CardContent sx={{ p: 4 }}>
+            <Typography
+              variant="body1"
+              sx={{
+                textAlign: "justify",
+                lineHeight: 1.8,
+                fontSize: "1.1rem",
+                color: "text.primary",
+                "& p": {
+                  mb: 2,
+                },
+              }}
+            >
               {data?.endescription}
             </Typography>
           </CardContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Гарах</Button>
+
+          <Divider />
+
+          {/* Actions */}
+          <DialogActions sx={{ p: 3, bgcolor: "grey.50" }}>
+            <Button
+              onClick={handleClose}
+              variant="contained"
+              sx={{
+                borderRadius: 2,
+                textTransform: "none",
+                fontSize: "1rem",
+                boxShadow: 2,
+                "&:hover": {
+                  boxShadow: 4,
+                  transform: "translateY(-1px)",
+                },
+                transition: "all 0.2s ease-in-out",
+              }}
+            >
+              Гарах
+            </Button>
           </DialogActions>
         </Card>
       </Dialog>
