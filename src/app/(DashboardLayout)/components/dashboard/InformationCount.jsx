@@ -15,8 +15,11 @@ const InformationCount = () => {
     news: 0,
     messages: 0,
     totalUsers: 0,
-    week: [],
-    month: [],
+    newUsersAll: 0,
+    weekActive: 0,
+    weekNew: 0,
+    monthActive: 0,
+    monthNew: 0,
     weekCity: [],
     monthCity: [],
   });
@@ -24,28 +27,47 @@ const InformationCount = () => {
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [newsRes, msgRes, weekRes, monthRes, allUsersRes] =
-          await Promise.all([
-            fetch("https://website-z9b7.onrender.com/api/news"),
-            fetch("http://localhost:8000/api/messages"),
-            fetch("http://localhost:8000/api/analytics/views?timeframe=week"),
-            fetch("http://localhost:8000/api/analytics/views?timeframe=month"),
-            fetch("http://localhost:8000/api/analytics/views?timeframe=all"),
-          ]);
-        const [newsData, msgData, weekData, monthData, allUsersData] =
-          await Promise.all([
-            newsRes.json(),
-            msgRes.json(),
-            weekRes.json(),
-            monthRes.json(),
-            allUsersRes.json(),
-          ]);
+        const [
+          newsRes,
+          msgRes,
+          weekViewsRes,
+          monthViewsRes,
+          weekSummaryRes,
+          monthSummaryRes,
+          allSummaryRes,
+        ] = await Promise.all([
+          fetch("https://website-z9b7.onrender.com/api/news"),
+          fetch("http://localhost:8000/api/messages"),
+          fetch("http://localhost:8000/api/analytics/views?timeframe=week"),
+          fetch("http://localhost:8000/api/analytics/views?timeframe=month"),
+          fetch("http://localhost:8000/api/analytics/summary?timeframe=week"),
+          fetch("http://localhost:8000/api/analytics/summary?timeframe=month"),
+          fetch("http://localhost:8000/api/analytics/summary?timeframe=year"),
+        ]);
+
+        const [
+          newsData,
+          msgData,
+          weekViews,
+          monthViews,
+          weekSummary,
+          monthSummary,
+          allSummary,
+        ] = await Promise.all([
+          newsRes.json(),
+          msgRes.json(),
+          weekViewsRes.json(),
+          monthViewsRes.json(),
+          weekSummaryRes.json(),
+          monthSummaryRes.json(),
+          allSummaryRes.json(),
+        ]);
 
         const mapCityData = (data) => {
           const map = new Map();
           data.forEach((d) => {
-            const city = d.dimensionValues[3]?.value || "Unknown";
-            const country = d.dimensionValues[2]?.value || "Unknown";
+            const city = d.city || "Unknown";
+            const country = d.country || "Unknown";
             const key = `${city}, ${country}`;
             map.set(key, (map.get(key) || 0) + 1);
           });
@@ -55,49 +77,25 @@ const InformationCount = () => {
           }));
         };
 
-        const totalUsers = allUsersData.reduce(
-          (sum, item) => sum + Number(item.metricValues[2].value),
-          0
-        );
-
         setCounts({
           news: newsData.length,
           messages: msgData.length,
-          totalUsers,
-          week: weekData,
-          month: monthData,
-          weekCity: mapCityData(weekData),
-          monthCity: mapCityData(monthData),
+          totalUsers: allSummary.activeUsers || 0,
+          newUsersAll: allSummary.newUsers || 0,
+          weekActive: weekSummary.activeUsers || 0,
+          weekNew: weekSummary.newUsers || 0,
+          monthActive: monthSummary.activeUsers || 0,
+          monthNew: monthSummary.newUsers || 0,
+          weekCity: mapCityData(weekViews),
+          monthCity: mapCityData(monthViews),
         });
       } catch (err) {
         console.error("Алдаа:", err);
       }
     };
+
     fetchAll();
   }, []);
-
-  const getTopPathUniqueUsers = (data) => {
-    const pathUserMap = new Map();
-    data.forEach((item) => {
-      const path = item.dimensionValues[1]?.value || "unknown";
-      const userId = item.dimensionValues[0]?.value || "unknown";
-      if (!pathUserMap.has(path)) {
-        pathUserMap.set(path, new Set());
-      }
-      pathUserMap.get(path).add(userId);
-    });
-
-    let maxUnique = 0;
-    for (const userSet of pathUserMap.values()) {
-      if (userSet.size > maxUnique) {
-        maxUnique = userSet.size;
-      }
-    }
-    return maxUnique;
-  };
-
-  const getTotalNewUsers = (data) =>
-    data.reduce((s, i) => s + Number(i.metricValues[2].value), 0);
 
   const renderCard = (title, items, cityData = null) => (
     <DashboardCard
@@ -165,12 +163,12 @@ const InformationCount = () => {
               {
                 icon: IconUsers,
                 label: "Идэвхтэй хэрэглэгч",
-                value: getTopPathUniqueUsers(counts.week),
+                value: counts.weekActive,
               },
               {
                 icon: IconUserPlus,
                 label: "Шинэ хэрэглэгч",
-                value: getTotalNewUsers(counts.week),
+                value: counts.weekNew,
                 color: "#66bb6a",
               },
             ],
@@ -184,12 +182,12 @@ const InformationCount = () => {
               {
                 icon: IconUsers,
                 label: "Идэвхтэй хэрэглэгч",
-                value: getTopPathUniqueUsers(counts.month),
+                value: counts.monthActive,
               },
               {
                 icon: IconUserPlus,
                 label: "Шинэ хэрэглэгч",
-                value: getTotalNewUsers(counts.month),
+                value: counts.monthNew,
                 color: "#66bb6a",
               },
             ],

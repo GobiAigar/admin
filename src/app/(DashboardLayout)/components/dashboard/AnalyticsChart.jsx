@@ -36,38 +36,37 @@ const AnalyticsChart = () => {
   const allowedPaths = [
     { path: "/home", label: "Нүүр" },
     { path: "/product", label: "Бүтээгдэхүүн" },
-    { path: "/contact", label: "Холбоо барих" },
     { path: "/sustainability", label: "Тогтвортой байдал" },
     { path: "/news", label: "Мэдээ" },
+    { path: "/contact", label: "Холбоо барих" },
   ];
 
   const aggregatedData = allowedPaths.map(({ path, label }) => {
     const matchingRows = chartData.filter((item) => {
-      const p = item.dimensionValues.find((d) =>
-        d.value.startsWith("/")
-      )?.value;
+      const p = item.path || "";
       return p === `/en${path}` || p === `/mn${path}`;
     });
 
     const totalPageViews = matchingRows.reduce(
-      (sum, item) => sum + Number(item.metricValues[0].value),
+      (sum, item) => sum + (item.screenPageViews || 0),
       0
     );
 
-    const uniqueActiveUsers = new Set();
-    matchingRows.forEach((item) => {
-      uniqueActiveUsers.add(item.dimensionValues[1]?.value || "unknown");
-    });
+    const totalEngagedSessions = matchingRows.reduce(
+      (sum, item) => sum + (item.engagedSessions || 0),
+      0
+    );
+
     return {
       label,
       pageViews: totalPageViews,
-      activeUsers: uniqueActiveUsers.size,
+      engagedSessions: totalEngagedSessions,
     };
   });
 
   const categories = aggregatedData.map((item) => item.label);
   const pageViews = aggregatedData.map((item) => item.pageViews);
-  const activeUsers = aggregatedData.map((item) => item.activeUsers);
+  const engagedSessions = aggregatedData.map((item) => item.engagedSessions);
 
   const options = {
     chart: { id: "analytics-bar", toolbar: { show: false } },
@@ -81,11 +80,11 @@ const AnalyticsChart = () => {
 
   const series = [
     { name: "Хуудас үзэлт", data: pageViews },
-    { name: "Идэвхтэй хэрэглэгч", data: activeUsers },
+    { name: "Үйлдэл хийсэн", data: engagedSessions },
   ];
 
   return (
-    <DashboardCard title="Веб хуудасны үзэлтүүд ">
+    <DashboardCard title="Веб хуудасны үзэлтүүд">
       <Box sx={{ mb: 2 }}>
         <Select
           size="small"

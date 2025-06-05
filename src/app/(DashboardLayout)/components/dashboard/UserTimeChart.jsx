@@ -1,14 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Typography,
-  Select,
-  MenuItem,
-  Container,
-  CircularProgress,
-} from "@mui/material";
+import { Box, Typography, Select, MenuItem, Container } from "@mui/material";
 import dynamic from "next/dynamic";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
@@ -24,9 +17,10 @@ const UserTimeChart = () => {
           `http://localhost:8000/api/analytics/views?timeframe=${timeframe}`
         );
         const data = await res.json();
-        setChartData(data);
+        setChartData(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("Fetch GA Data Error:", err);
+        setChartData([]);
       }
     };
 
@@ -48,8 +42,8 @@ const UserTimeChart = () => {
   }
 
   chartData.forEach((item) => {
-    const dateHourStr = item.dimensionValues[0]?.value;
-    if (!dateHourStr) return;
+    const dateHourStr = item?.dateOrHour;
+    if (!dateHourStr || typeof dateHourStr !== "string") return;
 
     let key;
 
@@ -58,11 +52,11 @@ const UserTimeChart = () => {
       const hour = dateHourStr.slice(-2);
       key = `${hour}:00`;
     } else {
-      const day = `${dateHourStr.slice(0, 4)}-${dateHourStr.slice(
-        4,
-        6
-      )}-${dateHourStr.slice(6, 8)}`;
-      key = day;
+      const year = dateHourStr.slice(0, 4);
+      const month = dateHourStr.slice(4, 6);
+      const day = dateHourStr.slice(6, 8);
+      if (!year || !month || !day) return;
+      key = `${year}-${month}-${day}`;
     }
 
     if (!groupedData[key]) {
@@ -74,37 +68,31 @@ const UserTimeChart = () => {
       };
     }
 
-    groupedData[key].sessionDuration += Number(item.metricValues[3].value);
-    groupedData[key].bounceRate += Number(item.metricValues[4].value);
-    groupedData[key].newUsers += Number(item.metricValues[2].value);
+    groupedData[key].sessionDuration += Number(item?.avgSession || 0);
+    groupedData[key].bounceRate += Number(item?.bounceRate || 0);
+    groupedData[key].newUsers += Number(item?.newUsers || 0);
     groupedData[key].count += 1;
   });
 
   const categories =
     timeframe === "day"
       ? hoursArray
-      : Object.keys(groupedData).sort((a, b) => {
-          const dateA = new Date(a);
-          const dateB = new Date(b);
-          return dateA - dateB;
-        });
+      : Object.keys(groupedData).sort((a, b) => new Date(a) - new Date(b));
 
   const averageSessionDuration = categories.map((key) => {
     const group = groupedData[key];
-    if (!group || group.count === 0) return 0;
-    return +(group.sessionDuration / group.count / 60).toFixed(2);
+    return group?.count
+      ? +(group.sessionDuration / group.count / 60).toFixed(2)
+      : 0;
   });
 
   const averageBounceRate = categories.map((key) => {
     const group = groupedData[key];
-    if (!group || group.count === 0) return 0;
-    return +(group.bounceRate / group.count).toFixed(2);
+    return group?.count ? +(group.bounceRate / group.count).toFixed(2) : 0;
   });
 
   const totalNewUsers = categories.map((key) => {
-    const group = groupedData[key];
-    if (!group || group.count === 0) return 0;
-    return group.newUsers;
+    return groupedData[key]?.newUsers || 0;
   });
 
   const options = {
@@ -131,11 +119,8 @@ const UserTimeChart = () => {
   };
 
   const series = [
-    { name: "Дундажаар байсан хугацаа (минут)", data: averageSessionDuration },
-    {
-      name: "Үйлдэл хийгээгүй гарсан хэрэглэгчийн (%)",
-      data: averageBounceRate,
-    },
+    { name: "Дундаж хугацаа (мин)", data: averageSessionDuration },
+    { name: "Bounce Rate (%)", data: averageBounceRate },
     { name: "Шинэ хэрэглэгч", data: totalNewUsers },
   ];
 
@@ -172,7 +157,7 @@ const UserTimeChart = () => {
       <Box>
         {chartData.length === 0 ? (
           <Typography textAlign="center" mt={4} color="text.secondary">
-            Өнөөдрийн дата байхгүй байна.
+            Дата байхгүй байна.
           </Typography>
         ) : (
           <Chart options={options} series={series} type="line" height={400} />
