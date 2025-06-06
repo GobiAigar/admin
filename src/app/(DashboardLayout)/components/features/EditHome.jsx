@@ -94,12 +94,12 @@ export default function EditHome({ data, onClose, onSubmitSuccess }) {
           </>
         )}
 
-        {(data.id === 2 || data.id === 3 || data.id === 4
+        {(data.id === 2 || data.id === 3 || data.id === 8
           ? [1, 2, 3, 4]
           : [1]
         ).map((i) => {
           const url = formik.values[`image_url${i}`];
-          const isVideo = data.id === 8;
+          const isVideo = data.id === 4;
           return (
             <Grid size={{ xs: 6 }} key={i}>
               <InputLabel htmlFor={`image_url${i}`}>
