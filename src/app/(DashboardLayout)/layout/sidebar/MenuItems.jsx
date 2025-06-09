@@ -2,10 +2,11 @@ import {
   Icon360View,
   IconCertificate,
   IconFlagQuestion,
+  IconHome,
   IconLayoutDashboard,
+  IconLayoutNavbar,
   IconMessage,
   IconNews,
-  IconTypography,
   IconUsers,
   IconWorldDollar,
 } from "@tabler/icons-react";
@@ -30,8 +31,14 @@ const Menuitems = [
   },
   {
     id: uniqueId(),
+    title: "Толгой хэсэг",
+    icon: IconLayoutNavbar,
+    href: "/website/headers",
+  },
+  {
+    id: uniqueId(),
     title: "Нүүр хуудас",
-    icon: IconTypography,
+    icon: IconHome,
     href: "/website/homepage",
   },
   {

@@ -14,7 +14,7 @@ export default function EditProduct({ data, onClose, onSubmitSuccess }) {
       mntitle: data?.mntitle,
       endescription: data?.endescription,
       mndescription: data?.mndescription,
-      image_url: data?.image_url,
+      image_url1: data?.image_url1,
     },
     enableReinitialize: true,
     onSubmit: async (values) => {
@@ -97,7 +97,7 @@ export default function EditProduct({ data, onClose, onSubmitSuccess }) {
               <FileUploader
                 setFieldValue={formik.setFieldValue}
                 fieldName="image_url"
-                initialPreview={formik.values.image_url}
+                initialPreview={formik.values.image_url1}
               />
             </Grid>
           </Grid>

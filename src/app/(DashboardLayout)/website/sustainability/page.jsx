@@ -25,7 +25,9 @@ const Page = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      setDatas(data.data || []);
+      console.log(data);
+
+      setDatas(data?.response || []);
     } catch (error) {
       console.error("Failed to fetch sustainability data:", error);
       setError("Failed to load data. Please try again.");
@@ -68,13 +70,11 @@ const Page = () => {
           <Box sx={{ display: "flex" }}>
             <SeeSustainability data={rowData} onSuccess={handleRefresh} />
             <EditSustainability data={rowData} onSuccess={handleRefresh} />
-            {rowData.id !== 1 && (
-              <DeleteButton
-                type={"sustainability"}
-                id={rowData}
-                onSuccess={handleRefresh}
-              />
-            )}
+            <DeleteButton
+              type={"sustainability"}
+              id={rowData}
+              onSuccess={handleRefresh}
+            />
           </Box>
         );
       },

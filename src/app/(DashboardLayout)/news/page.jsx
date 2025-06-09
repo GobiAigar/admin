@@ -1,13 +1,12 @@
 "use client";
 
-import { Box, Snackbar, Alert, IconButton } from "@mui/material";
+import { Box, Snackbar, Alert } from "@mui/material";
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
 import { Backend_Endpoint } from "@/constants/constants";
 import { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import Loading from "../../loading";
 import DeleteButton from "../components/features/DeleteButton";
-import SeeStatistics from "../website/statistics/SeeStatistics";
 import EditNews from "./EditNews";
 import AddNews from "./AddNews";
 import SeeNews from "./SeeNews";
@@ -15,7 +14,7 @@ import SeeNews from "./SeeNews";
 const Page = () => {
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
 
   const fetchdata = async () => {
     setLoading(true);
@@ -25,10 +24,10 @@ const Page = () => {
       const data = await response.json();
       console.log(data);
 
-      setDatas(data || []);
+      setDatas(data?.data?.response || []);
     } catch (error) {
-      console.error("Failed to fetch sustainability data:", error);
-      setError("Failed to load data. Please try again.");
+      setError(error);
+      throw new Error(error.message);
     } finally {
       setLoading(false);
     }
@@ -145,7 +144,6 @@ const Page = () => {
         />
       </Box>
 
-      {/* Error Alert */}
       <Snackbar
         open={!!error}
         autoHideDuration={6000}

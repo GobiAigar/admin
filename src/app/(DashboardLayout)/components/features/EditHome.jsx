@@ -14,8 +14,8 @@ export default function EditHome({ data, onClose, onSubmitSuccess }) {
     initialValues: {
       entitle: data?.entitle || "",
       mntitle: data?.mntitle || "",
-      ensubtitle: data?.ensubtitle || "",
-      mnsubtitle: data?.mnsubtitle || "",
+      endescription: data?.endescription || "",
+      mndescription: data?.mndescription || "",
       image_url1: data?.image_url1 || "",
       image_url2: data?.image_url2 || "",
       image_url3: data?.image_url3 || "",
@@ -70,31 +70,31 @@ export default function EditHome({ data, onClose, onSubmitSuccess }) {
         {![2, 8, 9, 10].includes(data.id) && (
           <>
             <Grid size={{ xs: 6 }}>
-              <InputLabel htmlFor="mnsubtitle">Тайлбар /Монгол/</InputLabel>
+              <InputLabel htmlFor="mndescription">Тайлбар /Монгол/</InputLabel>
               <TextField
                 fullWidth
-                id="mnsubtitle"
-                name="mnsubtitle"
+                id="mndescription"
+                name="mndescription"
                 multiline
                 onChange={formik.handleChange}
-                value={formik.values.mnsubtitle}
+                value={formik.values.mndescription}
               />
             </Grid>
             <Grid size={{ xs: 6 }}>
-              <InputLabel htmlFor="ensubtitle">Тайлбар /Англи/</InputLabel>
+              <InputLabel htmlFor="endescription">Тайлбар /Англи/</InputLabel>
               <TextField
                 fullWidth
-                id="ensubtitle"
-                name="ensubtitle"
+                id="endescription"
+                name="endescription"
                 multiline
                 onChange={formik.handleChange}
-                value={formik.values.ensubtitle}
+                value={formik.values.endescription}
               />
             </Grid>
           </>
         )}
 
-        {(data.id === 2 || data.id === 3 || data.id === 8
+        {(data.id === 1 || data.id === 2 || data.id === 7
           ? [1, 2, 3, 4]
           : [1]
         ).map((i) => {

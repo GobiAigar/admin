@@ -19,11 +19,9 @@ const renderMenuItems = (items, pathDirect) => {
     const itemIcon = <Icon stroke={1.5} size="1.3rem" />;
 
     if (item.subheader) {
-      // Display Subheader
       return <Menu subHeading={item.subheader} key={item.subheader} />;
     }
 
-    //If the item has children (submenu)
     if (item.children) {
       return (
         <Submenu

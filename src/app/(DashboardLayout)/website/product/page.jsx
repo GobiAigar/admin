@@ -33,7 +33,7 @@ const Page = () => {
     try {
       const response = await fetch(`${Backend_Endpoint}/api/product`);
       const data = await response.json();
-      const newData = data?.data?.map((item, index) => ({
+      const newData = data?.data?.response?.map((item, index) => ({
         ...item,
         index: index + 1,
       }));
@@ -119,7 +119,7 @@ const Page = () => {
       <Grid container spacing={2}>
         <Grid size={12}>Бүтээгдэхүүн</Grid>
 
-        <Box sx={{ height: 270, width: "100%" }}>
+        <Box sx={{ height: 450, width: "100%" }}>
           <DataGrid
             rows={datas}
             columns={columns}

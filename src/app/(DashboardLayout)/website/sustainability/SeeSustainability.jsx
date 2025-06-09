@@ -84,7 +84,7 @@ const SeeSustainability = ({ data }) => {
                 justifyContent: "center",
               }}
             >
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <img
                   style={{ width: "100%", objectFit: "cover" }}
                   src={data?.image_url}

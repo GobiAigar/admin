@@ -186,7 +186,7 @@ const FileUploader = ({
     <Box sx={{ mb: 3, mt: 2 }}>
       {!preview && (
         <UploadArea
-          isDragActive={isDragActive}
+          data-isdragactive={isDragActive}
           onDragEnter={handleDragEnter}
           onDragLeave={handleDragLeave}
           onDragOver={handleDragOver}

@@ -33,10 +33,11 @@ const Page = () => {
     try {
       const response = await fetch(`${Backend_Endpoint}/api/website`);
       const data = await response.json();
-      const newData = data?.website?.map((item, index) => ({
+      const newData = data?.data?.response?.map((item, index) => ({
         ...item,
         index: index + 1,
       }));
+
       setDatas(newData);
       setLoading(false);
     } catch (error) {
@@ -61,8 +62,8 @@ const Page = () => {
     },
     { field: "entitle", headerName: "Гарчиг /Англи/", flex: 1 },
     { field: "mntitle", headerName: "Гарчиг /Монгол/", flex: 1 },
-    { field: "mnsubtitle", headerName: "Тайлбар /Монгол/", flex: 1 },
-    { field: "ensubtitle", headerName: "Тайлбар /Англи/", flex: 1 },
+    { field: "mndescription", headerName: "Тайлбар /Монгол/", flex: 1 },
+    { field: "endescription", headerName: "Тайлбар /Англи/", flex: 1 },
     {
       field: "actions",
       headerName: "Үйлдэл",
@@ -97,9 +98,7 @@ const Page = () => {
   return (
     <PageContainer title="HomePage">
       <Grid container spacing={2}>
-        <Grid size={12}>Нүүр хуудас</Grid>
-
-        <Box sx={{ height: 700, width: "100%" }}>
+        <Box sx={{ height: 600, width: "100%" }}>
           <DataGrid
             rows={datas}
             columns={columns}

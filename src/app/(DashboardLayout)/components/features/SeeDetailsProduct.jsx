@@ -56,7 +56,7 @@ const SeeDetailsProduct = ({ data, onClose }) => {
             <Grid size={{ xs: 6 }}>
               <Box
                 component="img"
-                src={data?.image_url}
+                src={data?.image_url1}
                 loading="lazy"
                 sx={{
                   height: "100%",
