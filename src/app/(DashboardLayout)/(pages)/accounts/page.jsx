@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import PageContainer from "../components/container/PageContainer";
-import DashboardCard from "../components/shared/DashboardCard";
+import PageContainer from "../../components/container/PageContainer";
+import DashboardCard from "../../components/shared/DashboardCard";
 import {
   Box,
   Card,
@@ -16,7 +16,7 @@ import {
 import { Backend_Endpoint } from "@/constants/constants";
 import { DataGrid } from "@mui/x-data-grid";
 import { formatDate } from "@/utils/formatDate";
-import DeleteButton from "../components/features/DeleteButton";
+import DeleteButton from "../../components/features/DeleteButton";
 import AddUser from "./AddUser";
 
 const Page = () => {

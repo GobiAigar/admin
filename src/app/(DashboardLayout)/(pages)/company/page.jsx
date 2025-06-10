@@ -1,33 +1,33 @@
 "use client";
 
-import { Box, Snackbar, Alert } from "@mui/material";
+import { Box, Snackbar, Alert, IconButton } from "@mui/material";
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
 import { Backend_Endpoint } from "@/constants/constants";
 import { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
+import DeleteButton from "../../components/features/DeleteButton";
 import Loading from "../../loading";
-import DeleteButton from "../components/features/DeleteButton";
-import EditNews from "./EditNews";
-import AddNews from "./AddNews";
-import SeeNews from "./SeeNews";
+import EditStatistic from "./EditCompany";
+import SeeStatistics from "./SeeCompany";
+import SeeCompany from "./SeeCompany";
+import EditCompany from "./EditCompany";
 
 const Page = () => {
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
 
   const fetchdata = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${Backend_Endpoint}/api/news`);
+      const response = await fetch(`${Backend_Endpoint}/api/company`);
       const data = await response.json();
-      console.log(data);
 
-      setDatas(data?.data?.response || []);
+      setDatas(data || []);
     } catch (error) {
-      setError(error);
-      throw new Error(error.message);
+      console.error("Failed to fetch sustainability data:", error);
+      setError("Failed to load data. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -49,19 +49,9 @@ const Page = () => {
       align: "center",
       headerAlign: "center",
     },
-    { field: "mntitle", headerName: "Гарчиг", flex: 1, headerAlign: "center" },
-    {
-      field: "mndescription",
-      headerName: "Тайлбар",
-      flex: 1,
-      headerAlign: "center",
-    },
-    {
-      field: "mnjournalist",
-      headerName: "Нийтлэлч",
-      flex: 1,
-      headerAlign: "center",
-    },
+    { field: "title", headerName: "гарчиг", flex: 1, headerAlign: "center" },
+    { field: "mongolia", headerName: "Монгол", flex: 1, headerAlign: "center" },
+    { field: "english", headerName: "Англи", flex: 1, headerAlign: "center" },
 
     {
       field: "action",
@@ -69,19 +59,15 @@ const Page = () => {
       headerAlign: "center",
       headerName: "Үйлдэл",
       width: 120,
+
       sortable: false,
       filterable: false,
       renderCell: (params) => {
         const rowData = params.row;
         return (
           <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <SeeNews data={rowData} onSuccess={handleRefresh} />
-            <EditNews data={rowData} onSuccess={handleRefresh} />
-            <DeleteButton
-              type={"news"}
-              id={rowData}
-              onSuccess={handleRefresh}
-            />
+            <SeeCompany data={rowData} onSuccess={handleRefresh} />
+            <EditCompany data={rowData} onSuccess={handleRefresh} />
           </Box>
         );
       },
@@ -93,8 +79,8 @@ const Page = () => {
   }
 
   return (
-    <PageContainer title="Мэдээлэл" description="Мэдээлэл">
-      <Box sx={{ height: 400, width: "flex" }}>
+    <PageContainer title="Статистик" description="Статистик">
+      <Box sx={{ height: 400, width: "100%" }}>
         <Box
           sx={{
             display: "flex",
@@ -102,9 +88,7 @@ const Page = () => {
             marginBottom: "20px",
             justifyContent: "flex-end",
           }}
-        >
-          <AddNews onSuccess={handleRefresh} />
-        </Box>
+        ></Box>
 
         <DataGrid
           rows={(datas || []).map((row, idx) => ({
@@ -115,6 +99,7 @@ const Page = () => {
           loading={loading}
           disableMultipleRowSelection
           disableAutosize
+          disableColumnResize
           getRowId={(row) => row.id}
           sx={{
             border: "2px solid #ddd",
@@ -144,6 +129,7 @@ const Page = () => {
         />
       </Box>
 
+      {/* Error Alert */}
       <Snackbar
         open={!!error}
         autoHideDuration={6000}

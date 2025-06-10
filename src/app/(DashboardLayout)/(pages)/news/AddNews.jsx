@@ -4,6 +4,8 @@ import { Backend_Endpoint } from "@/constants/constants";
 import {
   Button,
   Card,
+  CardActions,
+  CardHeader,
   Divider,
   Dialog,
   DialogActions,
@@ -13,17 +15,13 @@ import {
   Grid,
   IconButton,
   Typography,
-  Box,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { IconEdit } from "@tabler/icons-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import FileUploader from "../components/website/FileUploader";
+import FileUploader from "../../components/website/FileUploader";
 
-const EditNews = ({ data }) => {
-  const router = useRouter();
+const AddNews = () => {
   const [open, setOpen] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
@@ -44,26 +42,23 @@ const EditNews = ({ data }) => {
 
   const formik = useFormik({
     initialValues: {
-      entitle: data?.entitle,
-      mntitle: data?.mntitle,
-      enjournalist: data?.enjournalist,
-      mnjournalist: data?.mnjournalist,
-      endescription: data?.endescription,
-      mndescription: data?.mndescription,
-      image_url: data?.image_url,
-      thumbnail: data?.thumbnail,
+      entitle: "",
+      mntitle: "",
+      enjournalist: "",
+      mnjournalist: "",
+      endescription: "",
+      mndescription: "",
+      image_url: "",
+      thumbnail: "",
     },
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
-        const response = await fetch(
-          `${Backend_Endpoint}/api/news/${data.id}`,
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(values),
-          }
-        );
+        const response = await fetch(`${Backend_Endpoint}/api/news`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        });
 
         if (response.ok) {
           setOpenSnackbar(true);
@@ -79,10 +74,10 @@ const EditNews = ({ data }) => {
   });
 
   return (
-    <Box>
-      <IconButton onClick={handleClickOpen} color="primary">
-        <IconEdit />
-      </IconButton>
+    <CardActions>
+      <Button onClick={handleClickOpen} variant="outlined" color="primary">
+        Нэмэх
+      </Button>
       <Dialog open={open} onClose={handleClose} scroll="body">
         <Card sx={{ padding: 2 }}>
           <form onSubmit={formik.handleSubmit} style={{ width: "100%" }}>
@@ -233,9 +228,9 @@ const EditNews = ({ data }) => {
             <Divider />
 
             <DialogActions>
-              <Button onClick={handleClose}>Буцах</Button>
+              <Button onClick={handleClose}>Үгүй</Button>
               <Button color="primary" variant="contained" type="submit">
-                Шинэчлэх
+                Тийм
               </Button>
             </DialogActions>
           </form>
@@ -252,8 +247,8 @@ const EditNews = ({ data }) => {
           </Alert>
         </Snackbar>
       </Dialog>
-    </Box>
+    </CardActions>
   );
 };
 
-export default EditNews;
+export default AddNews;

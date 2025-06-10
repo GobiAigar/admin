@@ -46,7 +46,7 @@ const EditHeader = ({ data }) => {
           onSubmit={async (values) => {
             try {
               const response = await fetch(
-                `${Backend_Endpoint}/api/sustainability/${data.id}`,
+                `${Backend_Endpoint}/api/header/${data.id}`,
                 {
                   method: "PUT",
                   headers: { "Content-Type": "application/json" },

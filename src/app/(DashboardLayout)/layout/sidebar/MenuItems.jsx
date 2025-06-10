@@ -1,5 +1,6 @@
 import {
   Icon360View,
+  IconBuilding,
   IconCertificate,
   IconFlagQuestion,
   IconHome,
@@ -31,39 +32,45 @@ const Menuitems = [
   },
   {
     id: uniqueId(),
+    title: "Компани",
+    icon: IconBuilding,
+    href: "/company",
+  },
+  {
+    id: uniqueId(),
     title: "Толгой хэсэг",
     icon: IconLayoutNavbar,
-    href: "/website/headers",
+    href: "/headers",
   },
   {
     id: uniqueId(),
     title: "Нүүр хуудас",
     icon: IconHome,
-    href: "/website/homepage",
+    href: "/homepage",
   },
   {
     id: uniqueId(),
     title: "Бүтээгдэхүүн",
     icon: IconWorldDollar,
-    href: "/website/product",
+    href: "/product",
   },
   {
     id: uniqueId(),
     title: "Баталгаажуулалт",
     icon: IconCertificate,
-    href: "/website/sustainability",
+    href: "/sustainability",
   },
   {
     id: uniqueId(),
     title: "Aсуулт",
     icon: IconFlagQuestion,
-    href: "/website/faq",
+    href: "/faq",
   },
   {
     id: uniqueId(),
     title: "Статистик",
     icon: Icon360View,
-    href: "/website/statistics",
+    href: "/statistics",
   },
   {
     id: uniqueId(),

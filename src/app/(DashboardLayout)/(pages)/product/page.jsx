@@ -60,6 +60,12 @@ const Page = () => {
       align: "center",
     },
     {
+      field: "title",
+      headerName: "Нэр",
+      flex: 1,
+      headerAlign: "center",
+    },
+    {
       field: "entitle",
       headerName: "Гарчиг /Англи/",
       flex: 1,

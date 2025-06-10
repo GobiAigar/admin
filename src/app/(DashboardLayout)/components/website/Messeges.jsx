@@ -31,42 +31,32 @@ const columns = (setSnackbar, handleRowDelete) => [
   {
     field: "purpose",
     headerName: "Зорилго",
-    width: 100,
+    flex: 1,
     align: "center",
     headerAlign: "center",
   },
-  {
-    field: "lastname",
-    headerName: "Овог",
-    width: 120,
-    align: "center",
-    headerAlign: "center",
-  },
+
   {
     field: "firstname",
     headerName: "Нэр",
-    width: 120,
+    flex: 1,
+
     align: "center",
     headerAlign: "center",
   },
   {
     field: "email",
     headerName: "И-мэйл",
-    width: 160,
-    align: "center",
-    headerAlign: "center",
-  },
-  {
-    field: "phonenumber",
-    headerName: "Утасны дугаар",
     flex: 1,
+
     align: "center",
     headerAlign: "center",
   },
   {
     field: "date",
     headerName: "Огноо",
-    width: 180,
+    flex: 1,
+
     align: "center",
     headerAlign: "center",
     valueGetter: (params) => {
@@ -139,15 +129,8 @@ const ActionButtons = ({ row, setSnackbar, handleRowDelete }) => {
   const fieldNames = {
     purpose: "Зорилго",
     firstname: "Нэр",
-    lastname: "Овог",
     email: "Цахим хаяг",
-    phonenumber: "Утасны дугаар",
-    date: "Илгээсэн огноо",
-    bussiness: "Бизнес",
     plan: "Төлөвлөгөө",
-    city: "Хот",
-    state: "Дүүрэг",
-    country: "Улс",
   };
 
   const formatDate = (dateStr) => {
@@ -186,7 +169,7 @@ const ActionButtons = ({ row, setSnackbar, handleRowDelete }) => {
                 key === "date" ? formatDate(value) : value || "-";
 
               return (
-                <Grid size={{ xs: 12, sm: 6 }} key={key}>
+                <Grid size={{ xs: 12, sm: 12 }} key={key}>
                   <Paper
                     elevation={2}
                     sx={{

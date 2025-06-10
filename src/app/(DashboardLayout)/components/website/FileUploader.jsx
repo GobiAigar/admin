@@ -156,13 +156,14 @@ const FileUploader = ({
         body: formData,
       });
       const data = await res.json();
+      console.log(data);
 
       setPreview(data.url);
       setFieldValue(fieldName, data.url);
       setFieldValue("thumbnail", data.thumbnail);
       setUploadProgress(100);
     } catch (error) {
-      console.error("Upload error:", error);
+      throw new Error(error.message);
     } finally {
       clearInterval(progressInterval);
       setTimeout(() => {
@@ -249,7 +250,7 @@ const FileUploader = ({
               }}
             />
             <Typography variant="caption" color="text.secondary" sx={{ mt: 1 }}>
-              {Math.round(uploadProgress)}% дууссан
+              {Math.round(uploadProgress)}%
             </Typography>
           </Box>
         </Fade>
