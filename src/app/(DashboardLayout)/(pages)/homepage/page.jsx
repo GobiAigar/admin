@@ -60,10 +60,9 @@ const Page = () => {
       headerAlign: "center",
       align: "center",
     },
+    { field: "title", headerName: "Хэсгийн нэр", flex: 1 },
     { field: "entitle", headerName: "Гарчиг /Англи/", flex: 1 },
     { field: "mntitle", headerName: "Гарчиг /Монгол/", flex: 1 },
-    { field: "mndescription", headerName: "Тайлбар /Монгол/", flex: 1 },
-    { field: "endescription", headerName: "Тайлбар /Англи/", flex: 1 },
     {
       field: "actions",
       headerName: "Үйлдэл",
