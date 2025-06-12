@@ -86,55 +86,42 @@ const EditNews = ({ data }) => {
       <Dialog open={open} onClose={handleClose} scroll="body">
         <Card sx={{ padding: 2 }}>
           <form onSubmit={formik.handleSubmit} style={{ width: "100%" }}>
-            <Grid container spacing={3} minWidth={500} size={12}>
-              <Grid
-                size={12}
-                sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-              >
+            <Grid container spacing={3}>
+              <Grid item size={12}>
                 <Typography variant="h4">Мэдээ засах</Typography>
-                <Divider />
+                <Divider sx={{ mt: 2 }} />
               </Grid>
 
               <Grid container spacing={2} size={12}>
-                {/* MONGOL section */}
-                <Grid container item size={12} spacing={2}>
-                  <Grid item size={6}>
-                    <TextField
-                      fullWidth
-                      id="mntitle"
-                      name="mntitle"
-                      label="Гарчиг /Монгол/"
-                      value={formik.values.mntitle}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      error={
-                        formik.touched.mntitle && Boolean(formik.errors.mntitle)
-                      }
-                      helperText={
-                        formik.touched.mntitle && formik.errors.mntitle
-                      }
-                    />
-                  </Grid>
-                  <Grid item size={6}>
-                    <TextField
-                      fullWidth
-                      id="mnjournalist"
-                      name="mnjournalist"
-                      label="Нийтлэлч /Монгол/"
-                      value={formik.values.mnjournalist}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      error={
-                        formik.touched.mnjournalist &&
-                        Boolean(formik.errors.mnjournalist)
-                      }
-                      helperText={
-                        formik.touched.mnjournalist &&
-                        formik.errors.mnjournalist
-                      }
-                    />
-                  </Grid>
-                </Grid>
+                <TextField
+                  fullWidth
+                  id="mntitle"
+                  name="mntitle"
+                  label="Гарчиг /Монгол/"
+                  value={formik.values.mntitle}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.mntitle && Boolean(formik.errors.mntitle)
+                  }
+                  helperText={formik.touched.mntitle && formik.errors.mntitle}
+                />
+                <TextField
+                  fullWidth
+                  id="mnjournalist"
+                  name="mnjournalist"
+                  label="Нийтлэлч /Монгол/"
+                  value={formik.values.mnjournalist}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.mnjournalist &&
+                    Boolean(formik.errors.mnjournalist)
+                  }
+                  helperText={
+                    formik.touched.mnjournalist && formik.errors.mnjournalist
+                  }
+                />
 
                 <TextField
                   fullWidth
@@ -155,42 +142,35 @@ const EditNews = ({ data }) => {
                   }
                 />
                 <Grid container item size={12}>
-                  <Grid item size={6}>
-                    <TextField
-                      fullWidth
-                      id="entitle"
-                      name="entitle"
-                      label="Гарчиг /Англи/"
-                      value={formik.values.entitle}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      error={
-                        formik.touched.entitle && Boolean(formik.errors.entitle)
-                      }
-                      helperText={
-                        formik.touched.entitle && formik.errors.entitle
-                      }
-                    />
-                  </Grid>
-                  <Grid item size={6}>
-                    <TextField
-                      fullWidth
-                      id="enjournalist"
-                      name="enjournalist"
-                      label="Нийтлэлч /Англи/"
-                      value={formik.values.enjournalist}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      error={
-                        formik.touched.enjournalist &&
-                        Boolean(formik.errors.enjournalist)
-                      }
-                      helperText={
-                        formik.touched.enjournalist &&
-                        formik.errors.enjournalist
-                      }
-                    />
-                  </Grid>
+                  <TextField
+                    fullWidth
+                    id="entitle"
+                    name="entitle"
+                    label="Гарчиг /Англи/"
+                    value={formik.values.entitle}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.entitle && Boolean(formik.errors.entitle)
+                    }
+                    helperText={formik.touched.entitle && formik.errors.entitle}
+                  />
+                  <TextField
+                    fullWidth
+                    id="enjournalist"
+                    name="enjournalist"
+                    label="Нийтлэлч /Англи/"
+                    value={formik.values.enjournalist}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.enjournalist &&
+                      Boolean(formik.errors.enjournalist)
+                    }
+                    helperText={
+                      formik.touched.enjournalist && formik.errors.enjournalist
+                    }
+                  />
                   <TextField
                     fullWidth
                     id="endescription"
@@ -211,23 +191,20 @@ const EditNews = ({ data }) => {
                     }
                   />
                 </Grid>
-                {/* ENGLISH section */}
 
-                <Grid item xs={12}>
-                  <FileUploader
-                    setFieldValue={formik.setFieldValue}
-                    fieldName="image_url"
-                    onClear={() => {
-                      formik.setFieldValue("image_url", "");
-                      formik.setFieldValue("thumbnail", "");
-                    }}
-                  />
-                  {formik.touched.image_url && formik.errors.image_url && (
-                    <Alert severity="error" sx={{ mt: 1 }}>
-                      {formik.errors.image_url}
-                    </Alert>
-                  )}
-                </Grid>
+                <FileUploader
+                  setFieldValue={formik.setFieldValue}
+                  fieldName="image_url"
+                  onClear={() => {
+                    formik.setFieldValue("image_url", "");
+                    formik.setFieldValue("thumbnail", "");
+                  }}
+                />
+                {formik.touched.image_url && formik.errors.image_url && (
+                  <Alert severity="error" sx={{ mt: 1 }}>
+                    {formik.errors.image_url}
+                  </Alert>
+                )}
               </Grid>
             </Grid>
             <Divider />

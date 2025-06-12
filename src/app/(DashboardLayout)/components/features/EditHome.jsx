@@ -67,7 +67,7 @@ export default function EditHome({ data, onClose, onSubmitSuccess }) {
           />
         </Grid>
 
-        {![2, 8, 9, 10].includes(data.id) && (
+        {![6, 7, 8, 9].includes(data.id) && (
           <>
             <Grid size={{ xs: 6 }}>
               <InputLabel htmlFor="mndescription">Тайлбар /Монгол/</InputLabel>
