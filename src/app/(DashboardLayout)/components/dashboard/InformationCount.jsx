@@ -36,7 +36,7 @@ const InformationCount = () => {
           monthSummaryRes,
           allSummaryRes,
         ] = await Promise.all([
-          fetch("https://website-z9b7.onrender.com/api/news"),
+          fetch("http://localhost:8000/api/news"),
           fetch("http://localhost:8000/api/messages"),
           fetch("http://localhost:8000/api/analytics/views?timeframe=week"),
           fetch("http://localhost:8000/api/analytics/views?timeframe=month"),
@@ -78,7 +78,7 @@ const InformationCount = () => {
         };
 
         setCounts({
-          news: newsData.length,
+          news: newsData?.data?.response?.length,
           messages: msgData.length,
           totalUsers: allSummary.activeUsers || 0,
           newUsersAll: allSummary.newUsers || 0,

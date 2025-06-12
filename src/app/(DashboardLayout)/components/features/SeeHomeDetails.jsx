@@ -1,83 +1,234 @@
-import { Grid, InputLabel, TextField, Divider, Box } from "@mui/material";
+"use client";
 
-const HomeDetails = ({ data, isEdit }) => {
+import { Grid, Typography, Box, Button } from "@mui/material";
+import { useState } from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+const HomeDetails = ({ data }) => {
+  const [eng, setEng] = useState(false);
+
   if (!data) return null;
 
   const imageUrls = [1, 2, 3, 4]
     .map((i) => data[`image_url${i}`])
     .filter((url) => !!url);
 
+  const renderMedia = (src) => {
+    const isVideo = /\.(mp4|webm|ogg)(\?.*)?$/i.test(src);
+    const commonSx = {
+      width: "100%",
+      maxHeight: "24rem",
+      borderRadius: 2,
+      boxShadow: 2,
+      objectFit: "cover",
+    };
+
+    if (isVideo) {
+      return (
+        <Box
+          component="video"
+          src={src}
+          controls
+          playsInline
+          muted
+          sx={commonSx}
+        />
+      );
+    }
+
+    return (
+      <Box component="img" src={src} alt="media" loading="lazy" sx={commonSx} />
+    );
+  };
   return (
     <Box p={2}>
-      <Grid container spacing={2} mb={2}>
-        <Grid size={{ xs: 6 }}>
-          <InputLabel>Гарчиг /Монгол/</InputLabel>
-          <TextField
-            fullWidth
-            value={data.mntitle || ""}
-            multiline
-            minRows={2}
-            disabled={!isEdit}
-          />
-        </Grid>
-        <Grid size={{ xs: 6 }}>
-          <InputLabel>Гарчиг /Англи/</InputLabel>
-          <TextField
-            fullWidth
-            value={data.entitle || ""}
-            multiline
-            minRows={2}
-            disabled={!isEdit}
-          />
-        </Grid>
-
-        {![19, 6, 5, 1].includes(data.id) && (
-          <>
-            <Grid size={{ xs: 6 }}>
-              <InputLabel>Тайлбар /Монгол/</InputLabel>
-              <TextField
-                fullWidth
-                value={data.mnsubtitle || ""}
-                multiline
-                minRows={2}
-                disabled={!isEdit}
-              />
+      <Box display="flex" justifyContent="flex-end" alignItems="center" mb={2}>
+        <Button variant="outlined" onClick={() => setEng(!eng)}>
+          {eng ? "Монгол" : "English"}
+        </Button>
+      </Box>
+      {(data.id === 1 || data.id === 5) && (
+        <Grid container spacing={2} alignItems="flex-start">
+          {imageUrls.length > 0 && (
+            <Grid size={{ xs: 12, md: 6 }}>
+              {imageUrls.length === 1 ? (
+                renderMedia(imageUrls[0])
+              ) : (
+                <Slider
+                  dots
+                  arrows={false}
+                  infinite
+                  autoplay
+                  autoplaySpeed={4000}
+                  speed={600}
+                  slidesToShow={1}
+                  slidesToScroll={1}
+                >
+                  {imageUrls.map((url, i) => (
+                    <Box key={i}>{renderMedia(url)}</Box>
+                  ))}
+                </Slider>
+              )}
             </Grid>
-            <Grid size={{ xs: 6 }}>
-              <InputLabel>Тайлбар /Англи/</InputLabel>
-              <TextField
-                fullWidth
-                value={data.ensubtitle || ""}
-                multiline
-                minRows={2}
-                disabled={!isEdit}
-              />
-            </Grid>
-          </>
-        )}
-      </Grid>
+          )}
 
-      {imageUrls.length > 0 && (
-        <>
-          <Divider sx={{ my: 2 }} />
-          <Grid container spacing={2}>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Typography fontWeight={600} fontSize="18px" sx={{ mb: 1 }}>
+              {eng ? data.entitle || "No Title" : data.mntitle || "Гарчиг алга"}
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ textAlign: "justify", whiteSpace: "pre-line" }}
+            >
+              {eng ? data.mndescription : data.endescription}
+            </Typography>
+          </Grid>
+        </Grid>
+      )}
+
+      {(data.id === 2 || data.id === 3 || data.id === 4) && (
+        <Grid container justifyContent="center" textAlign="center">
+          <Grid size={{ xs: 12, md: 6 }}>
+            {imageUrls[0] && (
+              <Box
+                component="img"
+                src={imageUrls[0]}
+                alt="icon"
+                loading="lazy"
+                sx={{
+                  width: "64px",
+                  height: "64px",
+                  mb: 2,
+                  mx: "auto",
+                }}
+              />
+            )}
+            <Typography fontWeight={600} fontSize="18px" sx={{ mb: 1 }}>
+              {eng ? data.entitle || "No Title" : data.mntitle || "Гарчиг алга"}
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                textAlign: "center",
+                whiteSpace: "pre-line",
+                color: "text.secondary",
+              }}
+            >
+              {eng ? data.endescription : data.mndescription}
+            </Typography>
+          </Grid>
+        </Grid>
+      )}
+      {data.id === 6 && (
+        <Box>
+          <Typography
+            variant="h6"
+            fontWeight={700}
+            align="center"
+            gutterBottom
+            sx={{ mb: 3 }}
+          >
+            {eng ? data.entitle || "No Title" : data.mntitle || "Гарчиг алга"}
+          </Typography>
+
+          <Grid container spacing={0.3} justifyContent="center">
             {imageUrls.map((url, index) => (
-              <Grid size={{ xs: imageUrls.length === 1 ? 12 : 6 }} key={index}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
                 <Box
                   component="img"
                   src={url}
-                  alt={`Image ${index + 1}`}
+                  alt={`Color image ${index + 1}`}
                   loading="lazy"
                   sx={{
                     width: "100%",
-                    borderRadius: 2,
+                    aspectRatio: "4/3",
+                    objectFit: "cover",
                     boxShadow: 2,
+                    objectFit: "cover",
                   }}
                 />
               </Grid>
             ))}
           </Grid>
-        </>
+        </Box>
+      )}
+      {data.id === 7 && (
+        <Box>
+          <Typography
+            variant="h6"
+            fontWeight={700}
+            align="start"
+            gutterBottom
+            sx={{ mb: 3 }}
+          >
+            {eng ? data.entitle || "No Title" : data.mntitle || "Гарчиг алга"}
+          </Typography>
+
+          {imageUrls[0] && (
+            <Box
+              component="img"
+              src={imageUrls[0]}
+              alt="Supply Chain Diagram"
+              loading="lazy"
+              sx={{
+                display: "block",
+                mx: "auto",
+                width: "100%",
+                maxWidth: "1000px",
+                height: "auto",
+                borderRadius: 2,
+                boxShadow: 2,
+              }}
+            />
+          )}
+
+          {data.endescription && data.mndescription && (
+            <Typography
+              variant="body2"
+              sx={{
+                mt: 3,
+                textAlign: "center",
+                whiteSpace: "pre-line",
+                color: "text.secondary",
+              }}
+            >
+              {eng ? data.endescription : data.mndescription}
+            </Typography>
+          )}
+        </Box>
+      )}
+      {(data.id === 9 || data.id === 8) && (
+        <Box>
+          <Typography
+            variant="h6"
+            fontWeight={700}
+            align="center"
+            gutterBottom
+            sx={{ mb: 3 }}
+          >
+            {eng ? data.entitle || "No Title" : data.mntitle || "Гарчиг алга"}
+          </Typography>
+
+          {imageUrls[0] && (
+            <Box
+              component="img"
+              src={imageUrls[0]}
+              alt="Main image"
+              loading="lazy"
+              sx={{
+                display: "block",
+                mx: "auto",
+                width: "100%",
+                maxWidth: "900px",
+                height: "auto",
+                borderRadius: 2,
+                boxShadow: 2,
+              }}
+            />
+          )}
+        </Box>
       )}
     </Box>
   );

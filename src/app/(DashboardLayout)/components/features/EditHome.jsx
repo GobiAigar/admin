@@ -45,7 +45,7 @@ export default function EditHome({ data, onClose, onSubmitSuccess }) {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Grid container spacing={2} sx={{ margin: 2 }}>
+      <Grid container spacing={2} sx={{ margin: 2, overflow: "hidden" }}>
         <Grid size={{ xs: 6 }}>
           <InputLabel htmlFor="mntitle">Гарчиг /Монгол/</InputLabel>
           <TextField
@@ -94,7 +94,9 @@ export default function EditHome({ data, onClose, onSubmitSuccess }) {
           </>
         )}
 
-        {(data.id === 1 || data.id === 2 || data.id === 7
+        {(data.id === 1
+          ? [1]
+          : [5, 6].includes(data.id)
           ? [1, 2, 3, 4]
           : [1]
         ).map((i) => {

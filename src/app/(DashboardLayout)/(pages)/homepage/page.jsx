@@ -152,19 +152,18 @@ const Page = () => {
           fullWidth
         >
           <DialogTitle>Засах</DialogTitle>
-          <DialogContent>
-            {selectedData && (
-              <EditHome
-                data={selectedData}
-                onClose={() => setEditOpen(false)}
-                onSubmitSuccess={() => {
-                  setEditOpen(false);
-                  fetchdata();
-                  setSuccessOpen(true);
-                }}
-              />
-            )}
-          </DialogContent>
+
+          {selectedData && (
+            <EditHome
+              data={selectedData}
+              onClose={() => setEditOpen(false)}
+              onSubmitSuccess={() => {
+                setEditOpen(false);
+                fetchdata();
+                setSuccessOpen(true);
+              }}
+            />
+          )}
         </Dialog>
       </Grid>
 
