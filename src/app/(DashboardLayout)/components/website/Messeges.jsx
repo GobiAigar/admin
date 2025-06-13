@@ -221,8 +221,8 @@ const ActionButtons = ({ row, setSnackbar, handleRowDelete }) => {
         <DialogTitle>Устгах</DialogTitle>
         <DialogContent>
           <Typography>
-            Та "{row.lastname} овогтой {row.firstname}" хэрэглэгчийн зурвасыг
-            устгахдаа итгэлтэй байна уу?
+            Та "{row.firstname}" хэрэглэгчийн зурвасыг устгахдаа итгэлтэй байна
+            уу?
           </Typography>
         </DialogContent>
         <DialogActions>
