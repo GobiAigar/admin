@@ -24,7 +24,7 @@ const AnalyticsChart = () => {
           `http://localhost:8000/api/analytics/views?timeframe=${timeframe}`
         );
         const data = await res.json();
-        setChartData(data);
+        setChartData(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("Fetch GA Data Error:", err);
       }
