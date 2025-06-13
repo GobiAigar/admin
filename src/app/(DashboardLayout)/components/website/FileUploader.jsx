@@ -156,7 +156,6 @@ const FileUploader = ({
         body: formData,
       });
       const data = await res.json();
-      console.log(data);
 
       setPreview(data.url);
       setFieldValue(fieldName, data.url);
