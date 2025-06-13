@@ -11,7 +11,6 @@ import {
   Snackbar,
   TextField,
   Grid,
-  IconButton,
   Card,
   Divider,
   Box,
@@ -84,6 +83,7 @@ const AddStatistic = () => {
                   id="english"
                   name="english"
                   label="Англи"
+                  multiline
                   value={formik.values.english}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
@@ -97,6 +97,7 @@ const AddStatistic = () => {
                   id="mongolia"
                   name="mongolia"
                   label="Монгол"
+                  multiline
                   value={formik.values.mongolia}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}

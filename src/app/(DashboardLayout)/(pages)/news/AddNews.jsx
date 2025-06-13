@@ -79,19 +79,15 @@ const AddNews = () => {
       <Dialog open={open} onClose={handleClose} scroll="body">
         <Card sx={{ padding: 2 }}>
           <form onSubmit={formik.handleSubmit} style={{ width: "100%" }}>
-            <Grid container spacing={3} minWidth={500} size={12}>
-              <Grid
-                size={12}
-                sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-              >
-                <Typography variant="h4">Мэдээ засах</Typography>
-                <Divider />
+            <Grid container spacing={3}>
+              <Grid item size={12}>
+                <Typography variant="h4">Мэдээ нэмэх</Typography>
+                <Divider sx={{ mt: 2 }} />
               </Grid>
 
-              <Grid container spacing={2} size={12}>
-                {/* MONGOL section */}
-                <Grid container item size={12} spacing={2}>
-                  <Grid item size={6}>
+              <Grid item size={12}>
+                <Grid container spacing={2}>
+                  <Grid item size={12} sm={6}>
                     <TextField
                       fullWidth
                       id="mntitle"
@@ -108,7 +104,7 @@ const AddNews = () => {
                       }
                     />
                   </Grid>
-                  <Grid item size={6}>
+                  <Grid item size={12} sm={6}>
                     <TextField
                       fullWidth
                       id="mnjournalist"
@@ -127,28 +123,34 @@ const AddNews = () => {
                       }
                     />
                   </Grid>
+                  <Grid item size={12}>
+                    <TextField
+                      fullWidth
+                      id="mndescription"
+                      name="mndescription"
+                      label="Мэдээний дэлгэрэнгүй /Монгол/"
+                      multiline
+                      minRows={4}
+                      value={formik.values.mndescription}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={
+                        formik.touched.mndescription &&
+                        Boolean(formik.errors.mndescription)
+                      }
+                      helperText={
+                        formik.touched.mndescription &&
+                        formik.errors.mndescription
+                      }
+                    />
+                  </Grid>
                 </Grid>
+              </Grid>
 
-                <TextField
-                  fullWidth
-                  id="mndescription"
-                  name="mndescription"
-                  label="Мэдээний дэлгэрэнгүй /Монгол/"
-                  multiline
-                  minRows={4}
-                  value={formik.values.mndescription}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={
-                    formik.touched.mndescription &&
-                    Boolean(formik.errors.mndescription)
-                  }
-                  helperText={
-                    formik.touched.mndescription && formik.errors.mndescription
-                  }
-                />
-                <Grid container item size={12}>
-                  <Grid item size={6}>
+              {/* English Section */}
+              <Grid item size={12}>
+                <Grid container spacing={2}>
+                  <Grid item size={12} sm={6}>
                     <TextField
                       fullWidth
                       id="entitle"
@@ -165,7 +167,7 @@ const AddNews = () => {
                       }
                     />
                   </Grid>
-                  <Grid item size={6}>
+                  <Grid item size={12} sm={6}>
                     <TextField
                       fullWidth
                       id="enjournalist"
@@ -184,46 +186,51 @@ const AddNews = () => {
                       }
                     />
                   </Grid>
-                  <TextField
-                    fullWidth
-                    id="endescription"
-                    name="endescription"
-                    label="Мэдээний дэлгэрэнгүй /Англи/"
-                    multiline
-                    minRows={4}
-                    value={formik.values.endescription}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={
-                      formik.touched.endescription &&
-                      Boolean(formik.errors.endescription)
-                    }
-                    helperText={
-                      formik.touched.endescription &&
-                      formik.errors.endescription
-                    }
-                  />
-                </Grid>
-                {/* ENGLISH section */}
-
-                <Grid item xs={12}>
-                  <FileUploader
-                    setFieldValue={formik.setFieldValue}
-                    fieldName="image_url"
-                    onClear={() => {
-                      formik.setFieldValue("image_url", "");
-                      formik.setFieldValue("thumbnail", "");
-                    }}
-                  />
-                  {formik.touched.image_url && formik.errors.image_url && (
-                    <Alert severity="error" sx={{ mt: 1 }}>
-                      {formik.errors.image_url}
-                    </Alert>
-                  )}
+                  <Grid item size={12}>
+                    <TextField
+                      fullWidth
+                      id="endescription"
+                      name="endescription"
+                      label="Мэдээний дэлгэрэнгүй /Англи/"
+                      multiline
+                      minRows={4}
+                      value={formik.values.endescription}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={
+                        formik.touched.endescription &&
+                        Boolean(formik.errors.endescription)
+                      }
+                      helperText={
+                        formik.touched.endescription &&
+                        formik.errors.endescription
+                      }
+                    />
+                  </Grid>
                 </Grid>
               </Grid>
+
+              {/* File Upload Section */}
+
+              <FileUploader
+                setFieldValue={formik.setFieldValue}
+                fieldName="image_url"
+                onClear={() => {
+                  formik.setFieldValue("image_url", "");
+                  formik.setFieldValue("thumbnail", "");
+                }}
+              />
+              {formik.touched.image_url && formik.errors.image_url && (
+                <Alert severity="error" sx={{ mt: 1 }}>
+                  {formik.errors.image_url}
+                </Alert>
+              )}
             </Grid>
-            <Divider />
+
+            {/* Divider */}
+            <Grid item size={12}>
+              <Divider />
+            </Grid>
 
             <DialogActions>
               <Button onClick={handleClose}>Үгүй</Button>
@@ -241,7 +248,7 @@ const AddNews = () => {
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
           <Alert severity="success" onClose={handleCloseSnackbar}>
-            Амжилттай шинэчлэгдлээ!
+            Амжилттай Нэмэгдлээ!
           </Alert>
         </Snackbar>
       </Dialog>

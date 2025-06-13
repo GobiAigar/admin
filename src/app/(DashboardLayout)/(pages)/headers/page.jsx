@@ -145,7 +145,7 @@ const Page = () => {
 
   return (
     <PageContainer title="Баталгаажуулалт">
-      <Box sx={{ height: 500, width: "100%" }}>
+      <Box sx={{ height: 380, width: "100%" }}>
         <Box
           sx={{
             display: "flex",
@@ -173,7 +173,6 @@ const Page = () => {
                 paginationModel: { page: 0, pageSize: 10 },
               },
             }}
-            pageSizeOptions={[5, 10, 25, 50]}
             sx={{
               border: "2px solid #e0e0e0",
               borderRadius: 2,

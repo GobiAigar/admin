@@ -98,6 +98,15 @@ const Page = () => {
     <PageContainer title="HomePage">
       <Grid container spacing={2}>
         <Box sx={{ height: 600, width: "100%" }}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              marginBottom: 3,
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          ></Box>
           <DataGrid
             rows={datas}
             columns={columns}

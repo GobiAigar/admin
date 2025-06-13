@@ -78,7 +78,7 @@ const EditFaq = ({ data }) => {
         <form onSubmit={formik.handleSubmit} style={{ width: "100%" }}>
           <Grid container spacing={3} minWidth={500} size={12}>
             <Card sx={{ padding: 2 }}>
-              <CardHeader title="Мэдээ засах хэсэг" />
+              <CardHeader title="Түгээмэл асуулт хариулт засах хэсэг" />
               <Grid container spacing={2} size={12}>
                 {/* MONGOL section */}
                 <Grid container item sm={6} size={12}>
@@ -87,6 +87,7 @@ const EditFaq = ({ data }) => {
                     id="mnquestion"
                     name="mnquestion"
                     label="Асуулт /Монгол/"
+                    multiline
                     value={formik.values.mnquestion}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -103,6 +104,7 @@ const EditFaq = ({ data }) => {
                     id="mnanswer"
                     name="mnanswer"
                     label="Хариулт /Монгол/"
+                    multiline
                     value={formik.values.mnanswer}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -122,6 +124,7 @@ const EditFaq = ({ data }) => {
                     id="enquestion"
                     name="enquestion"
                     label="Асуулт /Англи/"
+                    multiline
                     value={formik.values.enquestion}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -138,6 +141,7 @@ const EditFaq = ({ data }) => {
                     id="enanswer"
                     name="enanswer"
                     label="Хариулт /Англи/"
+                    multiline
                     value={formik.values.enanswer}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}

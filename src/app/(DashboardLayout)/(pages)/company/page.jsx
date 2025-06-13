@@ -49,7 +49,7 @@ const Page = () => {
       align: "center",
       headerAlign: "center",
     },
-    { field: "title", headerName: "гарчиг", flex: 1, headerAlign: "center" },
+    { field: "title", headerName: "Гарчиг", flex: 1, headerAlign: "center" },
     { field: "mongolia", headerName: "Монгол", flex: 1, headerAlign: "center" },
     { field: "english", headerName: "Англи", flex: 1, headerAlign: "center" },
 
@@ -80,7 +80,7 @@ const Page = () => {
 
   return (
     <PageContainer title="Статистик" description="Статистик">
-      <Box sx={{ height: 400, width: "100%" }}>
+      <Box sx={{ height: 650, width: "100%" }}>
         <Box
           sx={{
             display: "flex",

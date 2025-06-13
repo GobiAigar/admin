@@ -26,11 +26,18 @@ const Page = () => {
   }, []);
   return (
     <PageContainer title="Шуудан">
-      <DashboardCard title="Шуудан">
-        <Box>
-          <Messages datas={messages} />
-        </Box>
-      </DashboardCard>
+      <Box
+        sx={{
+          display: "flex",
+          gap: 2,
+          marginBottom: 3,
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      ></Box>
+      <Box>
+        <Messages datas={messages} />
+      </Box>
     </PageContainer>
   );
 };

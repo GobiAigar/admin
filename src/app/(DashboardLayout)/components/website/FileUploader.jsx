@@ -183,134 +183,143 @@ const FileUploader = ({
   const IconComponent = isVideo ? VideoFileIcon : ImageIcon;
 
   return (
-    <Box sx={{ mb: 3, mt: 2 }}>
-      {!preview && (
-        <UploadArea
-          data-isdragactive={isDragActive}
-          onDragEnter={handleDragEnter}
-          onDragLeave={handleDragLeave}
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-          onClick={() => fileInputRef.current?.click()}
-        >
-          <IconComponent sx={{ fontSize: 48, color: "primary.main", mb: 2 }} />
-          <Typography variant="h6" gutterBottom color="primary">
-            {isVideo ? "Видео оруулах" : "Зураг оруулах"}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            Файлыг энд чирж оруулах эсвэл товчлуурыг дарна уу
-          </Typography>
-          <Button
-            variant="contained"
-            startIcon={<CloudUploadIcon />}
-            disabled={loading}
-            sx={{
-              borderRadius: 3,
-              px: 4,
-              py: 1.5,
-              background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
-              boxShadow: "0 3px 5px 2px rgba(33, 203, 243, .3)",
-              "&:hover": {
-                background: "linear-gradient(45deg, #1976D2 30%, #0288D1 90%)",
-              },
-            }}
+    <Box sx={{ width: "100%", mb: 3, mt: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        {!preview && (
+          <UploadArea
+            data-isdragactive={isDragActive}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+            onClick={() => fileInputRef.current?.click()}
           >
-            Файл сонгох
-          </Button>
-          <VisuallyHiddenInput
-            type="file"
-            onChange={handleUpload}
-            accept={isVideo ? "video/*" : "image/*,.svg"}
-            ref={fileInputRef}
-          />
-        </UploadArea>
-      )}
-
-      {loading && (
-        <Fade in={loading}>
-          <Box sx={{ mt: 3 }}>
-            <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-              <CircularProgress size={24} sx={{ mr: 2 }} />
-              <Typography variant="body2" color="text.secondary">
-                Файл байршуулж байна...
-              </Typography>
-            </Box>
-            <LinearProgress
-              variant="determinate"
-              value={uploadProgress}
+            <IconComponent
+              sx={{ fontSize: 48, color: "primary.main", mb: 2 }}
+            />
+            <Typography variant="h6" gutterBottom color="primary">
+              {isVideo ? "Видео оруулах" : "Зураг оруулах"}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              Файлыг энд чирж оруулах эсвэл товчлуурыг дарна уу
+            </Typography>
+            <Button
+              variant="contained"
+              startIcon={<CloudUploadIcon />}
+              disabled={loading}
               sx={{
-                height: 8,
-                borderRadius: 4,
-                backgroundColor: "rgba(0, 0, 0, 0.1)",
-                "& .MuiLinearProgress-bar": {
-                  borderRadius: 4,
-                  background: "linear-gradient(90deg, #2196F3, #21CBF3)",
+                borderRadius: 3,
+                px: 4,
+                py: 1.5,
+                background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+                boxShadow: "0 3px 5px 2px rgba(33, 203, 243, .3)",
+                "&:hover": {
+                  background:
+                    "linear-gradient(45deg, #1976D2 30%, #0288D1 90%)",
                 },
               }}
+            >
+              Файл сонгох
+            </Button>
+            <VisuallyHiddenInput
+              type="file"
+              onChange={handleUpload}
+              accept={isVideo ? "video/*" : "image/*,.svg"}
+              ref={fileInputRef}
             />
-            <Typography variant="caption" color="text.secondary" sx={{ mt: 1 }}>
-              {Math.round(uploadProgress)}%
-            </Typography>
-          </Box>
-        </Fade>
-      )}
+          </UploadArea>
+        )}
 
-      {preview && !loading && (
-        <Grow in={!!preview} timeout={600}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <StyledCard sx={{ maxWidth: 600, width: "100%" }}>
-              <Box sx={{ position: "relative" }}>
-                {isVideo ? (
-                  <CardMedia
-                    component="video"
-                    height="300"
-                    src={preview}
-                    controls
-                    sx={{ borderRadius: "inherit" }}
-                  />
-                ) : (
-                  <CardMedia
-                    component="img"
-                    height="200"
-                    image={preview}
-                    alt="Uploaded"
-                    sx={{ borderRadius: "inherit" }}
-                  />
-                )}
-                <OverlayBox>
-                  <IconButton
-                    size="small"
-                    onClick={handleClear}
-                    sx={{
-                      color: "white",
-                      "&:hover": {
-                        backgroundColor: "rgba(255, 255, 255, 0.2)",
-                      },
-                    }}
-                  >
-                    <ClearIcon />
-                  </IconButton>
-                </OverlayBox>
-              </Box>
-              <CardContent>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  align="center"
-                >
-                  {"Байршуулсан зураг"}
+        {loading && (
+          <Fade in={loading}>
+            <Box sx={{ mt: 3 }}>
+              <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                <CircularProgress size={24} sx={{ mr: 2 }} />
+                <Typography variant="body2" color="text.secondary">
+                  Файл байршуулж байна...
                 </Typography>
-              </CardContent>
-            </StyledCard>
-          </Box>
-        </Grow>
-      )}
+              </Box>
+              <LinearProgress
+                variant="determinate"
+                value={uploadProgress}
+                sx={{
+                  height: 8,
+                  borderRadius: 4,
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                  "& .MuiLinearProgress-bar": {
+                    borderRadius: 4,
+                    background: "linear-gradient(90deg, #2196F3, #21CBF3)",
+                  },
+                }}
+              />
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ mt: 1 }}
+              >
+                {Math.round(uploadProgress)}%
+              </Typography>
+            </Box>
+          </Fade>
+        )}
+
+        {preview && !loading && (
+          <Grow in={!!preview} timeout={600}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <StyledCard sx={{ maxWidth: 600, width: "100%" }}>
+                <Box sx={{ position: "relative" }}>
+                  {isVideo ? (
+                    <CardMedia
+                      component="video"
+                      height="300"
+                      src={preview}
+                      controls
+                      sx={{ borderRadius: "inherit" }}
+                    />
+                  ) : (
+                    <CardMedia
+                      component="img"
+                      height="200"
+                      image={preview}
+                      alt="Uploaded"
+                      sx={{ borderRadius: "inherit" }}
+                    />
+                  )}
+                  <OverlayBox>
+                    <IconButton
+                      size="small"
+                      onClick={handleClear}
+                      sx={{
+                        color: "white",
+                        "&:hover": {
+                          backgroundColor: "rgba(255, 255, 255, 0.2)",
+                        },
+                      }}
+                    >
+                      <ClearIcon />
+                    </IconButton>
+                  </OverlayBox>
+                </Box>
+                <CardContent>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    align="center"
+                  >
+                    {"Байршуулсан зураг"}
+                  </Typography>
+                </CardContent>
+              </StyledCard>
+            </Box>
+          </Grow>
+        )}
+      </Box>
     </Box>
   );
 };

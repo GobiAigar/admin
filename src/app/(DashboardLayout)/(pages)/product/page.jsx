@@ -123,8 +123,15 @@ const Page = () => {
   return (
     <PageContainer title="Бүтээгдэхүүн">
       <Grid container spacing={2}>
-        <Grid size={12}>Бүтээгдэхүүн</Grid>
-
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2,
+            marginBottom: 3,
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        ></Box>
         <Box sx={{ height: 450, width: "100%" }}>
           <DataGrid
             rows={datas}
