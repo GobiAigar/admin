@@ -8,12 +8,13 @@ import {
   IconButton,
   Badge,
   Button,
+  Typography,
 } from "@mui/material";
 import PropTypes from "prop-types";
-import Link from "next/link";
 // components
 import Profile from "./Profile";
-import { IconBellRinging, IconMenu } from "@tabler/icons-react";
+import { IconMenu } from "@tabler/icons-react";
+import { usePathname } from "next/navigation";
 
 const Header = ({ toggleMobileSidebar }) => {
   // const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
@@ -34,6 +35,8 @@ const Header = ({ toggleMobileSidebar }) => {
     color: theme.palette.text.secondary,
   }));
 
+  const path = usePathname();
+
   return (
     <AppBarStyled position="sticky" color="default">
       <ToolbarStyled>
@@ -51,10 +54,53 @@ const Header = ({ toggleMobileSidebar }) => {
           <IconMenu width="20" height="20" />
         </IconButton>
 
-        <Box flexGrow={1} />
-        <Stack spacing={1} direction="row" alignItems="center">
-          <Profile />
-        </Stack>
+        <Box
+          width={"100%"}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Stack>
+            <Typography variant="h5">
+              {path == "/" && "Хяналтын самбар"}
+            </Typography>
+            <Typography variant="h5">
+              {path == "/accounts" && "Админууд"}
+            </Typography>
+            <Typography variant="h5">
+              {path == "/company" && "Компаний мэдээлэл"}
+            </Typography>
+            <Typography variant="h5">
+              {path == "/faq" && "Түгээмэл асуулт, хариулт"}
+            </Typography>
+            <Typography variant="h5">
+              {path == "/headers" && "Толгой хэсэг"}
+            </Typography>
+            <Typography variant="h5">
+              {path == "/homepage" && "Нүүр хуудас"}
+            </Typography>
+            <Typography variant="h5">
+              {path == "/messages" && "Зурвас"}
+            </Typography>
+            <Typography variant="h5">
+              {path == "/news" && "Мэдээлэлийн хуудас"}
+            </Typography>
+            <Typography variant="h5">
+              {path == "/product" && "Бүтээгдэхүүн хуудас"}
+            </Typography>
+            <Typography variant="h5">
+              {path == "/statistics" && "Статистик, судалгаа"}
+            </Typography>
+            <Typography variant="h5">
+              {path == "/sustainability" && "Батламж, Гэрчилгээ"}
+            </Typography>
+          </Stack>
+          <Stack spacing={1} direction="row" alignItems="center">
+            <Profile />
+          </Stack>
+        </Box>
       </ToolbarStyled>
     </AppBarStyled>
   );

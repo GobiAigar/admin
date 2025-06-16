@@ -26,7 +26,7 @@ export async function POST(req) {
             resource_type: "auto",
             eager: [
               {
-                width: 300, 
+                width: 300,
                 height: 300,
                 crop: "fill",
                 quality: "auto",
@@ -41,10 +41,9 @@ export async function POST(req) {
         .end(buffer);
     });
 
-
     return NextResponse.json({
       url: result.secure_url,
-      thumbnail: result.eager?.[0]?.secure_url || result.secure_url, 
+      thumbnail: result.eager?.[0]?.secure_url || result.secure_url,
     });
   } catch (err) {
     console.error("Cloudinary upload error:", err);

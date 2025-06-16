@@ -35,6 +35,7 @@ const MSidebar = ({ isMobileSidebarOpen, onSidebarClose, isSidebarOpen }) => {
           slotProps={{
             paper: {
               sx: {
+                bgcolor: "#edeff2",
                 boxSizing: "border-box",
                 ...scrollbarStyles,
                 width: sidebarWidth,

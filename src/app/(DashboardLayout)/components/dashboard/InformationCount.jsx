@@ -9,6 +9,7 @@ import {
   IconMessage,
 } from "@tabler/icons-react";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
+import { Backend_Endpoint } from "@/constants/constants";
 
 const InformationCount = () => {
   const [counts, setCounts] = useState({
@@ -36,13 +37,13 @@ const InformationCount = () => {
           monthSummaryRes,
           allSummaryRes,
         ] = await Promise.all([
-          fetch("http://localhost:8000/api/news"),
-          fetch("http://localhost:8000/api/messages"),
-          fetch("http://localhost:8000/api/analytics/views?timeframe=week"),
-          fetch("http://localhost:8000/api/analytics/views?timeframe=month"),
-          fetch("http://localhost:8000/api/analytics/summary?timeframe=week"),
-          fetch("http://localhost:8000/api/analytics/summary?timeframe=month"),
-          fetch("http://localhost:8000/api/analytics/summary?timeframe=year"),
+          fetch(`${Backend_Endpoint}/api/news`),
+          fetch(`${Backend_Endpoint}/api/messages`),
+          fetch(`${Backend_Endpoint}/api/analytics/views?timeframe=week`),
+          fetch(`${Backend_Endpoint}/api/analytics/views?timeframe=month`),
+          fetch(`${Backend_Endpoint}/api/analytics/summary?timeframe=week`),
+          fetch(`${Backend_Endpoint}/api/analytics/summary?timeframe=month`),
+          fetch(`${Backend_Endpoint}/api/analytics/summary?timeframe=year`),
         ]);
 
         const [

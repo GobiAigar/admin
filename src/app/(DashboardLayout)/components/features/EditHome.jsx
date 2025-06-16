@@ -107,12 +107,23 @@ export default function EditHome({ data, onClose, onSubmitSuccess }) {
               <InputLabel htmlFor={`image_url${i}`}>
                 {isVideo ? `Видео ${i}` : `Зураг ${i}`}
               </InputLabel>
-              <FileUploader
-                setFieldValue={formik.setFieldValue}
-                fieldName={`image_url${i}`}
-                initialPreview={url}
-                type={isVideo ? "video" : "image"}
-              />
+              {isVideo ? (
+                <TextField
+                  fullWidth
+                  id="image_url1"
+                  name="image_url1"
+                  multiline
+                  onChange={formik.handleChange}
+                  value={formik.values.image_url1}
+                />
+              ) : (
+                <FileUploader
+                  setFieldValue={formik.setFieldValue}
+                  fieldName={`image_url${i}`}
+                  initialPreview={url}
+                  type={"image"}
+                />
+              )}
             </Grid>
           );
         })}

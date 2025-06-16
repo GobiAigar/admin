@@ -109,61 +109,59 @@ const Page = () => {
 
   return (
     <PageContainer title="Админууд">
-      <DashboardCard>
-        <Box sx={{ height: "100vh", width: "100%" }}>
-          <Box
-            sx={{
-              width: "full",
-              display: "flex",
-              gap: 2,
-              marginBottom: 3,
-              justifyContent: "end",
-              alignItems: "center",
-            }}
-          >
-            <AddUser />
-          </Box>
-          <DataGrid
-            rows={processedRows}
-            columns={columns}
-            getRowId={(row) => row.id}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
-              },
-            }}
-            disableMultipleRowSelection
-            pageSizeOptions={[5]}
-            sx={{
-              border: "2px solid #ddd",
-              borderRadius: 2,
-              "& .MuiDataGrid-cell": {
-                borderRight: "1px solid #ddd",
-              },
-              "& .MuiDataGrid-row": {
-                borderBottom: "1px solid #ddd",
-              },
-              "& .MuiDataGrid-columnHeaders": {
-                borderBottom: "1px solid #ddd",
-              },
-              "& .MuiDataGrid-columnHeader": {
-                borderRight: "1px solid #ddd",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                textAlign: "center",
-              },
-              "& .MuiDataGrid-columnHeaderTitle": {
-                textAlign: "center",
-                width: "100%",
-                fontWeight: "bold",
-              },
-            }}
-          />
+      <Box sx={{ height: "100vh", width: "100%" }}>
+        <Box
+          sx={{
+            width: "full",
+            display: "flex",
+            gap: 2,
+            marginBottom: 3,
+            justifyContent: "end",
+            alignItems: "center",
+          }}
+        >
+          <AddUser />
         </Box>
-      </DashboardCard>
+        <DataGrid
+          rows={processedRows}
+          columns={columns}
+          getRowId={(row) => row.id}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
+              },
+            },
+          }}
+          disableMultipleRowSelection
+          pageSizeOptions={[5]}
+          sx={{
+            border: "2px solid #ddd",
+            borderRadius: 2,
+            "& .MuiDataGrid-cell": {
+              borderRight: "1px solid #ddd",
+            },
+            "& .MuiDataGrid-row": {
+              borderBottom: "1px solid #ddd",
+            },
+            "& .MuiDataGrid-columnHeaders": {
+              borderBottom: "1px solid #ddd",
+            },
+            "& .MuiDataGrid-columnHeader": {
+              borderRight: "1px solid #ddd",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+            },
+            "& .MuiDataGrid-columnHeaderTitle": {
+              textAlign: "center",
+              width: "100%",
+              fontWeight: "bold",
+            },
+          }}
+        />
+      </Box>
     </PageContainer>
   );
 };

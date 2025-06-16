@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import dynamic from "next/dynamic";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
+import { Backend_Endpoint } from "@/constants/constants";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -21,7 +22,7 @@ const AnalyticsChart = () => {
     const fetchAnalytics = async () => {
       try {
         const res = await fetch(
-          `http://localhost:8000/api/analytics/views?timeframe=${timeframe}`
+          `${Backend_Endpoint}/api/analytics/views?timeframe=${timeframe}`
         );
         const data = await res.json();
         setChartData(data);

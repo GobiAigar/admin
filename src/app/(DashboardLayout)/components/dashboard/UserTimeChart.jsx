@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography, Select, MenuItem, Container } from "@mui/material";
 import dynamic from "next/dynamic";
+import { Backend_Endpoint } from "@/constants/constants";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -14,7 +15,7 @@ const UserTimeChart = () => {
     const fetchAnalytics = async () => {
       try {
         const res = await fetch(
-          `http://localhost:8000/api/analytics/views?timeframe=${timeframe}`
+          `${Backend_Endpoint}/api/analytics/views?timeframe=${timeframe}`
         );
         const data = await res.json();
         setChartData(Array.isArray(data) ? data : []);
