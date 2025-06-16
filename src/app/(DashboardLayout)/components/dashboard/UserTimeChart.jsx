@@ -111,17 +111,26 @@ const UserTimeChart = () => {
     markers: { size: 4 },
     yaxis: {
       title: { text: "Үзүүлэлтүүдийн утга" },
-      labels: { formatter: (val) => +val.toFixed(2) },
+      labels: {
+        formatter: (val) =>
+          typeof val === "number" && !isNaN(val) ? +val.toFixed(2) : 0,
+      },
     },
     tooltip: {
-      y: { formatter: (val) => +val.toFixed(2) },
+      y: {
+        formatter: (val) =>
+          typeof val === "number" && !isNaN(val) ? +val.toFixed(2) : 0,
+      },
     },
     legend: { position: "top" },
   };
 
   const series = [
     { name: "Дундаж хугацаа (мин)", data: averageSessionDuration },
-    { name: "Bounce Rate (%)", data: averageBounceRate },
+    {
+      name: "Үйлдэл хийгээгүй гарсан хэрэглэгчийн (%)",
+      data: averageBounceRate,
+    },
     { name: "Шинэ хэрэглэгч", data: totalNewUsers },
   ];
 

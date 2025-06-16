@@ -19,14 +19,14 @@ import { formatDate } from "@/utils/formatDate";
 
 export default function SeeNews({ data }) {
   const [open, setOpen] = useState(false);
+  const [lang, setLang] = useState("en");
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const title = lang === "en" ? data?.entitle : data?.mntitle;
+  const description = lang === "en" ? data?.endescription : data?.mndescription;
+  const journalist = lang === "en" ? data?.enjournalist : data?.mnjournalist;
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   return (
     <Box>
@@ -69,12 +69,20 @@ export default function SeeNews({ data }) {
                   mb: 2,
                 }}
               >
-                {data?.entitle}
+                {title}
               </Typography>
             </Container>
           </Box>
-
-          {/* Meta information */}
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => setLang(lang === "en" ? "mn" : "en")}
+              sx={{ ml: "auto", mr: 2, mt: 2 }}
+            >
+              {lang === "en" ? "Монгол" : "English"}
+            </Button>
+          </Box>
           <CardContent
             sx={{
               display: "flex",
@@ -91,23 +99,16 @@ export default function SeeNews({ data }) {
               icon={<IconCalendar size={16} />}
               label={formatDate(data?.date)}
               size="small"
-              sx={{
-                bgcolor: "white",
-                bgcolor: "grey.50",
-              }}
+              sx={{ bgcolor: "grey.50" }}
             />
             <Chip
               icon={<IconUser size={16} />}
-              label={`Journalist: ${data?.enjournalist}`}
+              label={`Сэтгүүлч: ${journalist}`}
               size="small"
-              sx={{
-                bgcolor: "white",
-                bgcolor: "grey.50",
-              }}
+              sx={{ bgcolor: "grey.50" }}
             />
           </CardContent>
 
-          {/* Content */}
           <CardContent sx={{ p: 4 }}>
             <Typography
               variant="body1"
@@ -116,18 +117,15 @@ export default function SeeNews({ data }) {
                 lineHeight: 1.8,
                 fontSize: "1.1rem",
                 color: "text.primary",
-                "& p": {
-                  mb: 2,
-                },
+                whiteSpace: "pre-line",
               }}
             >
-              {data?.endescription}
+              {description}
             </Typography>
           </CardContent>
 
           <Divider />
 
-          {/* Actions */}
           <DialogActions sx={{ p: 3, bgcolor: "grey.50" }}>
             <Button
               onClick={handleClose}
