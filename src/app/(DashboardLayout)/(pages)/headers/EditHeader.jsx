@@ -40,7 +40,7 @@ const EditHeader = ({ data }) => {
             mntitle: data?.mntitle || "",
             ensubtitle: data?.ensubtitle || "",
             mnsubtitle: data?.mnsubtitle || "",
-            image_url1: data?.image_url1 || "",
+            image_url: data?.image_url || "",
           }}
           enableReinitialize={true}
           onSubmit={async (values) => {
