@@ -15,9 +15,9 @@ import {
   Typography,
 } from "@mui/material";
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
-import { Backend_Endpoint } from "@/constants/constants";
 import { useRouter } from "next/navigation";
 import { Logo } from "@/app/(DashboardLayout)/layout/shared/Logo";
+import { Backend_Endpoint } from "@/constants/constants";
 
 const Login2 = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -95,9 +95,6 @@ const Login2 = () => {
               >
                 <Box textAlign="center" mb={2}>
                   <Logo />
-                  <Typography variant="h5" fontWeight={700} color="primary">
-                    Системд нэвтрэх
-                  </Typography>
                 </Box>
                 <Divider sx={{ mb: 3 }} />
                 <TextField
