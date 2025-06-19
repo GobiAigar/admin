@@ -132,7 +132,7 @@ const Page = () => {
             alignItems: "center",
           }}
         ></Box>
-        <Box sx={{ height: 450, width: "100%" }}>
+        <Box sx={{ height: "auto", width: "100%" }}>
           <DataGrid
             rows={datas}
             columns={columns}

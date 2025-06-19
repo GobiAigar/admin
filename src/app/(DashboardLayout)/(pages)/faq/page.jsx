@@ -24,7 +24,6 @@ const Page = () => {
       const response = await fetch(`${Backend_Endpoint}/api/faq`);
 
       const data = await response.json();
-      console.log(data);
 
       setDatas(data || []);
     } catch (error) {
@@ -102,7 +101,7 @@ const Page = () => {
 
   return (
     <PageContainer title="Асуулт, хариулт" description="Нийтлэг асуулт">
-      <Box sx={{ height: 600, width: "100%" }}>
+      <Box sx={{ height: "auto", width: "100%" }}>
         <Box
           sx={{
             display: "flex",

@@ -270,7 +270,7 @@ const Messeges = ({ datas }) => {
   };
 
   return (
-    <Box sx={{ height: 450, position: "relative" }}>
+    <Box sx={{ height: "auto", position: "relative" }}>
       <Snackbar
         open={snackbar.open}
         autoHideDuration={3000}

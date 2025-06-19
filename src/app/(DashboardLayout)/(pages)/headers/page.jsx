@@ -29,7 +29,6 @@ const Page = () => {
       }
 
       const data = await response.json();
-      console.log(data?.response);
       setDatas(data?.response);
     } catch (error) {
       console.error("Failed to fetch sustainability data:", error);
@@ -145,7 +144,7 @@ const Page = () => {
 
   return (
     <PageContainer title="Баталгаажуулалт">
-      <Box sx={{ height: 380, width: "100%" }}>
+      <Box sx={{ height: "auto", width: "100%" }}>
         <Box
           sx={{
             display: "flex",

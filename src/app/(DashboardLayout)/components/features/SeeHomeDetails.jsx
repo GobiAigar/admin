@@ -49,46 +49,54 @@ const HomeDetails = ({ data }) => {
           {eng ? "Монгол" : "English"}
         </Button>
       </Box>
-      {(data.id === 1 || data.id === 5) && (
-        <Grid container spacing={2} alignItems="flex-start">
-          {imageUrls.length > 0 && (
-            <Grid size={{ xs: 12, md: 6 }}>
-              {imageUrls.length === 1 ? (
-                renderMedia(imageUrls[0])
-              ) : (
-                <Slider
-                  dots
-                  arrows={false}
-                  infinite
-                  autoplay
-                  autoplaySpeed={4000}
-                  speed={600}
-                  slidesToShow={1}
-                  slidesToScroll={1}
-                >
-                  {imageUrls.map((url, i) => (
-                    <Box key={i}>{renderMedia(url)}</Box>
-                  ))}
-                </Slider>
-              )}
-            </Grid>
-          )}
-
-          <Grid size={{ xs: 12, md: 6 }}>
-            <Typography fontWeight={600} fontSize="18px" sx={{ mb: 1 }}>
+      {data.id === 2 && (
+        <Box>
+          <Box sx={{ marginBottom: 3 }}>
+            <Typography
+              variant="h6"
+              fontWeight={700}
+              align="center"
+              gutterBottom
+              sx={{ mb: 3 }}
+            >
               {eng ? data.entitle || "No Title" : data.mntitle || "Гарчиг алга"}
             </Typography>
             <Typography
-              variant="body2"
-              sx={{ textAlign: "justify", whiteSpace: "pre-line" }}
+              variant="body"
+              fontWeight={300}
+              align="center"
+              gutterBottom
+              sx={{ mb: 3 }}
             >
-              {eng ? data.mndescription : data.endescription}
+              {eng
+                ? data.endescription || "No Title"
+                : data.mndescription || "Гарчиг алга"}
             </Typography>
+          </Box>
+
+          <Grid container spacing={0.3} justifyContent="center">
+            {imageUrls.map((url, index) => (
+              <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
+                <Box
+                  component="img"
+                  src={url}
+                  alt={`Color image ${index + 1}`}
+                  loading="lazy"
+                  sx={{
+                    width: "100%",
+                    aspectRatio: "4/3",
+                    objectFit: "cover",
+                    boxShadow: 2,
+                    objectFit: "cover",
+                  }}
+                />
+              </Grid>
+            ))}
           </Grid>
-        </Grid>
+        </Box>
       )}
 
-      {(data.id === 2 || data.id === 3 || data.id === 4) && (
+      {(data.id === 3 || data.id === 4 || data.id === 5) && (
         <Grid container justifyContent="center" textAlign="center">
           <Grid size={{ xs: 12, md: 6 }}>
             {imageUrls[0] && (
@@ -123,15 +131,28 @@ const HomeDetails = ({ data }) => {
       )}
       {data.id === 6 && (
         <Box>
-          <Typography
-            variant="h6"
-            fontWeight={700}
-            align="center"
-            gutterBottom
-            sx={{ mb: 3 }}
-          >
-            {eng ? data.entitle || "No Title" : data.mntitle || "Гарчиг алга"}
-          </Typography>
+          <Box sx={{ marginBottom: 3 }}>
+            <Typography
+              variant="h6"
+              fontWeight={700}
+              align="center"
+              gutterBottom
+              sx={{ mb: 3 }}
+            >
+              {eng ? data.entitle || "No Title" : data.mntitle || "Гарчиг алга"}
+            </Typography>
+            <Typography
+              variant="body"
+              fontWeight={300}
+              align="center"
+              gutterBottom
+              sx={{ mb: 3 }}
+            >
+              {eng
+                ? data.endescription || "No Title"
+                : data.mndescription || "Гарчиг алга"}
+            </Typography>
+          </Box>
 
           <Grid container spacing={0.3} justifyContent="center">
             {imageUrls.map((url, index) => (
@@ -154,62 +175,35 @@ const HomeDetails = ({ data }) => {
           </Grid>
         </Box>
       )}
-      {data.id === 7 && (
+      {![2, 3, 4, 5, 6].includes(data.id) && (
         <Box>
-          <Typography
-            variant="h6"
-            fontWeight={700}
-            align="start"
-            gutterBottom
-            sx={{ mb: 3 }}
-          >
-            {eng ? data.entitle || "No Title" : data.mntitle || "Гарчиг алга"}
-          </Typography>
-
-          {imageUrls[0] && (
-            <Box
-              component="img"
-              src={imageUrls[0]}
-              alt="Supply Chain Diagram"
-              loading="lazy"
-              sx={{
-                display: "block",
-                mx: "auto",
-                width: "100%",
-                maxWidth: "1000px",
-                height: "auto",
-                borderRadius: 2,
-                boxShadow: 2,
-              }}
-            />
-          )}
-
-          {data.endescription && data.mndescription && (
+          <Box sx={{ marginBottom: 3 }}>
             <Typography
-              variant="body2"
-              sx={{
-                mt: 3,
-                textAlign: "center",
-                whiteSpace: "pre-line",
-                color: "text.secondary",
-              }}
+              variant="h6"
+              fontWeight={700}
+              align="center"
+              gutterBottom
+              sx={{ mb: 3 }}
             >
-              {eng ? data.endescription : data.mndescription}
+              {eng
+                ? data?.entitle || "No Title"
+                : data?.mntitle || "Гарчиг оруулаагүй байна"}
             </Typography>
-          )}
-        </Box>
-      )}
-      {(data.id === 9 || data.id === 8) && (
-        <Box>
-          <Typography
-            variant="h6"
-            fontWeight={700}
-            align="center"
-            gutterBottom
-            sx={{ mb: 3 }}
-          >
-            {eng ? data.entitle || "No Title" : data.mntitle || "Гарчиг алга"}
-          </Typography>
+
+            {data.endescription && data.mndescription && (
+              <Typography
+                variant="body"
+                fontWeight={300}
+                align="center"
+                gutterBottom
+                sx={{ mb: 3 }}
+              >
+                {eng
+                  ? data.endescription || "No Description"
+                  : data.mndescription || "Тайлбар оруулаагүй байна"}
+              </Typography>
+            )}
+          </Box>
 
           {imageUrls[0] && (
             <Box
@@ -220,9 +214,8 @@ const HomeDetails = ({ data }) => {
               sx={{
                 display: "block",
                 mx: "auto",
-                width: "100%",
-                maxWidth: "900px",
                 height: "auto",
+                maxHeight: "300px",
                 borderRadius: 2,
                 boxShadow: 2,
               }}

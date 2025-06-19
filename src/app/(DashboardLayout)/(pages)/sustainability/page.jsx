@@ -87,7 +87,7 @@ const Page = () => {
 
   return (
     <PageContainer title="Баталгаажуулалт">
-      <Box sx={{ height: 450, width: "100%" }}>
+      <Box sx={{ height: "auto", width: "100%" }}>
         <Box
           sx={{
             display: "flex",

@@ -97,7 +97,7 @@ const Page = () => {
   return (
     <PageContainer title="HomePage">
       <Grid container spacing={2}>
-        <Box sx={{ height: 600, width: "100%" }}>
+        <Box sx={{ height: "auto", width: "100%" }}>
           <Box
             sx={{
               display: "flex",
@@ -112,9 +112,9 @@ const Page = () => {
             columns={columns}
             getRowId={(row) => row.id}
             initialState={{
-              pagination: { paginationModel: { pageSize: 11 } },
+              pagination: { paginationModel: { pageSize: 15 } },
             }}
-            pageSizeOptions={[11]}
+            pageSizeOptions={[15]}
             sx={{
               border: "2px solid rgba(224, 224, 224, 1)",
               "& .MuiDataGrid-cell": {
@@ -139,7 +139,6 @@ const Page = () => {
           maxWidth="md"
           fullWidth
         >
-          <DialogTitle>Дэлгэрэнгүй</DialogTitle>
           <DialogContent>
             <HomeDetails data={selectedData} isEdit={false} />
           </DialogContent>

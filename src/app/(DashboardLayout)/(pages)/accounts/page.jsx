@@ -23,7 +23,7 @@ const Page = () => {
       const data = await response.json();
       setDatas(data);
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   };
 
@@ -109,7 +109,7 @@ const Page = () => {
 
   return (
     <PageContainer title="Админууд">
-      <Box sx={{ height: "100vh", width: "100%" }}>
+      <Box sx={{ height: "auto", width: "100%" }}>
         <Box
           sx={{
             width: "full",

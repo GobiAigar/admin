@@ -67,7 +67,7 @@ export default function EditHome({ data, onClose, onSubmitSuccess }) {
           />
         </Grid>
 
-        {![6, 11, 12, 14].includes(data.id) && (
+        {![12, 13].includes(data.id) && (
           <>
             <Grid size={{ xs: 6 }}>
               <InputLabel htmlFor="mndescription">Тайлбар /Монгол/</InputLabel>
@@ -94,39 +94,40 @@ export default function EditHome({ data, onClose, onSubmitSuccess }) {
           </>
         )}
 
-        {(data.id === 1
-          ? [1]
-          : [5, 6].includes(data.id)
-          ? [1, 2, 3, 4]
-          : [1]
-        ).map((i) => {
-          const url = formik.values[`image_url${i}`];
-          const isVideo = data.id === 1;
-          return (
-            <Grid size={{ xs: 6 }} key={i}>
-              <InputLabel htmlFor={`image_url${i}`}>
-                {isVideo ? `Видео ${i}` : `Зураг ${i}`}
-              </InputLabel>
-              {isVideo ? (
-                <TextField
-                  fullWidth
-                  id="image_url1"
-                  name="image_url1"
-                  multiline
-                  onChange={formik.handleChange}
-                  value={formik.values.image_url1}
-                />
-              ) : (
-                <FileUploader
-                  setFieldValue={formik.setFieldValue}
-                  fieldName={`image_url${i}`}
-                  initialPreview={url}
-                  type={"image"}
-                />
-              )}
-            </Grid>
-          );
-        })}
+        {![7, 14].includes(data.id) &&
+          (data.id === 1
+            ? [1]
+            : [2, 6].includes(data.id)
+            ? [1, 2, 3, 4]
+            : [1]
+          ).map((i) => {
+            const url = formik.values[`image_url${i}`];
+            const isVideo = data.id === 1;
+            return (
+              <Grid size={{ xs: 6 }} key={i}>
+                <InputLabel htmlFor={`image_url${i}`}>
+                  {isVideo ? `Видео ${i}` : `Зураг ${i}`}
+                </InputLabel>
+                {isVideo ? (
+                  <TextField
+                    fullWidth
+                    id={`image_url${i}`}
+                    name={`image_url${i}`}
+                    multiline
+                    onChange={formik.handleChange}
+                    value={formik.values[`image_url${i}`]}
+                  />
+                ) : (
+                  <FileUploader
+                    setFieldValue={formik.setFieldValue}
+                    fieldName={`image_url${i}`}
+                    initialPreview={url}
+                    type={"image"}
+                  />
+                )}
+              </Grid>
+            );
+          })}
       </Grid>
 
       <DialogActions>
